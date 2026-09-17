@@ -64,6 +64,16 @@
   });
   sidebarBackdrop.addEventListener('click', closeSidebar);
 
+  var backToTop = document.getElementById('backToTop');
+  function updateBackToTop() {
+    backToTop.classList.toggle('visible', window.scrollY > 400);
+  }
+  window.addEventListener('scroll', updateBackToTop, { passive: true });
+  backToTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  updateBackToTop();
+
   var lightbox = document.getElementById('lightbox');
   var lightboxImg = document.getElementById('lightboxImg');
   document.querySelectorAll('.shot').forEach(function(fig) {
