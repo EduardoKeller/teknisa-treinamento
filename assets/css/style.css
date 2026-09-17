@@ -57,12 +57,62 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
-  padding-inline: 20px;
-  padding-block: 22px 60px;
 }
 h1,h2,h3 { font-family: "Manrope", "Segoe UI", system-ui, sans-serif; text-wrap: balance; margin: 0; }
 p { margin: 0; }
-.wrap { max-width: 880px; margin-inline: auto; }
+.wrap { max-width: 880px; margin-inline: auto; padding-inline: 20px; padding-block: 22px 60px; }
+
+.app-shell { display: flex; align-items: stretch; min-height: 100vh; }
+.content { flex: 1; min-width: 0; }
+
+.sidebar {
+  flex: none; width: 264px; position: sticky; top: 0; align-self: flex-start; height: 100vh;
+  overflow-y: auto; background: var(--card); border-right: 1px solid var(--line);
+  padding: 22px 16px; display: flex; flex-direction: column; gap: 4px;
+}
+.sidebar-brand { display: flex; align-items: center; padding: 4px 10px 22px; }
+.sidebar-logo { display: block; height: 38px; width: auto; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+.side-link {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px;
+  color: var(--ink-soft); text-decoration: none; font-weight: 700; font-size: 13.5px;
+  font-family: "Manrope", sans-serif; transition: background .12s ease, color .12s ease;
+}
+.side-link:hover { background: var(--accent-soft); color: var(--accent); }
+.side-link.active { background: var(--accent); color: var(--accent-ink); }
+.side-link-icon {
+  flex: none; width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center;
+  background: var(--accent-soft); color: var(--accent);
+}
+.side-link.active .side-link-icon { background: rgba(255,255,255,.22); color: var(--accent-ink); }
+.side-link-icon svg { width: 17px; height: 17px; }
+
+.sidebar-backdrop { position: fixed; inset: 0; background: rgba(10,7,4,.5); z-index: 45; }
+.sidebar-backdrop[hidden] { display: none; }
+
+.mobile-topbar { display: none; }
+
+@media (max-width: 880px) {
+  .sidebar {
+    position: fixed; inset: 0 auto 0 0; z-index: 50; width: 84%; max-width: 300px;
+    transform: translateX(-100%); transition: transform .25s ease; box-shadow: var(--shadow);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .mobile-topbar {
+    display: flex; align-items: center; gap: 12px; position: sticky; top: env(safe-area-inset-top, 0px);
+    z-index: 30; padding: 12px 20px; background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+  }
+  .sidebar-toggle {
+    all: unset; cursor: pointer; display: grid; place-items: center; width: 38px; height: 38px;
+    border-radius: 10px; background: var(--card); border: 1px solid var(--line); color: var(--ink); flex: none;
+  }
+  .sidebar-toggle svg { width: 19px; height: 19px; }
+  .mobile-topbar-logo { height: 28px; width: auto; }
+}
+@media (min-width: 881px) {
+  .sidebar-backdrop { display: none !important; }
+}
 
 .masthead { display: flex; flex-direction: column; gap: 14px; padding-block: 6px 28px; }
 .brand-plate {
@@ -77,28 +127,6 @@ p { margin: 0; }
 .stat { display: flex; flex-direction: column; }
 .stat b { font-family: "Manrope", sans-serif; font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .stat span { font-size: 12.5px; color: var(--ink-soft); }
-
-.sec-grid { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); padding-top: 6px; }
-@media (max-width: 620px) { .sec-grid { grid-template-columns: 1fr; } }
-
-.sec-card {
-  all: unset; cursor: pointer;
-  display: flex; align-items: flex-start; gap: 12px;
-  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 16px; box-shadow: var(--shadow);
-  transition: transform .12s ease, border-color .12s ease;
-}
-.sec-card:hover { transform: translateY(-2px); border-color: var(--accent); }
-.sec-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.sec-card-icon {
-  flex: none; width: 40px; height: 40px; border-radius: 10px;
-  background: var(--accent-soft); color: var(--accent);
-  display: grid; place-items: center;
-}
-.sec-card-icon svg { width: 21px; height: 21px; }
-.sec-card-text { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
-.sec-card-title { font-family: "Manrope", sans-serif; font-weight: 700; font-size: 15.5px; }
-.sec-card-desc { font-size: 12.5px; color: var(--ink-soft); line-height: 1.4; }
 
 .footer-note {
   margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--line);
