@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Treinamento — Gestão de Restaurantes | Sistema Teknisa</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="wrap">
+
+  <main id="home">
+    <header class="masthead">
+      <div class="brand-plate">
+        <img src="assets/img/img-001.jpg" alt="Escola Grupo Prato Feito" class="brand-logo">
+      </div>
+      <h1>Treinamento — Gestão de Restaurantes</h1>
+      <p class="lede">Guia de rotinas do Sistema Teknisa para as lideranças das unidades: planejamento de cardápio, compras e notas fiscais, faturamento, estoque e fechamento do dia. Capacitação sobre controle de custos, lançamento de notas fiscais e execução das rotinas da unidade operacional.</p>
+      <div class="stat-row">
+        <div class="stat"><b>120</b><span>telas de conteúdo</span></div>
+        <div class="stat"><b>6</b><span>módulos</span></div>
+        <div class="stat"><b>100%</b><span>revisado</span></div>
+      </div>
+    </header>
+
+    <nav class="sec-grid" aria-label="Módulos do treinamento">
+    <button class="sec-card" data-target="planejamento" type="button">
+      <span class="sec-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="4.6" width="17.6" height="16" rx="2.2"/><path d="M3.2 9.6h17.6M8 3v3.6M16 3v3.6"/><path d="M7.6 13.4h2.2M11.9 13.4h2.2M16.2 13.4h1M7.6 17h2.2M11.9 17h2.2"/></svg></span>
+      <span class="sec-card-text">
+        <span class="sec-card-title">Planejamento</span>
+        <span class="sec-card-desc">Cardápio, comensais, custo, requisições e medição de efetivos</span>
+      </span>
+    </button>
+    <button class="sec-card" data-target="compras" type="button">
+      <span class="sec-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2.2l1 2.2M6.2 6.2l1.9 9.1a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6l1.2-6.3H6.2z"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg></span>
+      <span class="sec-card-text">
+        <span class="sec-card-title">Compras e Notas Fiscais</span>
+        <span class="sec-card-desc">Autorização de Fornecimento, pedidos e lançamento de notas fiscais</span>
+      </span>
+    </button>
+    <button class="sec-card" data-target="faturamento" type="button">
+      <span class="sec-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.2h9.6L18.8 6.4V20a.8.8 0 0 1-.8.8H6a.8.8 0 0 1-.8-.8V4a.8.8 0 0 1 .8-.8Z"/><path d="M15.4 3.2V6.4a.4.4 0 0 0 .4.4h3"/><path d="M8.4 10.8h7.2M8.4 13.6h7.2M8.4 16.4h4.4"/></svg></span>
+      <span class="sec-card-text">
+        <span class="sec-card-title">Faturamento</span>
+        <span class="sec-card-desc">Medição de efetivos, apuração e emissão de notas fiscais</span>
+      </span>
+    </button>
+    <button class="sec-card" data-target="estoque" type="button">
+      <span class="sec-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4 20.4 8v8L12 20.6 3.6 16V8Z"/><path d="M3.9 7.8 12 12.3l8.1-4.5M12 12.3v8.3"/></svg></span>
+      <span class="sec-card-text">
+        <span class="sec-card-title">Estoque e Fechamento do Dia</span>
+        <span class="sec-card-desc">Posição de estoque, ajuste de inventário e fechamento diário</span>
+      </span>
+    </button>
+    <button class="sec-card" data-target="mapa" type="button">
+      <span class="sec-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10.4M10 20V6M16 20v-7.6M4 20h16"/></svg></span>
+      <span class="sec-card-text">
+        <span class="sec-card-title">Mapa de Gestão Semanal</span>
+        <span class="sec-card-desc">Curva ABC, notas lançadas e valores de gerais</span>
+      </span>
+    </button>
+    <button class="sec-card" data-target="dro" type="button">
+      <span class="sec-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.2 3.2h6.2l4.4 4.4V20a.8.8 0 0 1-.8.8H7.2a.8.8 0 0 1-.8-.8V4a.8.8 0 0 1 .8-.8Z"/><path d="M13.4 3.2v3.8a.6.6 0 0 0 .6.6h3.8"/><circle cx="10.6" cy="14.2" r="2.6"/><path d="m12.6 16.2 2 2"/></svg></span>
+      <span class="sec-card-text">
+        <span class="sec-card-title">DRO — Resultado Operacional</span>
+        <span class="sec-card-desc">Demonstrativo de Resultado Operacional da unidade</span>
+      </span>
+    </button>
+    </nav>
+
+    <p class="footer-note"><span class="dot"></span>Conteúdo conferido tela a tela a partir da apresentação original — nenhuma etapa foi omitida.</p>
+  </main>
+
+  
+  <section class="section-view" id="sec-planejamento" hidden>
+    <div class="topbar">
+      <button class="back-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5.5 8 12l7 6.5"/></svg>Menu</button>
+      <span class="topbar-title">Planejamento</span>
+    </div>
+    <div class="section-head">
+      <span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="4.6" width="17.6" height="16" rx="2.2"/><path d="M3.2 9.6h17.6M8 3v3.6M16 3v3.6"/><path d="M7.6 13.4h2.2M11.9 13.4h2.2M16.2 13.4h1M7.6 17h2.2M11.9 17h2.2"/></svg></span>
+      <div>
+        <h2>Planejamento</h2>
+        <p>Cardápio, comensais, custo, requisições e medição de efetivos</p>
+      </div>
+      <span class="section-count">45<small>telas</small></span>
+    </div>
+    <nav class="chip-row" aria-label="Ir para etapa"><a class="chip" href="#planejamento-t1">Elaboração de Cardápio</a><a class="chip" href="#planejamento-t2">Formulário para ajuste de Per Capita</a><a class="chip" href="#planejamento-t3">Emissão Cardápio do dia</a><a class="chip" href="#planejamento-t4">Emissão Cardápio da Semana</a><a class="chip" href="#planejamento-t5">Emissão Cardápio do mês</a><a class="chip" href="#planejamento-t6">Cálculo de Nutrientes do Cardápio</a><a class="chip" href="#planejamento-t7">Relatório de Planejamento – Pré-Custo</a><a class="chip" href="#planejamento-t8">Relatório de Planejamento</a><a class="chip" href="#planejamento-t9">Requisição – Ordem Produção</a><a class="chip" href="#planejamento-t10">Consumo por Serviço (kits)</a><a class="chip" href="#planejamento-t11">Retirada Geral – Baixa do estoque</a><a class="chip" href="#planejamento-t12">Consumo Planejado x Realizado</a><a class="chip" href="#planejamento-t13">Custo Planejado x Realizado</a><a class="chip" href="#planejamento-t14">Medição de Efetivos</a></nav>
+    <div class="topic-list">
+      <div class="intro-note">
+        <span class="intro-eyebrow">Sobre este módulo</span>
+        <h3>PLANEJAMENTO</h3>
+        <p>Planejar é o ato de definir metas e criar um caminho claro para alcançá-las.</p><p>Ele é fundamental porque reduz erros, economiza tempo, diminui a ansiedade e ajuda a usar melhor os recursos disponíveis, transformando ideias em resultados reais.</p>
+      </div>
+      
+      <article class="topic-card" id="planejamento-t1">
+        <h3 class="topic-title">Elaboração de Cardápio</h3>
+        <ul class="topic-bullets"><li>Conferir os pratos e os percentuais de consumo</li><li>Quando está em vermelho significa dia não útil.</li><li>Informações importantes:</li><li>Se a unidade não tiver refeições em algum dia precisa, ser excluído o cardápio do dia;</li><li>Quando o dia estiver em vermelho, significa dia não útil, caso tenha refeições, precisamos ativar o dia e informar cardápio;</li><li>Se a unidade não trabalha em finais de semana e o cliente solicita eventualmente, precisa informar ao PCP o cardápio para que seja inserido no sistema.</li><li>Ajuste de comensais</li><li>Clicar no número para ajustar.</li><li>O número de comensais puxa automaticamente no cardápio de um cadastro que o PCP faz, caso esteja puxando errado, favor informar o correto para que seja ajustado o cadastro.</li><li>Ajustar o número e salvar.</li><li>Verificação de Custo:</li><li>Abre dia por dia os custos;</li><li>Entrando no dia, aparece os custos dos pratos e clicando no prato o custo dos insumos</li><li>Pratos:</li><li>Na elaboração de cardápio, entrando na receita, consigo visualizar os per capitas, o custo e pesquisar outras receitas;</li><li>O ajuste de per capitas deve ser enviado para analista de PCP.</li><li>Pratos</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-002.jpg">
+                  <img src="assets/img/img-002.jpg" alt="Tela do sistema Teknisa — Elaboração de Cardápio" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-003.jpg">
+                  <img src="assets/img/img-003.jpg" alt="Tela do sistema Teknisa — Elaboração de Cardápio" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-004.jpg">
+                  <img src="assets/img/img-004.jpg" alt="Tela do sistema Teknisa — Elaboração de Cardápio" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-005.jpg">
+                  <img src="assets/img/img-005.jpg" alt="Tela do sistema Teknisa — Elaboração de Cardápio" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-006.jpg">
+                  <img src="assets/img/img-006.jpg" alt="Tela do sistema Teknisa — Elaboração de Cardápio" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-007.jpg">
+                  <img src="assets/img/img-007.jpg" alt="Tela do sistema Teknisa — Elaboração de Cardápio" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-008.jpg">
+                  <img src="assets/img/img-008.jpg" alt="Tela do sistema Teknisa — Elaboração de Cardápio" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-009.jpg">
+                  <img src="assets/img/img-009.jpg" alt="Tela do sistema Teknisa — Elaboração de Cardápio" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t2">
+        <h3 class="topic-title">Formulário para ajuste de Per Capita</h3>
+        <ul class="topic-bullets"><li>Ajuste de pratos:</li></ul><div class="shots-grid one"><figure class="shot" data-src="assets/img/img-010.jpg">
+                  <img src="assets/img/img-010.jpg" alt="Tela do sistema Teknisa — Formulário para ajuste de Per Capita" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t3">
+        <h3 class="topic-title">Emissão Cardápio do dia</h3>
+        <ul class="topic-bullets"><li>Para emitir o cardápio do dia para o cliente:</li><li>Pode ser gerado em PDF ou excel (caso queira excluir linhas)</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-011.jpg">
+                  <img src="assets/img/img-011.jpg" alt="Tela do sistema Teknisa — Emissão Cardápio do dia" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-012.jpg">
+                  <img src="assets/img/img-012.jpg" alt="Tela do sistema Teknisa — Emissão Cardápio do dia" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t4">
+        <h3 class="topic-title">Emissão Cardápio da Semana</h3>
+        <ul class="topic-bullets"><li>Para emitir cardápio semanal para mural do cliente:</li><li>Caso não tenha final de semana pode excluir.</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-013.jpg">
+                  <img src="assets/img/img-013.jpg" alt="Tela do sistema Teknisa — Emissão Cardápio da Semana" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-014.jpg">
+                  <img src="assets/img/img-014.jpg" alt="Tela do sistema Teknisa — Emissão Cardápio da Semana" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t5">
+        <h3 class="topic-title">Emissão Cardápio do mês</h3>
+        <ul class="topic-bullets"><li>Para emitir cardápio do mês com custo</li><li>Para emitir cardápio do mês sem custo, para enviar ao cliente;</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-015.jpg">
+                  <img src="assets/img/img-015.jpg" alt="Tela do sistema Teknisa — Emissão Cardápio do mês" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-016.jpg">
+                  <img src="assets/img/img-016.jpg" alt="Tela do sistema Teknisa — Emissão Cardápio do mês" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-017.jpg">
+                  <img src="assets/img/img-017.jpg" alt="Tela do sistema Teknisa — Emissão Cardápio do mês" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-018.jpg">
+                  <img src="assets/img/img-018.jpg" alt="Tela do sistema Teknisa — Emissão Cardápio do mês" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t6">
+        <h3 class="topic-title">Cálculo de Nutrientes do Cardápio</h3>
+        <ul class="topic-bullets"><li>Sistema realiza o cálculo nutricional</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-019.jpg">
+                  <img src="assets/img/img-019.jpg" alt="Tela do sistema Teknisa — Cálculo de Nutrientes do Cardápio" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-020.jpg">
+                  <img src="assets/img/img-020.jpg" alt="Tela do sistema Teknisa — Cálculo de Nutrientes do Cardápio" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t7">
+        <h3 class="topic-title">Relatório de Planejamento – Pré-Custo</h3>
+        <ul class="topic-bullets"><li>Custo Planejamento x Faturamento Previsto (Next):</li></ul><div class="shots-grid one"><figure class="shot" data-src="assets/img/img-021.jpg">
+                  <img src="assets/img/img-021.jpg" alt="Tela do sistema Teknisa — Relatório de Planejamento – Pré-Custo" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t8">
+        <h3 class="topic-title">Relatório de Planejamento</h3>
+        <div class="shots-grid one"><figure class="shot" data-src="assets/img/img-022.jpg">
+                  <img src="assets/img/img-022.jpg" alt="Tela do sistema Teknisa — Relatório de Planejamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t9">
+        <h3 class="topic-title">Requisição – Ordem Produção</h3>
+        <ul class="topic-bullets"><li>Requisição por Serviço Analítica (produção)</li><li>Relatório para produção saber as quantidades, por serviço, a serem produzidas;</li><li>Relatório para produção saber as quantidades gerais do dia, agrupa preparações;</li><li>Requisição Geral – estoque</li><li>Precisa ser calculado antes de dar a baixa</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-023.jpg">
+                  <img src="assets/img/img-023.jpg" alt="Tela do sistema Teknisa — Requisição – Ordem Produção" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-024.jpg">
+                  <img src="assets/img/img-024.jpg" alt="Tela do sistema Teknisa — Requisição – Ordem Produção" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-025.jpg">
+                  <img src="assets/img/img-025.jpg" alt="Tela do sistema Teknisa — Requisição – Ordem Produção" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-026.jpg">
+                  <img src="assets/img/img-026.jpg" alt="Tela do sistema Teknisa — Requisição – Ordem Produção" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-027.jpg">
+                  <img src="assets/img/img-027.jpg" alt="Tela do sistema Teknisa — Requisição – Ordem Produção" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-028.jpg">
+                  <img src="assets/img/img-028.jpg" alt="Tela do sistema Teknisa — Requisição – Ordem Produção" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t10">
+        <h3 class="topic-title">Consumo por Serviço (kits)</h3>
+        <ul class="topic-bullets"><li>No consumo por serviço estão os itens (descartáveis e limpeza) com as quantidades necessárias para uma semana;</li></ul><div class="shots-grid one"><figure class="shot" data-src="assets/img/img-029.jpg">
+                  <img src="assets/img/img-029.jpg" alt="Tela do sistema Teknisa — Consumo por Serviço (kits)" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t11">
+        <h3 class="topic-title">Retirada Geral – Baixa do estoque</h3>
+        <ul class="topic-bullets"><li>Informar a unidade, a data e aplicar filtro:</li><li>Se a requisição não foi calculada, a tela vai aparecer em branco. Correto é calcular a requisição do dia;</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-030.jpg">
+                  <img src="assets/img/img-030.jpg" alt="Tela do sistema Teknisa — Retirada Geral – Baixa do estoque" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-031.jpg">
+                  <img src="assets/img/img-031.jpg" alt="Tela do sistema Teknisa — Retirada Geral – Baixa do estoque" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-032.jpg">
+                  <img src="assets/img/img-032.jpg" alt="Tela do sistema Teknisa — Retirada Geral – Baixa do estoque" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-033.jpg">
+                  <img src="assets/img/img-033.jpg" alt="Tela do sistema Teknisa — Retirada Geral – Baixa do estoque" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-034.jpg">
+                  <img src="assets/img/img-034.jpg" alt="Tela do sistema Teknisa — Retirada Geral – Baixa do estoque" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t12">
+        <h3 class="topic-title">Consumo Planejado x Realizado</h3>
+        <ul class="topic-bullets"><li>Após realizar a baixa do estoque é possível analisar os itens consumidos;</li><li>Relatório: Consumo Planejado x Realizado</li><li>Análises para ajuste de per capita:</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-035.jpg">
+                  <img src="assets/img/img-035.jpg" alt="Tela do sistema Teknisa — Consumo Planejado x Realizado" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-036.jpg">
+                  <img src="assets/img/img-036.jpg" alt="Tela do sistema Teknisa — Consumo Planejado x Realizado" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t13">
+        <h3 class="topic-title">Custo Planejado x Realizado</h3>
+        <ul class="topic-bullets"><li>Após realizar a baixa do estoque é possível analisar os custos realizados;</li><li>Relatório: Custo Planejado x Realizado</li><li>Análise do custo</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-037.jpg">
+                  <img src="assets/img/img-037.jpg" alt="Tela do sistema Teknisa — Custo Planejado x Realizado" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-038.jpg">
+                  <img src="assets/img/img-038.jpg" alt="Tela do sistema Teknisa — Custo Planejado x Realizado" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="planejamento-t14">
+        <h3 class="topic-title">Medição de Efetivos</h3>
+        <ul class="topic-bullets"><li>Onde deve ser informado o número de refeições realizadas e a faturar.</li><li>Só é permitido preencher efetivos de serviços com cardápio para o dia informado;</li><li>Essa rotina é feita após a realização da retirada geral e a baixa do estoque;</li><li>Preencher os efetivos, por cliente, para emitir a nota fiscal.</li><li>Faturamento – Venda de óleo</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-039.jpg">
+                  <img src="assets/img/img-039.jpg" alt="Tela do sistema Teknisa — Medição de Efetivos" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-040.jpg">
+                  <img src="assets/img/img-040.jpg" alt="Tela do sistema Teknisa — Medição de Efetivos" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-041.jpg">
+                  <img src="assets/img/img-041.jpg" alt="Tela do sistema Teknisa — Medição de Efetivos" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-042.jpg">
+                  <img src="assets/img/img-042.jpg" alt="Tela do sistema Teknisa — Medição de Efetivos" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-043.jpg">
+                  <img src="assets/img/img-043.jpg" alt="Tela do sistema Teknisa — Medição de Efetivos" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article></div>
+  </section>
+  <section class="section-view" id="sec-compras" hidden>
+    <div class="topbar">
+      <button class="back-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5.5 8 12l7 6.5"/></svg>Menu</button>
+      <span class="topbar-title">Compras e Notas Fiscais</span>
+    </div>
+    <div class="section-head">
+      <span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2.2l1 2.2M6.2 6.2l1.9 9.1a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6l1.2-6.3H6.2z"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg></span>
+      <div>
+        <h2>Compras e Notas Fiscais</h2>
+        <p>Autorização de Fornecimento, pedidos e lançamento de notas fiscais</p>
+      </div>
+      <span class="section-count">44<small>telas</small></span>
+    </div>
+    <nav class="chip-row" aria-label="Ir para etapa"><a class="chip" href="#compras-t1">Autorização de Fornecimento (AF)</a><a class="chip" href="#compras-t2">Lançamento de Autorização de Fornecimento</a><a class="chip" href="#compras-t3">AJUSTE DE PEDIDOS</a><a class="chip" href="#compras-t4">Relatório AFs</a><a class="chip" href="#compras-t5">Solicitação Pedido Extra</a><a class="chip" href="#compras-t6">Pedidos de Gerais</a><a class="chip" href="#compras-t7">Pedidos de Gerais e Serviços</a><a class="chip" href="#compras-t8">Notas Fiscais</a><a class="chip" href="#compras-t9">Notas Fiscais – Lançamento Simplificado</a><a class="chip" href="#compras-t10">Notas Fiscais – Importação de AF</a><a class="chip" href="#compras-t11">Nota Fiscal – Lançamento Manual</a><a class="chip" href="#compras-t12">Romaneio de Notas Fiscais de entrada</a></nav>
+    <div class="topic-list">
+      <div class="intro-note">
+        <span class="intro-eyebrow">Sobre este módulo</span>
+        <h3>COMPRAS E NOTAS FISCAIS</h3>
+        
+      </div>
+      
+      <article class="topic-card" id="compras-t1">
+        <h3 class="topic-title">Autorização de Fornecimento (AF)</h3>
+        <ul class="topic-bullets"><li>Lançamento de Autorização de Fornecimento;</li><li>Nessa tela aparecem todas as Afs geradas para a unidade;</li><li>Filtrar unidade</li><li>Compradores: todos</li><li>Data entrega: o mês que desejo olhar</li><li>Filtrar</li></ul>
+      </article>
+      
+      <article class="topic-card" id="compras-t2">
+        <h3 class="topic-title">Lançamento de Autorização de Fornecimento</h3>
+        <ul class="topic-bullets"><li>Pode ser filtrado por fornecedor ou pelo número da AF.</li><li>Ao escrever na lupa o sistema filtra conforme desejado.</li><li>Para imprimir a AF:</li><li>Clicar em uma AF</li><li>Ações</li><li>Relatório</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-044.jpg">
+                  <img src="assets/img/img-044.jpg" alt="Tela do sistema Teknisa — Lançamento de Autorização de Fornecimento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-045.jpg">
+                  <img src="assets/img/img-045.jpg" alt="Tela do sistema Teknisa — Lançamento de Autorização de Fornecimento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-046.jpg">
+                  <img src="assets/img/img-046.jpg" alt="Tela do sistema Teknisa — Lançamento de Autorização de Fornecimento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-047.jpg">
+                  <img src="assets/img/img-047.jpg" alt="Tela do sistema Teknisa — Lançamento de Autorização de Fornecimento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="compras-t3">
+        <h3 class="topic-title">AJUSTE DE PEDIDOS</h3>
+        <ul class="topic-bullets"><li>Alteração /Aprovação de AF’s</li><li>Informar no filtro unidade e período;</li><li>Entrar na AF, clicar no produto que deseja alterar;</li><li>Informar quantidade e o motivo</li><li>A alteração aparecerá para o PCP aprovar. Só conseguirá salvar a Af mediante aprovação.</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-048.jpg">
+                  <img src="assets/img/img-048.jpg" alt="Tela do sistema Teknisa — AJUSTE DE PEDIDOS" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-049.jpg">
+                  <img src="assets/img/img-049.jpg" alt="Tela do sistema Teknisa — AJUSTE DE PEDIDOS" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="compras-t4">
+        <h3 class="topic-title">Relatório AFs</h3>
+        <ul class="topic-bullets"><li>Relatório de AF’s por Fornecedor:</li><li>Pode ser emitido relatório de todas AFs de um mesmo fornecedor do período, ou pode emitir todas Afs do período de todos os fornecedores para conferir;</li><li>Nesse relatório temos três opções:</li><li>Não exibe utilização – ideal para enviar aos fornecedores;</li><li>Primeira utilização: mostrará o primeiro dia que será utilizada a mercadoria;</li><li>Lista de data de utilização: mostrará todos os dias de consumo, ideal para conferência com o cardápio;</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-050.jpg">
+                  <img src="assets/img/img-050.jpg" alt="Tela do sistema Teknisa — Relatório AFs" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-051.jpg">
+                  <img src="assets/img/img-051.jpg" alt="Tela do sistema Teknisa — Relatório AFs" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="compras-t5">
+        <h3 class="topic-title">Solicitação Pedido Extra</h3>
+        <ul class="topic-bullets"><li>Lançamento da Solicitação de Compra:</li><li>O filtro inicial pode ser fechado;</li><li>Ir em adicionar, marcar extra, informar a justificativa e o comprador, prosseguir;</li><li>Informar a data que precisa que seja entregue o pedido e salvar;</li><li>Excluir o primeiro item que puxa (acém c/osso) e adicionar o item que deseja;</li><li>Informar a data que precisa que seja entregue e salvar;</li><li>No momento que a solicitação é concluída, ela fica pendente para o PCP aprovar;</li><li>Após a aprovação, o comprador selecionado consegue apurar e gerar uma AF;</li><li>É importante sempre enviar um e-mail para analista de PCP e para o comprador terem ciência que necessitam fazer esse processo.</li><li>Esse processo deve ser realizado para pedidos extras, caso já tenha uma AF e deseja incluir um novo item, poderá ser utilizado o formulário para ajuste de AF padrão da empresa.</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-052.jpg">
+                  <img src="assets/img/img-052.jpg" alt="Tela do sistema Teknisa — Solicitação Pedido Extra" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-053.jpg">
+                  <img src="assets/img/img-053.jpg" alt="Tela do sistema Teknisa — Solicitação Pedido Extra" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="compras-t6">
+        <h3 class="topic-title">Pedidos de Gerais</h3>
+        <ul class="topic-bullets"><li>Para as compras de Gerais (uniforme, EPI/expediente, utensílios), o processo continua da mesma forma, cada unidade faz seus pedidos no sistema e envia para coordenação;</li><li>Cada unidade tem em seu orçamento uma previsão de valor para cada conta e a AF deve ser feita dentro do valor orçado, nunca ultrapassando o mesmo;</li><li>Para criar AF entrar em Lançamento de Autorização de Fornecimento:</li><li>Fechar o filtro e ir em adicionar;</li><li>Informar a unidade;</li><li>O comprador deve ser você mesmo;</li><li>E o fornecedor;</li></ul>
+      </article>
+      
+      <article class="topic-card" id="compras-t7">
+        <h3 class="topic-title">Pedidos de Gerais e Serviços</h3>
+        <ul class="topic-bullets"><li>Selecionar o produto ou serviço desejado;</li><li>Informar data de entrega;</li><li>Quantidade;</li><li>Salvar;</li><li>Adicionar tudo que for necessário, sempre cuidando valor total e salvar ao final</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-054.jpg">
+                  <img src="assets/img/img-054.jpg" alt="Tela do sistema Teknisa — Pedidos de Gerais e Serviços" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-055.jpg">
+                  <img src="assets/img/img-055.jpg" alt="Tela do sistema Teknisa — Pedidos de Gerais e Serviços" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="compras-t8">
+        <h3 class="topic-title">Notas Fiscais</h3>
+        <ul class="topic-bullets"><li>É importante que esse processo seja realizado no início do dia para dar sequência à rotina. A mercadoria entra no estoque mediante lançamento de nota fiscal.</li><li>Formas de lançamento das notas fiscais.</li></ul><div class="shots-grid one"><figure class="shot" data-src="assets/img/img-056.jpg">
+                  <img src="assets/img/img-056.jpg" alt="Tela do sistema Teknisa — Notas Fiscais" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="compras-t9">
+        <h3 class="topic-title">Notas Fiscais – Lançamento Simplificado</h3>
+        <ul class="topic-bullets"><li>Esse tipo de lançamento se aplica para as notas de compra (alimentar, descartáveis e limpeza), simples remessa, bonificação/brindes/doações (CFOP 5910, 6910), NF de abastecimento de gás, NF amostra grátis (CFOP 5911, 6911).</li><li>Tela lançamento de notas fiscais simplificado.</li><li>Data de emissão deixar em branco, aplicar filtro.</li><li>Clicar sob o lançamento para abrir.</li><li>Conferir, clicar em visualizar nota fiscal.</li><li>Conferir os produtos um por um.</li><li>Após conferir clicar em voltar no canto inferior esquerdo.</li><li>Selecionar a nota e confirmar NF.</li><li>Informar a data de entrada e confirmar.</li><li>Essa data precisa ser o dia que recebeu a mercadoria, essa é a data que os produtos irão entrar no estoque.</li><li>Não consigo dar baixa de um item antes dele entrar no estoque.</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-057.jpg">
+                  <img src="assets/img/img-057.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Lançamento Simplificado" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-058.jpg">
+                  <img src="assets/img/img-058.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Lançamento Simplificado" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-059.jpg">
+                  <img src="assets/img/img-059.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Lançamento Simplificado" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-060.jpg">
+                  <img src="assets/img/img-060.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Lançamento Simplificado" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      <span class="subsection-label">Notas Fiscais – Lançamento com Chave de acesso Importação de AF</span>
+      <article class="topic-card" id="compras-t10">
+        <h3 class="topic-title">Notas Fiscais – Importação de AF</h3>
+        <ul class="topic-bullets"><li>Esse tipo de lançamento se aplica para as notas de produtor rural, NF sobre recibo, NF compra/bonificação (com itens de compra mais itens bonificados na mesma nota), NF uso e consumo/imobilizado (utensílios, epi, uniformes, material de expediente), NF substituição de cupom (CFOP 5929).</li><li>*entrada com recibo é o mesmo processo, porém não se digita chave de acesso.</li><li>No canto superior esquerdo da tela, clique no ícone do menu lateral.</li><li>Na tela que será exibida, o sistema apresenta um filtro que precisa ser preenchido.</li><li>Para o preenchimento do filtro, complete os seguintes campos:</li><li>Unidade: clique no espaço correspondente e localize a filial em questão.</li><li>Empresa: essa informação será preenchida automaticamente.</li><li>Data de Entrada: informar o mês vigente.</li><li>Após a inserção dos dados, clique no botão Aplicar filtro. O sistema listará os lançamentos realizados conforme as informações filtradas.</li><li>Clique no botão Adicionar localizado no rodapé da página</li><li>Na tela que será exibida, os campos sinalizados com um asterisco são de preenchimento obrigatório. Complete-os com as informações correspondentes. Cuidar com a operação e digite a chave de acesso. Ao digitar a chave de acesso já irá puxar as informações da nota fiscal.</li><li>Clique no campo Importar AF e selecione a opção Realizar a Importação de AF.</li><li>O sistema abrirá uma tela com todas as AFs do fornecedor selecionado que estiverem em aberto. Marque o checkbox ao lado da AF desejada ou utilize o botão Buscar AF para localizar alguma Autorização de Fornecimento específica a partir do número dela.</li><li>O sistema permite selecionar mais de uma AF se necessário.</li><li>Depois de marcar a opção desejada, clique em Confirmar.</li><li>O campo Valor será apresentado de acordo com o valor da AF ou das AFs selecionadas. Clique em Salvar para prosseguir.</li><li>Na aba Produto, o sistema carregará todos os produtos relacionados às AFs selecionadas. Confirme que os produtos da nota são os mesmos que estão nas AFs. Se algum item ficar em vermelho, significa que não tem relacionamento e será  necessário entrar em contato com o setor de suprimentos.</li><li>Na aba Cálculo de Impostos, informe, na coluna Valor, o valor total dos impostos dos produtos presentes na fatura;</li><li>Encargo</li><li>Caso haja encargos na nota, como descontos e frete, estes deverão ser lançados na aba Encargo. Na coluna Valor, clique no espaço correspondente e inclua os valores. Em seguida, clique em Salvar Alterações.</li><li>Para finalizar, observe os dados da nota fiscal e as informações que foram importadas através da AF. O lançamento no sistema deverá ser a cópia da Nota Fiscal. Sendo assim, caso haja alguma diferença, faça as alterações necessárias no lançamento de forma que a NF do sistema seja idêntica à NF física ou ao Documento Auxiliar de Nota Fiscal Eletrônica (DANFE).</li><li>Após confirmar e salvar as informações, clique no botão Fechar NF, localizado no canto inferior direito. O sistema exibe uma mensagem de confirmação. Clique em Sim para finalizar a operação.</li><li>Caso sejam identificadas divergências entre a Nota Fiscal e a AF, estas serão apontadas pelo sistema no momento do fechamento por meio da janela Erros e Avisos. Os problemas mais comuns incluem:</li><li>Diferenças entre a quantidade de produto da AF e da NF (ajustar AF antes de lançar a nota fiscal);</li><li>Valores unitários inconsistentes: sistema não permite valor maior na nota, caso ocorrer entrar em contato com o comprador da conta;</li><li>Data de entrada ou de vencimento incorretas;</li><li>Alteração de itens da AF (os itens da AF precisam ser iguais aos da Nota);</li><li>Após seguir as orientações corretamente, a Autorização de Fornecimento</li><li>será importada com sucesso.</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-061.jpg">
+                  <img src="assets/img/img-061.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Importação de AF" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-062.jpg">
+                  <img src="assets/img/img-062.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Importação de AF" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-063.jpg">
+                  <img src="assets/img/img-063.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Importação de AF" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-064.jpg">
+                  <img src="assets/img/img-064.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Importação de AF" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-065.jpg">
+                  <img src="assets/img/img-065.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Importação de AF" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-066.jpg">
+                  <img src="assets/img/img-066.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Importação de AF" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-067.jpg">
+                  <img src="assets/img/img-067.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Importação de AF" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-068.jpg">
+                  <img src="assets/img/img-068.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Importação de AF" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-069.jpg">
+                  <img src="assets/img/img-069.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Importação de AF" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-070.jpg">
+                  <img src="assets/img/img-070.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Importação de AF" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-071.jpg">
+                  <img src="assets/img/img-071.jpg" alt="Tela do sistema Teknisa — Notas Fiscais – Importação de AF" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      <span class="subsection-label">Nota Fiscal – Lançamento Manual / Recibo</span>
+      <article class="topic-card" id="compras-t11">
+        <h3 class="topic-title">Nota Fiscal – Lançamento Manual</h3>
+        <ul class="topic-bullets"><li>Lançamento NF sobre recibo</li><li>O processo é o mesmo do lançamento de nota fiscal por importação de AF, porém não será importado AF, deverá ser vinculado os recibos já lançados conforme tela abaixo.</li><li>Utilizar a operação 11 - NF sobre recibo.</li><li>Irá abrir a tela relacionamento de itens, conferir e confirmar. Ao confirmar irá liberar a aba entrada sem nota fiscal, nessa aba deve vincular os recibos já lançados clicando em adicionar.</li><li>Selecionar os recibos referentes a nota fiscal e salvar.</li><li>Fechar NF.</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-072.jpg">
+                  <img src="assets/img/img-072.jpg" alt="Tela do sistema Teknisa — Nota Fiscal – Lançamento Manual" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-073.jpg">
+                  <img src="assets/img/img-073.jpg" alt="Tela do sistema Teknisa — Nota Fiscal – Lançamento Manual" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-074.jpg">
+                  <img src="assets/img/img-074.jpg" alt="Tela do sistema Teknisa — Nota Fiscal – Lançamento Manual" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      <span class="subsection-label">Relatório de Notas / Romaneio de Notas Fiscais</span>
+      <article class="topic-card" id="compras-t12">
+        <h3 class="topic-title">Romaneio de Notas Fiscais de entrada</h3>
+        <ul class="topic-bullets"><li>Acesse o menu principal do sistema;</li><li>Utilize o campo de pesquisa para localizar a rotina Romaneio de Notas Fiscais de Entrada;</li><li>Selecione a unidade desejada para consulta;</li><li>Informe o período utilizando Data de Entrada;</li><li>Aplicar Filtro;</li><li>O sistema trará todas as notas lançadas no período selecionado, por data de entrada;</li><li>Valores totais por dia e valor total do período;</li><li>Clicando em totalizador o sistema trará os valores por categoria;</li><li>Todas as telas poderão ser exportadas para relatório:</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-075.jpg">
+                  <img src="assets/img/img-075.jpg" alt="Tela do sistema Teknisa — Romaneio de Notas Fiscais de entrada" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-076.jpg">
+                  <img src="assets/img/img-076.jpg" alt="Tela do sistema Teknisa — Romaneio de Notas Fiscais de entrada" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-077.jpg">
+                  <img src="assets/img/img-077.jpg" alt="Tela do sistema Teknisa — Romaneio de Notas Fiscais de entrada" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-078.jpg">
+                  <img src="assets/img/img-078.jpg" alt="Tela do sistema Teknisa — Romaneio de Notas Fiscais de entrada" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-079.jpg">
+                  <img src="assets/img/img-079.jpg" alt="Tela do sistema Teknisa — Romaneio de Notas Fiscais de entrada" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article></div>
+  </section>
+  <section class="section-view" id="sec-faturamento" hidden>
+    <div class="topbar">
+      <button class="back-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5.5 8 12l7 6.5"/></svg>Menu</button>
+      <span class="topbar-title">Faturamento</span>
+    </div>
+    <div class="section-head">
+      <span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.2h9.6L18.8 6.4V20a.8.8 0 0 1-.8.8H6a.8.8 0 0 1-.8-.8V4a.8.8 0 0 1 .8-.8Z"/><path d="M15.4 3.2V6.4a.4.4 0 0 0 .4.4h3"/><path d="M8.4 10.8h7.2M8.4 13.6h7.2M8.4 16.4h4.4"/></svg></span>
+      <div>
+        <h2>Faturamento</h2>
+        <p>Medição de efetivos, apuração e emissão de notas fiscais</p>
+      </div>
+      <span class="section-count">14<small>telas</small></span>
+    </div>
+    <nav class="chip-row" aria-label="Ir para etapa"><a class="chip" href="#faturamento-t1">Faturamento</a><a class="chip" href="#faturamento-t2">Relatório para conferência do Faturamento</a><a class="chip" href="#faturamento-t3">Apuração do Faturamento</a></nav>
+    <div class="topic-list">
+      <div class="intro-note">
+        <span class="intro-eyebrow">Sobre este módulo</span>
+        <h3>FATURAMENTO</h3>
+        
+      </div>
+      
+      <article class="topic-card" id="faturamento-t1">
+        <h3 class="topic-title">Faturamento</h3>
+        <ul class="topic-bullets"><li>Preencher diariamente na tela Medição de Efetivos as quantidades a serem cobrados do cliente;</li><li>Ao final do período gerar o relatório para conferir as quantidades e valores;</li><li>Relatório para conferência do faturamento</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-080.jpg">
+                  <img src="assets/img/img-080.jpg" alt="Tela do sistema Teknisa — Faturamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-081.jpg">
+                  <img src="assets/img/img-081.jpg" alt="Tela do sistema Teknisa — Faturamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-082.jpg">
+                  <img src="assets/img/img-082.jpg" alt="Tela do sistema Teknisa — Faturamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="faturamento-t2">
+        <h3 class="topic-title">Relatório para conferência do Faturamento</h3>
+        <ul class="topic-bullets"><li>Conhecimento de Fornecimento de Refeições (CRF)</li><li>Selecionar o cliente (desmarcar todos)</li><li>Período (faturamento)</li><li>Clicar em Relatório - PDF - Confirmar</li><li>Conferir lançamento, quantidade e valores. Assim será emitido NF</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-083.jpg">
+                  <img src="assets/img/img-083.jpg" alt="Tela do sistema Teknisa — Relatório para conferência do Faturamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-084.jpg">
+                  <img src="assets/img/img-084.jpg" alt="Tela do sistema Teknisa — Relatório para conferência do Faturamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="faturamento-t3">
+        <h3 class="topic-title">Apuração do Faturamento</h3>
+        <ul class="topic-bullets"><li>Cálculo da Apuração</li><li>Unidade</li><li>Aplicar Filtro</li><li>Cálculo da Apuração:</li><li>Marcar o cliente;</li><li>Dta Inic. Apuração/ Data Fim Apuração: Informar período de apuração (mesmo que não tenha refeição)</li><li>Data da Saída: data emissão NF (o dia que está realizando)</li><li>Salvar (fazer o processo para cada cliente)</li><li>Voltar na tela e fazer um a um;</li><li>Gerar Notas Fiscais</li><li>Confirmar</li><li>Se for necessário separar os itens em mais notas;</li><li>Marcar o item e separar nota;</li><li>Se precisar colocar alguma observação:</li><li>Caso tenha verificado algum erro, antes de gerar a nota fiscal poderá cancelar a apuração e corrigir;</li><li>Cancelamento de Apuração:</li><li>Após realizar todas as etapas, a nota irá aparecer para o Setor Financeiro Faturar;</li><li>Sempre avisar o Setor Financeiro por e-mail quando tiver NF para faturar;</li><li>Caso tenha informado a data de saída errada na apuração, o financeiro não irá identificar NF para ser emitida.</li><li>Financeiro não altera qualquer item ou quantidade, essa conferência é de</li><li>responsabilidade de cada unidade.</li><li>Período de apuração precisa ser o período de fechamento do cliente;</li><li>Data da saída é o dia que o financeiro irá transmitir a nota. Se a apuração ocorrer após as 17h18 precisa ser informado a data de saída do outro dia, pois é quando a UG fará a nota fiscal.</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-085.jpg">
+                  <img src="assets/img/img-085.jpg" alt="Tela do sistema Teknisa — Apuração do Faturamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-086.jpg">
+                  <img src="assets/img/img-086.jpg" alt="Tela do sistema Teknisa — Apuração do Faturamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-087.jpg">
+                  <img src="assets/img/img-087.jpg" alt="Tela do sistema Teknisa — Apuração do Faturamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-088.jpg">
+                  <img src="assets/img/img-088.jpg" alt="Tela do sistema Teknisa — Apuração do Faturamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-089.jpg">
+                  <img src="assets/img/img-089.jpg" alt="Tela do sistema Teknisa — Apuração do Faturamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-090.jpg">
+                  <img src="assets/img/img-090.jpg" alt="Tela do sistema Teknisa — Apuração do Faturamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-091.jpg">
+                  <img src="assets/img/img-091.jpg" alt="Tela do sistema Teknisa — Apuração do Faturamento" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article></div>
+  </section>
+  <section class="section-view" id="sec-estoque" hidden>
+    <div class="topbar">
+      <button class="back-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5.5 8 12l7 6.5"/></svg>Menu</button>
+      <span class="topbar-title">Estoque e Fechamento do Dia</span>
+    </div>
+    <div class="section-head">
+      <span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4 20.4 8v8L12 20.6 3.6 16V8Z"/><path d="M3.9 7.8 12 12.3l8.1-4.5M12 12.3v8.3"/></svg></span>
+      <div>
+        <h2>Estoque e Fechamento do Dia</h2>
+        <p>Posição de estoque, ajuste de inventário e fechamento diário</p>
+      </div>
+      <span class="section-count">7<small>telas</small></span>
+    </div>
+    <nav class="chip-row" aria-label="Ir para etapa"><a class="chip" href="#estoque-t1">Posição de Estoque</a><a class="chip" href="#estoque-t2">Ajuste de Inventário</a><a class="chip" href="#estoque-t3">Fechar Dia</a></nav>
+    <div class="topic-list">
+      
+      <article class="topic-card" id="estoque-t1">
+        <h3 class="topic-title">Posição de Estoque</h3>
+        <ul class="topic-bullets"><li>Relatório para fazer a contagem do estoque físico:</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-092.jpg">
+                  <img src="assets/img/img-092.jpg" alt="Tela do sistema Teknisa — Posição de Estoque" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-093.jpg">
+                  <img src="assets/img/img-093.jpg" alt="Tela do sistema Teknisa — Posição de Estoque" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="estoque-t2">
+        <h3 class="topic-title">Ajuste de Inventário</h3>
+        <ul class="topic-bullets"><li>Objetivo: Ajustar o inventário virtual conforme inventário físico;</li><li>Tela: Ajuste de Inventário;</li><li>Informar a unidade e o último dia do seu fechamento;</li><li>Adicionar e o sistema trará uma mensagem informando que essa é a última rotina do seu dia – clicar em OK;</li><li>Data: último dia do fechamento da unidade</li><li>Descrição: AJUSTE DE INVENTARIO – MÊS SETEMBRO</li><li>Adicionar somente os produtos que precisam ser ajustados (ou seja, o que tem no estoque virtual e difere do físico);</li><li>Cuidar a unidade de medida do produto;</li><li>Informar a quantidade e salvar;</li><li>Após incluir todos os itens, clicar em atualizar estoque;</li><li>Vai aparecer uma mensagem e precisa escolher a opção</li><li>GRAVAR</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-094.jpg">
+                  <img src="assets/img/img-094.jpg" alt="Tela do sistema Teknisa — Ajuste de Inventário" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-095.jpg">
+                  <img src="assets/img/img-095.jpg" alt="Tela do sistema Teknisa — Ajuste de Inventário" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-096.jpg">
+                  <img src="assets/img/img-096.jpg" alt="Tela do sistema Teknisa — Ajuste de Inventário" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article>
+      
+      <article class="topic-card" id="estoque-t3">
+        <h3 class="topic-title">Fechar Dia</h3>
+        <ul class="topic-bullets"><li>Quando todas as rotinas do dia foram encerradas, podemos fechar o dia;</li><li>1 -Lançamento de Notas Fiscais;</li><li>2 - Retirada</li><li>3 - Medição de efetivos;</li><li>4 - Fechar o dia;</li><li>*Importante: no último dia do mês (conforme período de fechamento) é necessário fazer o ajuste de inventário antes de fechar o dia.</li></ul><div class="shots-grid one"><figure class="shot" data-src="assets/img/img-097.jpg">
+                  <img src="assets/img/img-097.jpg" alt="Tela do sistema Teknisa — Fechar Dia" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article></div>
+  </section>
+  <section class="section-view" id="sec-mapa" hidden>
+    <div class="topbar">
+      <button class="back-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5.5 8 12l7 6.5"/></svg>Menu</button>
+      <span class="topbar-title">Mapa de Gestão Semanal</span>
+    </div>
+    <div class="section-head">
+      <span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10.4M10 20V6M16 20v-7.6M4 20h16"/></svg></span>
+      <div>
+        <h2>Mapa de Gestão Semanal</h2>
+        <p>Curva ABC, notas lançadas e valores de gerais</p>
+      </div>
+      <span class="section-count">5<small>telas</small></span>
+    </div>
+    <nav class="chip-row" aria-label="Ir para etapa"><a class="chip" href="#mapa-t1">Mapa Gestão Semanal</a></nav>
+    <div class="topic-list">
+      
+      <article class="topic-card" id="mapa-t1">
+        <h3 class="topic-title">Mapa Gestão Semanal</h3>
+        <ul class="topic-bullets"><li>Curva ABC de Produtos/Fornecedor(Compras)</li><li>Notas lançadas (o que já entrou de mercadoria);</li><li>Conforme meu período de fechamento</li><li>Aqui irá puxar tudo que entrou por nota fiscal, por categoria;</li><li>Basta descontar o valor de gás, limpeza e descartável II e você terá o valor de alimentar;</li><li>Informar os quatro valores no seu mapa gestão (alimentar, gás, descartável II e limpeza). O descartável I entra junto no alimentar.</li><li>AF abertas ( o que ainda tem para entrar de mercadorias);</li><li>O ideal é que antes de fazer o mapa sejam verificadas as Afs parciais e seja dado baixa total nos itens que sobraram.</li><li>Realizar o mesmo cálculo que foi feito no relatório de Notas.</li><li>A soma dos dois relatórios irá representar a despesa da unidade;</li><li>Para verificar os valores de gerais</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-098.jpg">
+                  <img src="assets/img/img-098.jpg" alt="Tela do sistema Teknisa — Mapa Gestão Semanal" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-099.jpg">
+                  <img src="assets/img/img-099.jpg" alt="Tela do sistema Teknisa — Mapa Gestão Semanal" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-100.jpg">
+                  <img src="assets/img/img-100.jpg" alt="Tela do sistema Teknisa — Mapa Gestão Semanal" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-101.jpg">
+                  <img src="assets/img/img-101.jpg" alt="Tela do sistema Teknisa — Mapa Gestão Semanal" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article></div>
+  </section>
+  <section class="section-view" id="sec-dro" hidden>
+    <div class="topbar">
+      <button class="back-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5.5 8 12l7 6.5"/></svg>Menu</button>
+      <span class="topbar-title">DRO — Resultado Operacional</span>
+    </div>
+    <div class="section-head">
+      <span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.2 3.2h6.2l4.4 4.4V20a.8.8 0 0 1-.8.8H7.2a.8.8 0 0 1-.8-.8V4a.8.8 0 0 1 .8-.8Z"/><path d="M13.4 3.2v3.8a.6.6 0 0 0 .6.6h3.8"/><circle cx="10.6" cy="14.2" r="2.6"/><path d="m12.6 16.2 2 2"/></svg></span>
+      <div>
+        <h2>DRO — Resultado Operacional</h2>
+        <p>Demonstrativo de Resultado Operacional da unidade</p>
+      </div>
+      <span class="section-count">2<small>telas</small></span>
+    </div>
+    <nav class="chip-row" aria-label="Ir para etapa"><a class="chip" href="#dro-t1">Demonstrativo de Resultado Operacional - DRO</a></nav>
+    <div class="topic-list">
+      
+      <article class="topic-card" id="dro-t1">
+        <h3 class="topic-title">Demonstrativo de Resultado Operacional - DRO</h3>
+        <ul class="topic-bullets"><li>Informar a empresa a qual pertence, a unidade e o mês que deseja visualizar;</li><li>Só conseguirá emitir o relatório se sua analista de PCP realizou a apuração do mesmo;</li><li>Nesse relatório consta todas as movimentações da unidade durante o mês.</li><li>Faturamentos, compras, despesas gerais, massa salarial e depreciação.</li><li>Deve ser conferido com a prévia semanal no encerramento do mês.</li></ul><div class="shots-grid"><figure class="shot" data-src="assets/img/img-102.jpg">
+                  <img src="assets/img/img-102.jpg" alt="Tela do sistema Teknisa — Demonstrativo de Resultado Operacional - DRO" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure><figure class="shot" data-src="assets/img/img-103.jpg">
+                  <img src="assets/img/img-103.jpg" alt="Tela do sistema Teknisa — Demonstrativo de Resultado Operacional - DRO" loading="lazy">
+                  <span class="shot-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4.5V8.5M15 4h4.5V8.5M9 20H4.5v-4.5M15 20h4.5v-4.5"/></svg></span>
+                </figure></div>
+      </article></div>
+  </section>
+
+</div>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 5.5 18.5 18.5M18.5 5.5 5.5 18.5"/></svg></button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script src="assets/js/script.js"></script>
+</body>
+</html>
