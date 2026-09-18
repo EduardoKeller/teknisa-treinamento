@@ -15,7 +15,8 @@ app.get("/health", (_req, res) => {
 
 app.get("/api/ping-db", async (_req, res) => {
   const { error } = await supabase.from("_supabase_ping").select("*").limit(1);
-  if (error && error.code !== "42P01") {
+  const tableNotFound = error?.code === "42P01" || error?.code === "PGRST205";
+  if (error && !tableNotFound) {
     res.status(500).json({ connected: false, error: error.message });
     return;
   }
