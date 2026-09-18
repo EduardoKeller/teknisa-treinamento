@@ -2,6 +2,11 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { supabase } from "./supabaseClient";
+import { categoriasRouter } from "./routes/categorias";
+import { empresasRouter } from "./routes/empresas";
+import { usuariosRouter } from "./routes/usuarios";
+import { dadosBancariosRouter } from "./routes/dadosBancarios";
+import { rdvsRouter } from "./routes/rdvs";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -22,6 +27,12 @@ app.get("/api/ping-db", async (_req, res) => {
   }
   res.json({ connected: true });
 });
+
+app.use("/api/categorias-despesa", categoriasRouter);
+app.use("/api/empresas", empresasRouter);
+app.use("/api/usuarios", usuariosRouter);
+app.use("/api/dados-bancarios", dadosBancariosRouter);
+app.use("/api/rdvs", rdvsRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
