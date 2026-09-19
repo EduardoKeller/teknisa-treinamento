@@ -327,27 +327,47 @@ function SecaoItensDespesa({
   }
 
   async function enviarComprovante(itemId: string, arquivo: File) {
+    setErro(null);
     setUploadIdAtivo(itemId);
     const formData = new FormData();
     formData.append("arquivo", arquivo);
-    const response = await apiFetchClient(`/api/rdvs/${rdvId}/itens-despesa/${itemId}/comprovante`, {
-      method: "POST",
-      body: formData,
-    });
+    let response: Response;
+    try {
+      response = await apiFetchClient(`/api/rdvs/${rdvId}/itens-despesa/${itemId}/comprovante`, {
+        method: "POST",
+        body: formData,
+      });
+    } catch {
+      setUploadIdAtivo(null);
+      setErro("Não foi possível enviar o comprovante. Verifique sua conexão e tente novamente.");
+      return;
+    }
     setUploadIdAtivo(null);
-    if (response.ok) await onAtualizar();
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      setErro(data?.error ?? "Não foi possível salvar o comprovante.");
+      return;
+    }
+    await onAtualizar();
   }
 
   async function removerComprovante(itemId: string) {
+    setErro(null);
     const response = await apiFetchClient(`/api/rdvs/${rdvId}/itens-despesa/${itemId}/comprovante`, {
       method: "DELETE",
     });
-    if (response.ok) await onAtualizar();
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      setErro(data?.error ?? "Não foi possível remover o comprovante.");
+      return;
+    }
+    await onAtualizar();
   }
 
   return (
     <section className="mb-8">
       <h2 className="mb-3 text-lg font-semibold text-gray-900">Itens de despesa</h2>
+      {erro && <p className="mb-3 text-sm text-red-600">{erro}</p>}
 
       {itens.length === 0 ? (
         <p className="mb-4 text-sm text-gray-500">Nenhum item de despesa adicionado.</p>
@@ -466,7 +486,6 @@ function SecaoItensDespesa({
               className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
             />
           </div>
-          {erro && <p className="mt-2 text-sm text-red-600">{erro}</p>}
           <button
             type="submit"
             disabled={enviando}
