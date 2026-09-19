@@ -20,8 +20,16 @@ const PERFIS_FINANCEIRO = ["financeiro", "admin"];
 const JORNADA_PADRAO_MINUTOS = 8 * 60 + 48;
 const MINUTOS_INTERVALO = 60;
 
+const HORA_VALIDA_REGEX = /^([01]\d|2[0-3]):[0-5]\d$/;
+
+function maskHora(valor: string): string {
+  const digitos = valor.replace(/\D/g, "").slice(0, 4);
+  if (digitos.length <= 2) return digitos;
+  return `${digitos.slice(0, 2)}:${digitos.slice(2)}`;
+}
+
 function calcularHorasExtrasPreview(horaInicio: string, horaFim: string, fezIntervalo: boolean): number | null {
-  if (!horaInicio || !horaFim) return null;
+  if (!HORA_VALIDA_REGEX.test(horaInicio) || !HORA_VALIDA_REGEX.test(horaFim)) return null;
   const [hi, mi] = horaInicio.split(":").map(Number);
   const [hf, mf] = horaFim.split(":").map(Number);
   const minutosTrabalhados = hf * 60 + mf - (hi * 60 + mi) - (fezIntervalo ? MINUTOS_INTERVALO : 0);
@@ -378,6 +386,11 @@ function SecaoItens({
       return;
     }
 
+    if (!HORA_VALIDA_REGEX.test(horaInicio) || !HORA_VALIDA_REGEX.test(horaFim)) {
+      setErro("Informe os horários completos no formato HH:MM (ex.: 07:30).");
+      return;
+    }
+
     if (data < periodoInicio || data > periodoFim) {
       setErro(`A data deve estar entre ${formatarData(periodoInicio)} e ${formatarData(periodoFim)}.`);
       return;
@@ -486,15 +499,21 @@ function SecaoItens({
               className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
             />
             <input
-              type="time"
+              type="text"
+              inputMode="numeric"
+              placeholder="07:30"
+              maxLength={5}
               value={horaInicio}
-              onChange={(e) => setHoraInicio(e.target.value)}
+              onChange={(e) => setHoraInicio(maskHora(e.target.value))}
               className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
             />
             <input
-              type="time"
+              type="text"
+              inputMode="numeric"
+              placeholder="17:18"
+              maxLength={5}
               value={horaFim}
-              onChange={(e) => setHoraFim(e.target.value)}
+              onChange={(e) => setHoraFim(maskHora(e.target.value))}
               className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
             />
             <input
@@ -509,7 +528,7 @@ function SecaoItens({
             <input type="checkbox" checked={fezIntervalo} onChange={(e) => setFezIntervalo(e.target.checked)} />
             Fiz o intervalo de almoço (12:00–13:00)
           </label>
-          {horaInicio && horaFim && (
+          {HORA_VALIDA_REGEX.test(horaInicio) && HORA_VALIDA_REGEX.test(horaFim) && (
             <p className="mt-2 text-sm text-gray-600">
               {previaHoras === null
                 ? "Sem horas extras nesse intervalo."

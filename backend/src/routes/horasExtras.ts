@@ -41,6 +41,7 @@ function dataForaDoPeriodo(data: string, he: { periodo_inicio: string; periodo_f
 // Jornada padrão: 07:30–12:00 e 13:00–17:18 (8h48min)
 const JORNADA_PADRAO_MINUTOS = 8 * 60 + 48;
 const MINUTOS_INTERVALO = 60;
+const HORA_VALIDA_REGEX = /^([01]\d|2[0-3]):[0-5]\d$/;
 
 function minutosDoHorario(horario: string): number {
   const [horas, minutos] = horario.split(":").map(Number);
@@ -177,6 +178,10 @@ horasExtrasRouter.post("/:id/itens", async (req, res) => {
     res.status(400).json({
       error: `A data do item deve estar dentro do período informado (${he.periodo_inicio} a ${he.periodo_fim})`,
     });
+    return;
+  }
+  if (!HORA_VALIDA_REGEX.test(hora_inicio) || !HORA_VALIDA_REGEX.test(hora_fim)) {
+    res.status(400).json({ error: "Informe os horários completos no formato HH:MM (ex.: 07:30)" });
     return;
   }
   if (hora_fim <= hora_inicio) {
