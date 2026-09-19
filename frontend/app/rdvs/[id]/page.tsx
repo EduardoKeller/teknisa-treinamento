@@ -90,6 +90,8 @@ export default function DetalheRdvPage({ params }: Props) {
         <ResumoCard titulo="Reembolso" valor={formatarValor(rdv.valor_reembolso)} destaque />
       </div>
 
+      <AcaoEnvio rdv={rdv} onAtualizar={recarregar} />
+
       <SecaoItensDespesa
         rdvId={rdv.id}
         itens={rdv.itens_despesa}
@@ -99,7 +101,152 @@ export default function DetalheRdvPage({ params }: Props) {
       />
 
       <SecaoItensKm rdvId={rdv.id} itens={rdv.itens_quilometragem} editavel={editavel} onAtualizar={recarregar} />
+
+      <SecaoHistorico historico={rdv.historico_status} />
     </div>
+  );
+}
+
+function AcaoEnvio({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () => Promise<void> }) {
+  const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
+  const [cpf, setCpf] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  const [reabrindo, setReabrindo] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
+
+  async function enviar() {
+    setErro(null);
+    if (!cpf) {
+      setErro("Informe seu CPF para confirmar o envio.");
+      return;
+    }
+    setEnviando(true);
+    const response = await apiFetchClient(`/api/rdvs/${rdv.id}/enviar`, {
+      method: "POST",
+      body: JSON.stringify({ cpf }),
+    });
+    setEnviando(false);
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      setErro(data?.error ?? "Não foi possível enviar o RDV.");
+      return;
+    }
+    setMostrarConfirmacao(false);
+    setCpf("");
+    await onAtualizar();
+  }
+
+  async function reabrir() {
+    setReabrindo(true);
+    const response = await apiFetchClient(`/api/rdvs/${rdv.id}/reabrir`, { method: "POST" });
+    setReabrindo(false);
+    if (response.ok) await onAtualizar();
+  }
+
+  if (rdv.status === "reprovado") {
+    const ultimaReprovacao = [...rdv.historico_status].reverse().find((h) => h.status_novo === "reprovado");
+    return (
+      <div className="mb-8 rounded-lg border border-red-200 bg-red-50 p-4">
+        <p className="text-sm font-medium text-red-800">Este RDV foi reprovado</p>
+        {ultimaReprovacao?.justificativa && (
+          <p className="mt-1 text-sm text-red-700">{ultimaReprovacao.justificativa}</p>
+        )}
+        <button
+          type="button"
+          onClick={reabrir}
+          disabled={reabrindo}
+          className="mt-3 rounded-md bg-red-800 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-red-900 disabled:opacity-60"
+        >
+          {reabrindo ? "Reabrindo..." : "Corrigir e reenviar"}
+        </button>
+      </div>
+    );
+  }
+
+  if (rdv.status !== "rascunho") {
+    return null;
+  }
+
+  return (
+    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4">
+      {!mostrarConfirmacao ? (
+        <button
+          type="button"
+          onClick={() => setMostrarConfirmacao(true)}
+          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
+        >
+          Enviar para aprovação
+        </button>
+      ) : (
+        <div>
+          <p className="mb-2 text-sm text-gray-700">
+            Confirme seu CPF cadastrado para enviar este RDV para aprovação.
+          </p>
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={cpf}
+              onChange={(e) => setCpf(e.target.value)}
+              placeholder="000.000.000-00"
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+            />
+            <button
+              type="button"
+              onClick={enviar}
+              disabled={enviando}
+              className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+            >
+              {enviando ? "Enviando..." : "Confirmar envio"}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMostrarConfirmacao(false);
+                setErro(null);
+              }}
+              className="text-sm text-gray-500 hover:text-gray-700"
+            >
+              Cancelar
+            </button>
+          </div>
+          {erro && (
+            <p className="mt-2 text-sm text-red-600">
+              {erro}
+              {erro.includes("dados bancários") && (
+                <>
+                  {" "}
+                  <Link href="/perfil" className="underline">
+                    Cadastrar agora
+                  </Link>
+                </>
+              )}
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SecaoHistorico({ historico }: { historico: RdvDetalhado["historico_status"] }) {
+  if (historico.length === 0) return null;
+
+  return (
+    <section className="mt-8">
+      <h2 className="mb-3 text-lg font-semibold text-gray-900">Histórico</h2>
+      <ul className="space-y-2">
+        {historico.map((item) => (
+          <li key={item.id} className="rounded-md border border-gray-200 bg-white p-3 text-sm">
+            <span className="font-medium text-gray-900">
+              {item.status_anterior ? `${STATUS_LABEL[item.status_anterior]} → ` : ""}
+              {STATUS_LABEL[item.status_novo]}
+            </span>
+            <span className="ml-2 text-xs text-gray-500">{formatarData(item.criado_em)}</span>
+            {item.justificativa && <p className="mt-1 text-gray-600">{item.justificativa}</p>}
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
