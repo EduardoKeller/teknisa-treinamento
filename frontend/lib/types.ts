@@ -33,6 +33,12 @@ export interface CategoriaDespesa {
   ativa: boolean;
 }
 
+export interface CentroCusto {
+  id: string;
+  nome: string;
+  ativo: boolean;
+}
+
 export interface ItemDespesa {
   id: string;
   rdv_id: string;

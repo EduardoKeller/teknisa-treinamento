@@ -5,6 +5,7 @@ import multer from "multer";
 import { supabase } from "./supabaseClient";
 import { categoriasRouter } from "./routes/categorias";
 import { empresasRouter } from "./routes/empresas";
+import { centrosCustoRouter } from "./routes/centrosCusto";
 import { usuariosRouter } from "./routes/usuarios";
 import { dadosBancariosRouter } from "./routes/dadosBancarios";
 import { rdvsRouter } from "./routes/rdvs";
@@ -31,6 +32,7 @@ app.get("/api/ping-db", async (_req, res) => {
 
 app.use("/api/categorias-despesa", categoriasRouter);
 app.use("/api/empresas", empresasRouter);
+app.use("/api/centros-custo", centrosCustoRouter);
 app.use("/api/usuarios", usuariosRouter);
 app.use("/api/dados-bancarios", dadosBancariosRouter);
 app.use("/api/rdvs", rdvsRouter);

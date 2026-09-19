@@ -7,6 +7,7 @@ const ABAS = [
   { href: "/admin/usuarios", label: "Usuários" },
   { href: "/admin/empresas", label: "Empresas" },
   { href: "/admin/categorias", label: "Categorias" },
+  { href: "/admin/centros-custo", label: "Centros de custo" },
 ];
 
 export function AdminNav() {
