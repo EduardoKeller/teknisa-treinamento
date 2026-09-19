@@ -1,21 +1,25 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { apiFetch } from "@/lib/api";
-import { LogoutButton } from "./logout-button";
 import { Rdv, UsuarioAtual, STATUS_LABEL, STATUS_CLASS, formatarData, formatarValor } from "@/lib/types";
 
-export default async function MeusRdvsPage() {
+export default async function PagamentosPage() {
   const meResponse = await apiFetch("/api/usuarios/me");
-  const usuarioAtual: UsuarioAtual | null = meResponse.ok ? await meResponse.json() : null;
-  const podeAprovar = usuarioAtual ? ["aprovador", "financeiro", "admin"].includes(usuarioAtual.perfil) : false;
-  const podePagar = usuarioAtual ? ["financeiro", "admin"].includes(usuarioAtual.perfil) : false;
+  if (!meResponse.ok) {
+    redirect("/login");
+  }
+  const usuarioAtual: UsuarioAtual = await meResponse.json();
 
-  const query = usuarioAtual && usuarioAtual.perfil !== "funcionario" ? `?usuario_id=${usuarioAtual.id}` : "";
-  const response = await apiFetch(`/api/rdvs${query}`);
+  if (!["financeiro", "admin"].includes(usuarioAtual.perfil)) {
+    redirect("/rdvs");
+  }
+
+  const response = await apiFetch("/api/rdvs?status=aprovado");
 
   if (!response.ok) {
     return (
       <div className="mx-auto max-w-5xl px-4 py-8">
-        <p className="text-sm text-red-600">Não foi possível carregar seus RDVs. Tente novamente mais tarde.</p>
+        <p className="text-sm text-red-600">Não foi possível carregar os pagamentos pendentes.</p>
       </div>
     );
   }
@@ -26,42 +30,24 @@ export default async function MeusRdvsPage() {
     <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Meus RDVs</h1>
-          <p className="text-sm text-gray-500">Relatórios de despesas de viagem que você criou</p>
+          <h1 className="text-2xl font-semibold text-gray-900">Pagamentos pendentes</h1>
+          <p className="text-sm text-gray-500">RDVs aprovados aguardando pagamento</p>
         </div>
-        <div className="flex items-center gap-3">
-          {podeAprovar && (
-            <Link href="/aprovacoes" className="text-sm text-gray-500 hover:text-gray-700">
-              Aprovações
-            </Link>
-          )}
-          {podePagar && (
-            <Link href="/pagamentos" className="text-sm text-gray-500 hover:text-gray-700">
-              Pagamentos
-            </Link>
-          )}
-          <Link href="/perfil" className="text-sm text-gray-500 hover:text-gray-700">
-            Dados bancários
-          </Link>
-          <Link
-            href="/rdvs/novo"
-            className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800"
-          >
-            Novo RDV
-          </Link>
-          <LogoutButton />
-        </div>
+        <Link href="/rdvs" className="text-sm text-gray-500 hover:text-gray-700">
+          Meus RDVs
+        </Link>
       </div>
 
       {rdvs.length === 0 ? (
         <div className="rounded-lg border border-dashed border-gray-300 p-10 text-center text-sm text-gray-500">
-          Você ainda não criou nenhum RDV.
+          Nenhum RDV aprovado aguardando pagamento no momento.
         </div>
       ) : (
         <div className="overflow-hidden rounded-lg border border-gray-200">
           <table className="w-full text-left text-sm">
             <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
               <tr>
+                <th className="px-4 py-3">Funcionário</th>
                 <th className="px-4 py-3">Empresa</th>
                 <th className="px-4 py-3">Motivo</th>
                 <th className="px-4 py-3">Período</th>
@@ -74,9 +60,10 @@ export default async function MeusRdvsPage() {
                 <tr key={rdv.id} className="hover:bg-gray-50">
                   <td className="p-0">
                     <Link href={`/rdvs/${rdv.id}`} className="block px-4 py-3 text-gray-900">
-                      {rdv.empresas?.nome ?? "-"}
+                      {rdv.funcionario?.nome ?? "-"}
                     </Link>
                   </td>
+                  <td className="px-4 py-3 text-gray-600">{rdv.empresas?.nome ?? "-"}</td>
                   <td className="px-4 py-3 text-gray-600">{rdv.motivo_viagem ?? "-"}</td>
                   <td className="px-4 py-3 text-gray-600">
                     {formatarData(rdv.periodo_inicio)} – {formatarData(rdv.periodo_fim)}

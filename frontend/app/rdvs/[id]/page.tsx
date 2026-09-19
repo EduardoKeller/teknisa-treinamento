@@ -15,6 +15,7 @@ import {
 } from "@/lib/types";
 
 const PERFIS_APROVADORES = ["aprovador", "financeiro", "admin"];
+const PERFIS_FINANCEIRO = ["financeiro", "admin"];
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -75,12 +76,20 @@ export default function DetalheRdvPage({ params }: Props) {
 
   const souDono = usuarioAtual?.id === rdv.usuario_id;
   const souAprovador = usuarioAtual ? PERFIS_APROVADORES.includes(usuarioAtual.perfil) : false;
+  const souFinanceiro = usuarioAtual ? PERFIS_FINANCEIRO.includes(usuarioAtual.perfil) : false;
   const editavel = rdv.status === "rascunho" && souDono;
+
+  const linkVoltaHref = souDono
+    ? "/rdvs"
+    : souFinanceiro && (rdv.status === "aprovado" || rdv.status === "pago")
+      ? "/pagamentos"
+      : "/aprovacoes";
+  const linkVoltaLabel = souDono ? "← Meus RDVs" : linkVoltaHref === "/pagamentos" ? "← Pagamentos" : "← Aprovações";
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <Link href={souDono ? "/rdvs" : "/aprovacoes"} className="text-sm text-gray-500 hover:text-gray-700">
-        {souDono ? "← Meus RDVs" : "← Aprovações"}
+      <Link href={linkVoltaHref} className="text-sm text-gray-500 hover:text-gray-700">
+        {linkVoltaLabel}
       </Link>
 
       <div className="mt-2 mb-6 flex items-start justify-between">
@@ -109,6 +118,9 @@ export default function DetalheRdvPage({ params }: Props) {
       {souDono && <AcaoEnvio rdv={rdv} onAtualizar={recarregar} />}
       {!souDono && souAprovador && rdv.status === "enviado" && (
         <AcaoAprovacao rdv={rdv} onAtualizar={recarregar} />
+      )}
+      {!souDono && souFinanceiro && rdv.status === "aprovado" && (
+        <AcaoPagamento rdv={rdv} onAtualizar={recarregar} />
       )}
 
       <SecaoItensDespesa
@@ -350,6 +362,39 @@ function AcaoAprovacao({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: (
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function AcaoPagamento({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () => Promise<void> }) {
+  const { showError } = useToast();
+  const [processando, setProcessando] = useState(false);
+
+  async function pagar() {
+    setProcessando(true);
+    const response = await apiFetchClient(`/api/rdvs/${rdv.id}/pagar`, { method: "POST" });
+    setProcessando(false);
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível marcar o RDV como pago.");
+      return;
+    }
+    await onAtualizar();
+  }
+
+  return (
+    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4">
+      <p className="mb-3 text-sm text-gray-700">
+        RDV aprovado. Confirme quando o reembolso de {formatarValor(rdv.valor_reembolso)} for depositado.
+      </p>
+      <button
+        type="button"
+        onClick={pagar}
+        disabled={processando}
+        className="rounded-md bg-purple-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-purple-800 disabled:opacity-60"
+      >
+        {processando ? "Registrando..." : "Marcar como pago"}
+      </button>
     </div>
   );
 }
