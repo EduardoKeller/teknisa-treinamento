@@ -1,4 +1,14 @@
 export type StatusRdv = "rascunho" | "enviado" | "aprovado" | "reprovado" | "pago";
+export type Perfil = "funcionario" | "aprovador" | "financeiro" | "admin";
+
+export interface UsuarioAtual {
+  id: string;
+  nome: string;
+  email: string;
+  perfil: Perfil;
+  gestor_id: string | null;
+  ativo: boolean;
+}
 
 export interface Empresa {
   id: string;
@@ -61,6 +71,7 @@ export interface Rdv {
   aprovador_id: string | null;
   pago_em: string | null;
   empresas?: { nome: string } | null;
+  funcionario?: { nome: string } | null;
 }
 
 export interface RdvDetalhado extends Rdv {

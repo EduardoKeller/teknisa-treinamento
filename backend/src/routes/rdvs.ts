@@ -41,8 +41,14 @@ async function idsDaEquipe(gestorId: string): Promise<string[]> {
   return (data ?? []).map((u) => u.id);
 }
 
+const SELECT_RDV_COM_FUNCIONARIO = "*, empresas(nome), funcionario:usuarios!usuario_id(nome)";
+
 async function carregarRdvComPermissao(rdvId: string, usuario: Usuario) {
-  const { data: rdv, error } = await supabase.from("rdv").select("*, empresas(nome)").eq("id", rdvId).single();
+  const { data: rdv, error } = await supabase
+    .from("rdv")
+    .select(SELECT_RDV_COM_FUNCIONARIO)
+    .eq("id", rdvId)
+    .single();
   if (error || !rdv) return { rdv: null, permitido: false };
 
   if (usuario.perfil === "financeiro" || usuario.perfil === "admin") {
@@ -72,7 +78,7 @@ async function registrarHistorico(
 
 rdvsRouter.get("/", async (req, res) => {
   const usuario = req.usuario!;
-  let query = supabase.from("rdv").select("*, empresas(nome)").order("criado_em", { ascending: false });
+  let query = supabase.from("rdv").select(SELECT_RDV_COM_FUNCIONARIO).order("criado_em", { ascending: false });
 
   if (usuario.perfil === "funcionario") {
     query = query.eq("usuario_id", usuario.id);

@@ -7,11 +7,14 @@ import { useToast } from "@/components/toast";
 import {
   CategoriaDespesa,
   RdvDetalhado,
+  UsuarioAtual,
   STATUS_LABEL,
   STATUS_CLASS,
   formatarData,
   formatarValor,
 } from "@/lib/types";
+
+const PERFIS_APROVADORES = ["aprovador", "financeiro", "admin"];
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -23,6 +26,7 @@ export default function DetalheRdvPage({ params }: Props) {
 
   const [rdv, setRdv] = useState<RdvDetalhado | null>(null);
   const [categorias, setCategorias] = useState<CategoriaDespesa[]>([]);
+  const [usuarioAtual, setUsuarioAtual] = useState<UsuarioAtual | null>(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
 
@@ -48,6 +52,10 @@ export default function DetalheRdvPage({ params }: Props) {
       const response = await apiFetchClient("/api/categorias-despesa");
       if (response.ok) setCategorias(await response.json());
     })();
+    (async () => {
+      const response = await apiFetchClient("/api/usuarios/me");
+      if (response.ok) setUsuarioAtual(await response.json());
+    })();
   }, [recarregar]);
 
   if (carregando) {
@@ -65,18 +73,21 @@ export default function DetalheRdvPage({ params }: Props) {
     );
   }
 
-  const editavel = rdv.status === "rascunho";
+  const souDono = usuarioAtual?.id === rdv.usuario_id;
+  const souAprovador = usuarioAtual ? PERFIS_APROVADORES.includes(usuarioAtual.perfil) : false;
+  const editavel = rdv.status === "rascunho" && souDono;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <Link href="/rdvs" className="text-sm text-gray-500 hover:text-gray-700">
-        ← Meus RDVs
+      <Link href={souDono ? "/rdvs" : "/aprovacoes"} className="text-sm text-gray-500 hover:text-gray-700">
+        {souDono ? "← Meus RDVs" : "← Aprovações"}
       </Link>
 
       <div className="mt-2 mb-6 flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-gray-900">{rdv.empresas?.nome ?? "RDV"}</h1>
           <p className="text-sm text-gray-500">
+            {!souDono && rdv.funcionario?.nome && `${rdv.funcionario.nome} · `}
             {rdv.unop_ug} · {formatarData(rdv.periodo_inicio)} – {formatarData(rdv.periodo_fim)}
           </p>
         </div>
@@ -95,7 +106,10 @@ export default function DetalheRdvPage({ params }: Props) {
         <ResumoCard titulo="Reembolso" valor={formatarValor(rdv.valor_reembolso)} destaque />
       </div>
 
-      <AcaoEnvio rdv={rdv} onAtualizar={recarregar} />
+      {souDono && <AcaoEnvio rdv={rdv} onAtualizar={recarregar} />}
+      {!souDono && souAprovador && rdv.status === "enviado" && (
+        <AcaoAprovacao rdv={rdv} onAtualizar={recarregar} />
+      )}
 
       <SecaoItensDespesa
         rdvId={rdv.id}
@@ -235,6 +249,105 @@ function AcaoEnvio({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () =>
               )}
             </p>
           )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AcaoAprovacao({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () => Promise<void> }) {
+  const { showError } = useToast();
+  const [mostrarReprovacao, setMostrarReprovacao] = useState(false);
+  const [justificativa, setJustificativa] = useState("");
+  const [processando, setProcessando] = useState(false);
+
+  async function aprovar() {
+    setProcessando(true);
+    const response = await apiFetchClient(`/api/rdvs/${rdv.id}/aprovar`, { method: "POST" });
+    setProcessando(false);
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível aprovar o RDV.");
+      return;
+    }
+    await onAtualizar();
+  }
+
+  async function reprovar() {
+    if (!justificativa.trim()) {
+      showError("Informe uma justificativa para reprovar.");
+      return;
+    }
+    setProcessando(true);
+    const response = await apiFetchClient(`/api/rdvs/${rdv.id}/reprovar`, {
+      method: "POST",
+      body: JSON.stringify({ justificativa }),
+    });
+    setProcessando(false);
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível reprovar o RDV.");
+      return;
+    }
+    setMostrarReprovacao(false);
+    setJustificativa("");
+    await onAtualizar();
+  }
+
+  return (
+    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4">
+      {!mostrarReprovacao ? (
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={aprovar}
+            disabled={processando}
+            className="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 disabled:opacity-60"
+          >
+            {processando ? "Aprovando..." : "Aprovar"}
+          </button>
+          <button
+            type="button"
+            onClick={() => setMostrarReprovacao(true)}
+            disabled={processando}
+            className="rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:opacity-60"
+          >
+            Reprovar
+          </button>
+        </div>
+      ) : (
+        <div>
+          <label htmlFor="justificativa" className="mb-1 block text-sm font-medium text-gray-700">
+            Justificativa da reprovação
+          </label>
+          <textarea
+            id="justificativa"
+            rows={3}
+            value={justificativa}
+            onChange={(e) => setJustificativa(e.target.value)}
+            placeholder="Explique o motivo da reprovação"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+          />
+          <div className="mt-3 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={reprovar}
+              disabled={processando}
+              className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-800 disabled:opacity-60"
+            >
+              {processando ? "Reprovando..." : "Confirmar reprovação"}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMostrarReprovacao(false);
+                setJustificativa("");
+              }}
+              className="text-sm text-gray-500 hover:text-gray-700"
+            >
+              Cancelar
+            </button>
+          </div>
         </div>
       )}
     </div>
