@@ -118,6 +118,9 @@ export interface ItemHoraExtra {
   id: string;
   horas_extras_id: string;
   data: string;
+  hora_inicio: string;
+  hora_fim: string;
+  fez_intervalo: boolean;
   quantidade_horas: number;
   justificativa: string | null;
 }

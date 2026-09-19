@@ -38,6 +38,25 @@ function dataForaDoPeriodo(data: string, he: { periodo_inicio: string; periodo_f
   return data < he.periodo_inicio || data > he.periodo_fim;
 }
 
+// Jornada padrão: 07:30–12:00 e 13:00–17:18 (8h48min)
+const JORNADA_PADRAO_MINUTOS = 8 * 60 + 48;
+const MINUTOS_INTERVALO = 60;
+
+function minutosDoHorario(horario: string): number {
+  const [horas, minutos] = horario.split(":").map(Number);
+  return horas * 60 + minutos;
+}
+
+function calcularHorasExtras(horaInicio: string, horaFim: string, fezIntervalo: boolean): number | null {
+  const minutosInicio = minutosDoHorario(horaInicio);
+  const minutosFim = minutosDoHorario(horaFim);
+  const minutosTrabalhados = minutosFim - minutosInicio - (fezIntervalo ? MINUTOS_INTERVALO : 0);
+  if (minutosTrabalhados <= 0) return null;
+  const minutosExtras = minutosTrabalhados - JORNADA_PADRAO_MINUTOS;
+  if (minutosExtras <= 0) return null;
+  return Math.round((minutosExtras / 60) * 100) / 100;
+}
+
 async function registrarHistorico(
   heId: string,
   usuarioId: string,
@@ -149,9 +168,9 @@ horasExtrasRouter.post("/:id/itens", async (req, res) => {
     res.status(403).json({ error: "Só é possível adicionar itens ao próprio registro em rascunho" });
     return;
   }
-  const { data: dataItem, quantidade_horas, justificativa } = req.body;
-  if (!dataItem || !quantidade_horas) {
-    res.status(400).json({ error: "data e quantidade_horas são obrigatórios" });
+  const { data: dataItem, hora_inicio, hora_fim, fez_intervalo, justificativa } = req.body;
+  if (!dataItem || !hora_inicio || !hora_fim || fez_intervalo === undefined) {
+    res.status(400).json({ error: "data, hora_inicio, hora_fim e fez_intervalo são obrigatórios" });
     return;
   }
   if (dataForaDoPeriodo(dataItem, he)) {
@@ -160,9 +179,28 @@ horasExtrasRouter.post("/:id/itens", async (req, res) => {
     });
     return;
   }
+  if (hora_fim <= hora_inicio) {
+    res.status(400).json({ error: "A hora de fim deve ser depois da hora de início" });
+    return;
+  }
+  const quantidadeHoras = calcularHorasExtras(hora_inicio, hora_fim, fez_intervalo);
+  if (quantidadeHoras === null) {
+    res.status(400).json({
+      error: "Não há horas extras nesse intervalo (jornada padrão: 07:30–12:00 e 13:00–17:18, 8h48min)",
+    });
+    return;
+  }
   const { data, error } = await supabase
     .from("he_itens")
-    .insert({ horas_extras_id: he.id, data: dataItem, quantidade_horas, justificativa })
+    .insert({
+      horas_extras_id: he.id,
+      data: dataItem,
+      hora_inicio,
+      hora_fim,
+      fez_intervalo,
+      quantidade_horas: quantidadeHoras,
+      justificativa,
+    })
     .select()
     .single();
   if (error) {

@@ -16,6 +16,21 @@ import {
 const PERFIS_APROVADORES = ["aprovador", "financeiro", "admin"];
 const PERFIS_FINANCEIRO = ["financeiro", "admin"];
 
+// Jornada padrão: 07:30–12:00 e 13:00–17:18 (8h48min) — espelha o cálculo do backend
+const JORNADA_PADRAO_MINUTOS = 8 * 60 + 48;
+const MINUTOS_INTERVALO = 60;
+
+function calcularHorasExtrasPreview(horaInicio: string, horaFim: string, fezIntervalo: boolean): number | null {
+  if (!horaInicio || !horaFim) return null;
+  const [hi, mi] = horaInicio.split(":").map(Number);
+  const [hf, mf] = horaFim.split(":").map(Number);
+  const minutosTrabalhados = hf * 60 + mf - (hi * 60 + mi) - (fezIntervalo ? MINUTOS_INTERVALO : 0);
+  if (minutosTrabalhados <= 0) return null;
+  const minutosExtras = minutosTrabalhados - JORNADA_PADRAO_MINUTOS;
+  if (minutosExtras <= 0) return null;
+  return Math.round((minutosExtras / 60) * 100) / 100;
+}
+
 interface Props {
   params: Promise<{ id: string }>;
 }
@@ -345,17 +360,21 @@ function SecaoItens({
 }) {
   const { showError } = useToast();
   const [data, setData] = useState("");
-  const [quantidadeHoras, setQuantidadeHoras] = useState("");
+  const [horaInicio, setHoraInicio] = useState("");
+  const [horaFim, setHoraFim] = useState("");
+  const [fezIntervalo, setFezIntervalo] = useState(true);
   const [justificativa, setJustificativa] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
+
+  const previaHoras = calcularHorasExtrasPreview(horaInicio, horaFim, fezIntervalo);
 
   async function adicionarItem(event: FormEvent) {
     event.preventDefault();
     setErro(null);
 
-    if (!data || !quantidadeHoras) {
-      setErro("Preencha data e quantidade de horas.");
+    if (!data || !horaInicio || !horaFim) {
+      setErro("Preencha data, hora de início e hora de fim.");
       return;
     }
 
@@ -369,7 +388,9 @@ function SecaoItens({
       method: "POST",
       body: JSON.stringify({
         data,
-        quantidade_horas: Number(quantidadeHoras),
+        hora_inicio: horaInicio,
+        hora_fim: horaFim,
+        fez_intervalo: fezIntervalo,
         justificativa: justificativa || null,
       }),
     });
@@ -384,7 +405,9 @@ function SecaoItens({
     }
 
     setData("");
-    setQuantidadeHoras("");
+    setHoraInicio("");
+    setHoraFim("");
+    setFezIntervalo(true);
     setJustificativa("");
     await onAtualizar();
   }
@@ -411,7 +434,10 @@ function SecaoItens({
             <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
               <tr>
                 <th className="px-4 py-2">Data</th>
-                <th className="px-4 py-2 text-right">Horas</th>
+                <th className="px-4 py-2">Início</th>
+                <th className="px-4 py-2">Fim</th>
+                <th className="px-4 py-2">Intervalo</th>
+                <th className="px-4 py-2 text-right">Horas extras</th>
                 <th className="px-4 py-2">Justificativa</th>
                 {editavel && <th className="px-4 py-2" />}
               </tr>
@@ -420,7 +446,12 @@ function SecaoItens({
               {itens.map((item) => (
                 <tr key={item.id}>
                   <td className="px-4 py-2 text-gray-600">{formatarData(item.data)}</td>
-                  <td className="px-4 py-2 text-right text-gray-900">{formatarHoras(item.quantidade_horas)}</td>
+                  <td className="px-4 py-2 text-gray-600">{item.hora_inicio.slice(0, 5)}</td>
+                  <td className="px-4 py-2 text-gray-600">{item.hora_fim.slice(0, 5)}</td>
+                  <td className="px-4 py-2 text-gray-600">{item.fez_intervalo ? "Sim" : "Não"}</td>
+                  <td className="px-4 py-2 text-right font-medium text-gray-900">
+                    {formatarHoras(item.quantidade_horas)}
+                  </td>
                   <td className="px-4 py-2 text-gray-600">{item.justificativa ?? "-"}</td>
                   {editavel && (
                     <td className="px-4 py-2 text-right">
@@ -442,7 +473,10 @@ function SecaoItens({
 
       {editavel && (
         <form onSubmit={adicionarItem} className="rounded-lg border border-dashed border-gray-300 p-4">
-          <div className="grid grid-cols-3 gap-3">
+          <p className="mb-3 text-xs text-gray-500">
+            Jornada padrão: 07:30–12:00 e 13:00–17:18 (8h48min). As horas extras são calculadas automaticamente.
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <input
               type="date"
               value={data}
@@ -452,12 +486,15 @@ function SecaoItens({
               className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
             />
             <input
-              type="number"
-              min="0.5"
-              step="0.5"
-              placeholder="Quantidade de horas"
-              value={quantidadeHoras}
-              onChange={(e) => setQuantidadeHoras(e.target.value)}
+              type="time"
+              value={horaInicio}
+              onChange={(e) => setHoraInicio(e.target.value)}
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+            />
+            <input
+              type="time"
+              value={horaFim}
+              onChange={(e) => setHoraFim(e.target.value)}
               className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
             />
             <input
@@ -468,6 +505,17 @@ function SecaoItens({
               className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
             />
           </div>
+          <label className="mt-3 flex items-center gap-2 text-sm text-gray-700">
+            <input type="checkbox" checked={fezIntervalo} onChange={(e) => setFezIntervalo(e.target.checked)} />
+            Fiz o intervalo de almoço (12:00–13:00)
+          </label>
+          {horaInicio && horaFim && (
+            <p className="mt-2 text-sm text-gray-600">
+              {previaHoras === null
+                ? "Sem horas extras nesse intervalo."
+                : `Horas extras calculadas: ${formatarHoras(previaHoras)}`}
+            </p>
+          )}
           {erro && <p className="mt-2 text-sm text-red-600">{erro}</p>}
           <button
             type="submit"
