@@ -164,5 +164,10 @@ export function formatarValor(valor: number) {
 }
 
 export function formatarHoras(horas: number) {
-  return `${horas.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 2 })}h`;
+  const totalMinutos = Math.round(horas * 60);
+  const h = Math.floor(totalMinutos / 60);
+  const m = totalMinutos % 60;
+  if (h === 0) return `${m}min`;
+  if (m === 0) return `${h}h`;
+  return `${h}h${m}min`;
 }
