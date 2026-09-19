@@ -1,10 +1,25 @@
 import { Router } from "express";
+import multer from "multer";
 import { supabase } from "../supabaseClient";
 import { autenticar, autorizar } from "../middleware/auth";
 import { Usuario } from "../types";
 
 export const rdvsRouter = Router();
 rdvsRouter.use(autenticar);
+
+const TIPOS_COMPROVANTE_PERMITIDOS = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+
+const uploadComprovante = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    if (!TIPOS_COMPROVANTE_PERMITIDOS.includes(file.mimetype)) {
+      cb(new Error("Tipo de arquivo não suportado. Envie uma imagem (JPEG/PNG/WEBP) ou PDF."));
+      return;
+    }
+    cb(null, true);
+  },
+});
 
 async function idsDaEquipe(gestorId: string): Promise<string[]> {
   const { data } = await supabase.from("usuarios").select("id").eq("gestor_id", gestorId);
@@ -201,6 +216,124 @@ rdvsRouter.delete("/:id/itens-despesa/:itemId", async (req, res) => {
     return;
   }
   res.status(204).send();
+});
+
+async function buscarItemDespesa(rdvId: string, itemId: string) {
+  const { data, error } = await supabase
+    .from("itens_despesa")
+    .select("*")
+    .eq("id", itemId)
+    .eq("rdv_id", rdvId)
+    .single();
+  if (error || !data) return null;
+  return data;
+}
+
+rdvsRouter.post(
+  "/:id/itens-despesa/:itemId/comprovante",
+  uploadComprovante.single("arquivo"),
+  async (req, res) => {
+    const usuario = req.usuario!;
+    const { rdv } = await carregarRdvComPermissao(String(req.params.id), usuario);
+    if (!rdv || rdv.usuario_id !== usuario.id || rdv.status !== "rascunho") {
+      res.status(403).json({ error: "Só é possível anexar comprovante ao próprio RDV em rascunho" });
+      return;
+    }
+
+    const item = await buscarItemDespesa(rdv.id, String(req.params.itemId));
+    if (!item) {
+      res.status(404).json({ error: "Item de despesa não encontrado" });
+      return;
+    }
+
+    if (!req.file) {
+      res.status(400).json({ error: "Envie um arquivo no campo 'arquivo'" });
+      return;
+    }
+
+    const caminho = `${rdv.id}/${item.id}/${Date.now()}-${req.file.originalname}`;
+    const { error: uploadError } = await supabase.storage
+      .from("comprovantes")
+      .upload(caminho, req.file.buffer, { contentType: req.file.mimetype });
+
+    if (uploadError) {
+      res.status(400).json({ error: uploadError.message });
+      return;
+    }
+
+    if (item.comprovante_url) {
+      await supabase.storage.from("comprovantes").remove([item.comprovante_url]);
+    }
+
+    const { data, error } = await supabase
+      .from("itens_despesa")
+      .update({ comprovante_url: caminho })
+      .eq("id", item.id)
+      .select()
+      .single();
+
+    if (error) {
+      res.status(400).json({ error: error.message });
+      return;
+    }
+    res.status(201).json(data);
+  }
+);
+
+rdvsRouter.get("/:id/itens-despesa/:itemId/comprovante", async (req, res) => {
+  const usuario = req.usuario!;
+  const { rdv, permitido } = await carregarRdvComPermissao(req.params.id, usuario);
+  if (!rdv || !permitido) {
+    res.status(403).json({ error: "Sem permissão para ver este comprovante" });
+    return;
+  }
+
+  const item = await buscarItemDespesa(rdv.id, req.params.itemId);
+  if (!item || !item.comprovante_url) {
+    res.status(404).json({ error: "Comprovante não encontrado" });
+    return;
+  }
+
+  const { data, error } = await supabase.storage
+    .from("comprovantes")
+    .createSignedUrl(item.comprovante_url, 60);
+
+  if (error || !data) {
+    res.status(400).json({ error: error?.message ?? "Erro ao gerar link do comprovante" });
+    return;
+  }
+
+  res.json({ url: data.signedUrl, expiraEm: 60 });
+});
+
+rdvsRouter.delete("/:id/itens-despesa/:itemId/comprovante", async (req, res) => {
+  const usuario = req.usuario!;
+  const { rdv } = await carregarRdvComPermissao(req.params.id, usuario);
+  if (!rdv || rdv.usuario_id !== usuario.id || rdv.status !== "rascunho") {
+    res.status(403).json({ error: "Só é possível remover comprovante do próprio RDV em rascunho" });
+    return;
+  }
+
+  const item = await buscarItemDespesa(rdv.id, req.params.itemId);
+  if (!item || !item.comprovante_url) {
+    res.status(404).json({ error: "Comprovante não encontrado" });
+    return;
+  }
+
+  await supabase.storage.from("comprovantes").remove([item.comprovante_url]);
+
+  const { data, error } = await supabase
+    .from("itens_despesa")
+    .update({ comprovante_url: null })
+    .eq("id", item.id)
+    .select()
+    .single();
+
+  if (error) {
+    res.status(400).json({ error: error.message });
+    return;
+  }
+  res.json(data);
 });
 
 rdvsRouter.post("/:id/itens-km", async (req, res) => {

@@ -1,6 +1,7 @@
 import "dotenv/config";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
+import multer from "multer";
 import { supabase } from "./supabaseClient";
 import { categoriasRouter } from "./routes/categorias";
 import { empresasRouter } from "./routes/empresas";
@@ -33,6 +34,18 @@ app.use("/api/empresas", empresasRouter);
 app.use("/api/usuarios", usuariosRouter);
 app.use("/api/dados-bancarios", dadosBancariosRouter);
 app.use("/api/rdvs", rdvsRouter);
+
+app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+  if (err instanceof multer.MulterError) {
+    res.status(400).json({ error: `Falha no upload: ${err.message}` });
+    return;
+  }
+  if (err instanceof Error) {
+    res.status(400).json({ error: err.message });
+    return;
+  }
+  res.status(500).json({ error: "Erro interno" });
+});
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
