@@ -9,6 +9,7 @@ import { centrosCustoRouter } from "./routes/centrosCusto";
 import { usuariosRouter } from "./routes/usuarios";
 import { dadosBancariosRouter } from "./routes/dadosBancarios";
 import { rdvsRouter } from "./routes/rdvs";
+import { horasExtrasRouter } from "./routes/horasExtras";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -36,6 +37,7 @@ app.use("/api/centros-custo", centrosCustoRouter);
 app.use("/api/usuarios", usuariosRouter);
 app.use("/api/dados-bancarios", dadosBancariosRouter);
 app.use("/api/rdvs", rdvsRouter);
+app.use("/api/horas-extras", horasExtrasRouter);
 
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof multer.MulterError) {

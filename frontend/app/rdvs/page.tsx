@@ -46,6 +46,9 @@ export default async function MeusRdvsPage() {
               Admin
             </Link>
           )}
+          <Link href="/horas-extras" className="text-sm text-gray-500 hover:text-gray-700">
+            Horas Extras
+          </Link>
           <Link href="/perfil" className="text-sm text-gray-500 hover:text-gray-700">
             Dados bancários
           </Link>

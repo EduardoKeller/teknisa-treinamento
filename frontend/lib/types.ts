@@ -114,10 +114,52 @@ export const STATUS_CLASS: Record<StatusRdv, string> = {
   pago: "bg-purple-100 text-purple-700",
 };
 
+export interface ItemHoraExtra {
+  id: string;
+  horas_extras_id: string;
+  data: string;
+  quantidade_horas: number;
+  justificativa: string | null;
+}
+
+export interface HistoricoHe {
+  id: string;
+  horas_extras_id: string;
+  usuario_id: string;
+  status_anterior: StatusRdv | null;
+  status_novo: StatusRdv;
+  justificativa: string | null;
+  criado_em: string;
+}
+
+export interface HoraExtra {
+  id: string;
+  usuario_id: string;
+  periodo_inicio: string;
+  periodo_fim: string;
+  status: StatusRdv;
+  total_horas: number;
+  criado_em: string;
+  enviado_em: string | null;
+  aprovado_em: string | null;
+  aprovador_id: string | null;
+  pago_em: string | null;
+  funcionario?: { nome: string } | null;
+}
+
+export interface HoraExtraDetalhada extends HoraExtra {
+  itens: ItemHoraExtra[];
+  historico: HistoricoHe[];
+}
+
 export function formatarData(iso: string) {
   return new Date(iso).toLocaleDateString("pt-BR", { timeZone: "UTC" });
 }
 
 export function formatarValor(valor: number) {
   return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+export function formatarHoras(horas: number) {
+  return `${horas.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 2 })}h`;
 }
