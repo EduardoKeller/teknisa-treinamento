@@ -78,25 +78,31 @@ export default function AdminUsuariosPage() {
 
   return (
     <div>
-      <form onSubmit={criarUsuario} className="mb-6 rounded-lg border border-dashed border-gray-300 p-4">
+      <form onSubmit={criarUsuario} autoComplete="off" className="mb-6 rounded-lg border border-dashed border-gray-300 p-4">
         <h2 className="mb-3 text-sm font-semibold text-gray-900">Novo usuário</h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <input
             type="text"
+            name="novo-usuario-nome"
+            autoComplete="off"
             placeholder="Nome"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
           />
           <input
-            type="email"
+            type="text"
+            name="novo-usuario-email"
+            autoComplete="off"
             placeholder="E-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
           />
           <input
-            type="password"
+            type="text"
+            name="novo-usuario-senha"
+            autoComplete="off"
             placeholder="Senha inicial"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
