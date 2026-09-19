@@ -41,7 +41,8 @@ async function idsDaEquipe(gestorId: string): Promise<string[]> {
   return (data ?? []).map((u) => u.id);
 }
 
-const SELECT_RDV_COM_FUNCIONARIO = "*, empresas(nome), funcionario:usuarios!usuario_id(nome)";
+const SELECT_RDV_COM_FUNCIONARIO =
+  "*, empresas(nome), funcionario:usuarios!usuario_id(nome), centro_custo:centros_custo(nome)";
 
 async function carregarRdvComPermissao(rdvId: string, usuario: Usuario) {
   const { data: rdv, error } = await supabase
@@ -102,10 +103,10 @@ rdvsRouter.get("/", async (req, res) => {
 
 rdvsRouter.post("/", async (req, res) => {
   const usuario = req.usuario!;
-  const { empresa_id, unop_ug, motivo_viagem, periodo_inicio, periodo_fim, adiantamento_recebido } = req.body;
+  const { empresa_id, centro_custo_id, motivo_viagem, periodo_inicio, periodo_fim, adiantamento_recebido } = req.body;
 
-  if (!empresa_id || !unop_ug || !periodo_inicio || !periodo_fim) {
-    res.status(400).json({ error: "empresa_id, unop_ug, periodo_inicio e periodo_fim são obrigatórios" });
+  if (!empresa_id || !centro_custo_id || !periodo_inicio || !periodo_fim) {
+    res.status(400).json({ error: "empresa_id, centro_custo_id, periodo_inicio e periodo_fim são obrigatórios" });
     return;
   }
 
@@ -114,7 +115,7 @@ rdvsRouter.post("/", async (req, res) => {
     .insert({
       usuario_id: usuario.id,
       empresa_id,
-      unop_ug,
+      centro_custo_id,
       motivo_viagem,
       periodo_inicio,
       periodo_fim,
@@ -163,10 +164,10 @@ rdvsRouter.patch("/:id", async (req, res) => {
     return;
   }
 
-  const { empresa_id, unop_ug, motivo_viagem, periodo_inicio, periodo_fim, adiantamento_recebido } = req.body;
+  const { empresa_id, centro_custo_id, motivo_viagem, periodo_inicio, periodo_fim, adiantamento_recebido } = req.body;
   const { data, error } = await supabase
     .from("rdv")
-    .update({ empresa_id, unop_ug, motivo_viagem, periodo_inicio, periodo_fim, adiantamento_recebido })
+    .update({ empresa_id, centro_custo_id, motivo_viagem, periodo_inicio, periodo_fim, adiantamento_recebido })
     .eq("id", rdv.id)
     .select()
     .single();

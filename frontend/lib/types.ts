@@ -74,7 +74,7 @@ export interface Rdv {
   id: string;
   usuario_id: string;
   empresa_id: string;
-  unop_ug: string;
+  centro_custo_id: string;
   motivo_viagem: string | null;
   periodo_inicio: string;
   periodo_fim: string;
@@ -89,6 +89,7 @@ export interface Rdv {
   pago_em: string | null;
   empresas?: { nome: string } | null;
   funcionario?: { nome: string } | null;
+  centro_custo?: { nome: string } | null;
 }
 
 export interface RdvDetalhado extends Rdv {

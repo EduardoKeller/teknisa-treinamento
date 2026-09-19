@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
 import { useToast } from "@/components/toast";
-import { Empresa } from "@/lib/types";
+import { CentroCusto, Empresa } from "@/lib/types";
 
 export default function NovoRdvPage() {
   const router = useRouter();
@@ -13,11 +13,13 @@ export default function NovoRdvPage() {
 
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [carregandoEmpresas, setCarregandoEmpresas] = useState(true);
+  const [centrosCusto, setCentrosCusto] = useState<CentroCusto[]>([]);
+  const [carregandoCentros, setCarregandoCentros] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
 
   const [empresaId, setEmpresaId] = useState("");
-  const [unopUg, setUnopUg] = useState("");
+  const [centroCustoId, setCentroCustoId] = useState("");
   const [motivoViagem, setMotivoViagem] = useState("");
   const [periodoInicio, setPeriodoInicio] = useState("");
   const [periodoFim, setPeriodoFim] = useState("");
@@ -34,6 +36,15 @@ export default function NovoRdvPage() {
       }
       setCarregandoEmpresas(false);
     })();
+    (async () => {
+      const response = await apiFetchClient("/api/centros-custo");
+      if (cancelado) return;
+      if (response.ok) {
+        const data: CentroCusto[] = await response.json();
+        setCentrosCusto(data);
+      }
+      setCarregandoCentros(false);
+    })();
     return () => {
       cancelado = true;
     };
@@ -43,8 +54,8 @@ export default function NovoRdvPage() {
     event.preventDefault();
     setErro(null);
 
-    if (!empresaId || !unopUg || !periodoInicio || !periodoFim) {
-      setErro("Preencha empresa, unidade/área e o período da viagem.");
+    if (!empresaId || !centroCustoId || !periodoInicio || !periodoFim) {
+      setErro("Preencha empresa, centro de custo e o período da viagem.");
       return;
     }
 
@@ -58,7 +69,7 @@ export default function NovoRdvPage() {
       method: "POST",
       body: JSON.stringify({
         empresa_id: empresaId,
-        unop_ug: unopUg,
+        centro_custo_id: centroCustoId,
         motivo_viagem: motivoViagem || null,
         periodo_inicio: periodoInicio,
         periodo_fim: periodoFim,
@@ -112,18 +123,24 @@ export default function NovoRdvPage() {
         </div>
 
         <div>
-          <label htmlFor="unop_ug" className="mb-1 block text-sm font-medium text-gray-700">
-            Unidade/Área
+          <label htmlFor="centro_custo" className="mb-1 block text-sm font-medium text-gray-700">
+            Centro de custo
           </label>
-          <input
-            id="unop_ug"
-            type="text"
+          <select
+            id="centro_custo"
             required
-            value={unopUg}
-            onChange={(e) => setUnopUg(e.target.value)}
-            placeholder="Ex.: TI"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
-          />
+            value={centroCustoId}
+            onChange={(e) => setCentroCustoId(e.target.value)}
+            disabled={carregandoCentros}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none disabled:bg-gray-50"
+          >
+            <option value="">{carregandoCentros ? "Carregando..." : "Selecione o centro de custo"}</option>
+            {centrosCusto.map((centro) => (
+              <option key={centro.id} value={centro.id}>
+                {centro.nome}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>

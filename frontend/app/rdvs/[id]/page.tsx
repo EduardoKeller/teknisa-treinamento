@@ -97,7 +97,7 @@ export default function DetalheRdvPage({ params }: Props) {
           <h1 className="text-2xl font-semibold text-gray-900">{rdv.empresas?.nome ?? "RDV"}</h1>
           <p className="text-sm text-gray-500">
             {!souDono && rdv.funcionario?.nome && `${rdv.funcionario.nome} · `}
-            {rdv.unop_ug} · {formatarData(rdv.periodo_inicio)} – {formatarData(rdv.periodo_fim)}
+            {rdv.centro_custo?.nome ?? "-"} · {formatarData(rdv.periodo_inicio)} – {formatarData(rdv.periodo_fim)}
           </p>
         </div>
         <span className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_CLASS[rdv.status]}`}>
