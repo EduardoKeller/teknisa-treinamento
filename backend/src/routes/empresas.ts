@@ -5,12 +5,11 @@ import { autenticar, autorizar } from "../middleware/auth";
 export const empresasRouter = Router();
 empresasRouter.use(autenticar);
 
-empresasRouter.get("/", async (_req, res) => {
-  const { data, error } = await supabase
-    .from("empresas")
-    .select("*")
-    .eq("ativa", true)
-    .order("nome");
+empresasRouter.get("/", async (req, res) => {
+  const incluirInativas = req.query.todas === "true" && req.usuario?.perfil === "admin";
+  let query = supabase.from("empresas").select("*").order("nome");
+  if (!incluirInativas) query = query.eq("ativa", true);
+  const { data, error } = await query;
   if (error) {
     res.status(500).json({ error: error.message });
     return;

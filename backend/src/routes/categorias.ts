@@ -5,12 +5,11 @@ import { autenticar, autorizar } from "../middleware/auth";
 export const categoriasRouter = Router();
 categoriasRouter.use(autenticar);
 
-categoriasRouter.get("/", async (_req, res) => {
-  const { data, error } = await supabase
-    .from("categorias_despesa")
-    .select("*")
-    .eq("ativa", true)
-    .order("nome");
+categoriasRouter.get("/", async (req, res) => {
+  const incluirInativas = req.query.todas === "true" && req.usuario?.perfil === "admin";
+  let query = supabase.from("categorias_despesa").select("*").order("nome");
+  if (!incluirInativas) query = query.eq("ativa", true);
+  const { data, error } = await query;
   if (error) {
     res.status(500).json({ error: error.message });
     return;

@@ -10,7 +10,10 @@ usuariosRouter.get("/me", async (req, res) => {
 });
 
 usuariosRouter.get("/", autorizar("financeiro", "admin"), async (_req, res) => {
-  const { data, error } = await supabase.from("usuarios").select("*").order("nome");
+  const { data, error } = await supabase
+    .from("usuarios")
+    .select("*, gestor:usuarios!gestor_id(nome)")
+    .order("nome");
   if (error) {
     res.status(500).json({ error: error.message });
     return;

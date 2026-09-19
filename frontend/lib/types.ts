@@ -10,6 +10,17 @@ export interface UsuarioAtual {
   ativo: boolean;
 }
 
+export interface UsuarioAdmin extends UsuarioAtual {
+  gestor?: { nome: string } | null;
+}
+
+export const PERFIL_LABEL: Record<Perfil, string> = {
+  funcionario: "Funcionário",
+  aprovador: "Aprovador",
+  financeiro: "Financeiro",
+  admin: "Admin",
+};
+
 export interface Empresa {
   id: string;
   nome: string;
