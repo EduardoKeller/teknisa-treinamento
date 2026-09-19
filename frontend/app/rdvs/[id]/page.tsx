@@ -128,10 +128,19 @@ export default function DetalheRdvPage({ params }: Props) {
         itens={rdv.itens_despesa}
         categorias={categorias}
         editavel={editavel}
+        periodoInicio={rdv.periodo_inicio}
+        periodoFim={rdv.periodo_fim}
         onAtualizar={recarregar}
       />
 
-      <SecaoItensKm rdvId={rdv.id} itens={rdv.itens_quilometragem} editavel={editavel} onAtualizar={recarregar} />
+      <SecaoItensKm
+        rdvId={rdv.id}
+        itens={rdv.itens_quilometragem}
+        editavel={editavel}
+        periodoInicio={rdv.periodo_inicio}
+        periodoFim={rdv.periodo_fim}
+        onAtualizar={recarregar}
+      />
 
       <SecaoHistorico historico={rdv.historico_status} />
     </div>
@@ -435,12 +444,16 @@ function SecaoItensDespesa({
   itens,
   categorias,
   editavel,
+  periodoInicio,
+  periodoFim,
   onAtualizar,
 }: {
   rdvId: string;
   itens: RdvDetalhado["itens_despesa"];
   categorias: CategoriaDespesa[];
   editavel: boolean;
+  periodoInicio: string;
+  periodoFim: string;
   onAtualizar: () => Promise<void>;
 }) {
   const { showError } = useToast();
@@ -458,6 +471,11 @@ function SecaoItensDespesa({
 
     if (!categoriaId || !valor || !dataGasto) {
       setErro("Preencha categoria, valor e data.");
+      return;
+    }
+
+    if (dataGasto < periodoInicio || dataGasto > periodoFim) {
+      setErro(`A data deve estar entre ${formatarData(periodoInicio)} e ${formatarData(periodoFim)}.`);
       return;
     }
 
@@ -663,6 +681,8 @@ function SecaoItensDespesa({
               type="date"
               value={dataGasto}
               onChange={(e) => setDataGasto(e.target.value)}
+              min={periodoInicio}
+              max={periodoFim}
               className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
             />
           </div>
@@ -684,11 +704,15 @@ function SecaoItensKm({
   rdvId,
   itens,
   editavel,
+  periodoInicio,
+  periodoFim,
   onAtualizar,
 }: {
   rdvId: string;
   itens: RdvDetalhado["itens_quilometragem"];
   editavel: boolean;
+  periodoInicio: string;
+  periodoFim: string;
   onAtualizar: () => Promise<void>;
 }) {
   const { showError } = useToast();
@@ -705,6 +729,11 @@ function SecaoItensKm({
 
     if (!data || !trajeto || !km || !valorKm) {
       setErro("Preencha data, trajeto, km e valor por km.");
+      return;
+    }
+
+    if (data < periodoInicio || data > periodoFim) {
+      setErro(`A data deve estar entre ${formatarData(periodoInicio)} e ${formatarData(periodoFim)}.`);
       return;
     }
 
@@ -792,6 +821,8 @@ function SecaoItensKm({
               type="date"
               value={data}
               onChange={(e) => setData(e.target.value)}
+              min={periodoInicio}
+              max={periodoFim}
               className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
             />
             <input

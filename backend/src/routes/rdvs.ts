@@ -65,6 +65,10 @@ async function carregarRdvComPermissao(rdvId: string, usuario: Usuario) {
   return { rdv, permitido: false };
 }
 
+function dataForaDoPeriodo(data: string, rdv: { periodo_inicio: string; periodo_fim: string }): boolean {
+  return data < rdv.periodo_inicio || data > rdv.periodo_fim;
+}
+
 async function registrarHistorico(
   rdvId: string,
   usuarioId: string,
@@ -191,6 +195,12 @@ rdvsRouter.post("/:id/itens-despesa", async (req, res) => {
     res.status(400).json({ error: "categoria_id, valor e data_gasto são obrigatórios" });
     return;
   }
+  if (dataForaDoPeriodo(data_gasto, rdv)) {
+    res.status(400).json({
+      error: `A data do item deve estar dentro do período da viagem (${rdv.periodo_inicio} a ${rdv.periodo_fim})`,
+    });
+    return;
+  }
   const { data, error } = await supabase
     .from("itens_despesa")
     .insert({ rdv_id: rdv.id, categoria_id, descricao, valor, data_gasto, comprovante_url })
@@ -211,6 +221,12 @@ rdvsRouter.patch("/:id/itens-despesa/:itemId", async (req, res) => {
     return;
   }
   const { categoria_id, descricao, valor, data_gasto, comprovante_url } = req.body;
+  if (data_gasto && dataForaDoPeriodo(data_gasto, rdv)) {
+    res.status(400).json({
+      error: `A data do item deve estar dentro do período da viagem (${rdv.periodo_inicio} a ${rdv.periodo_fim})`,
+    });
+    return;
+  }
   const { data, error } = await supabase
     .from("itens_despesa")
     .update({ categoria_id, descricao, valor, data_gasto, comprovante_url })
@@ -369,6 +385,12 @@ rdvsRouter.post("/:id/itens-km", async (req, res) => {
   const { data: dataGasto, trajeto, km, valor_km } = req.body;
   if (!dataGasto || !trajeto || !km || !valor_km) {
     res.status(400).json({ error: "data, trajeto, km e valor_km são obrigatórios" });
+    return;
+  }
+  if (dataForaDoPeriodo(dataGasto, rdv)) {
+    res.status(400).json({
+      error: `A data do km deve estar dentro do período da viagem (${rdv.periodo_inicio} a ${rdv.periodo_fim})`,
+    });
     return;
   }
   const { data, error } = await supabase
