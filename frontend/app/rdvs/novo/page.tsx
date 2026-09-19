@@ -4,10 +4,12 @@ import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
+import { useToast } from "@/components/toast";
 import { Empresa } from "@/lib/types";
 
 export default function NovoRdvPage() {
   const router = useRouter();
+  const { showError } = useToast();
 
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [carregandoEmpresas, setCarregandoEmpresas] = useState(true);
@@ -67,7 +69,9 @@ export default function NovoRdvPage() {
 
     if (!response.ok) {
       const data = await response.json().catch(() => null);
-      setErro(data?.error ?? "Não foi possível criar o RDV.");
+      const mensagem = data?.error ?? "Não foi possível criar o RDV.";
+      setErro(mensagem);
+      showError(mensagem);
       return;
     }
 

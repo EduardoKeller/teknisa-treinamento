@@ -3,6 +3,7 @@
 import { use, useCallback, useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
+import { useToast } from "@/components/toast";
 import {
   CategoriaDespesa,
   RdvDetalhado,
@@ -18,6 +19,7 @@ interface Props {
 
 export default function DetalheRdvPage({ params }: Props) {
   const { id } = use(params);
+  const { showError } = useToast();
 
   const [rdv, setRdv] = useState<RdvDetalhado | null>(null);
   const [categorias, setCategorias] = useState<CategoriaDespesa[]>([]);
@@ -27,7 +29,10 @@ export default function DetalheRdvPage({ params }: Props) {
   const recarregar = useCallback(async () => {
     const response = await apiFetchClient(`/api/rdvs/${id}`);
     if (!response.ok) {
-      setErro("Não foi possível carregar este RDV.");
+      const data = await response.json().catch(() => null);
+      const mensagem = data?.error ?? "Não foi possível carregar este RDV.";
+      setErro(mensagem);
+      showError(mensagem);
       setCarregando(false);
       return;
     }
@@ -35,7 +40,7 @@ export default function DetalheRdvPage({ params }: Props) {
     setRdv(dados);
     setErro(null);
     setCarregando(false);
-  }, [id]);
+  }, [id, showError]);
 
   useEffect(() => {
     recarregar();
@@ -108,6 +113,7 @@ export default function DetalheRdvPage({ params }: Props) {
 }
 
 function AcaoEnvio({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () => Promise<void> }) {
+  const { showError } = useToast();
   const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
   const [cpf, setCpf] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -128,7 +134,9 @@ function AcaoEnvio({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () =>
     setEnviando(false);
     if (!response.ok) {
       const data = await response.json().catch(() => null);
-      setErro(data?.error ?? "Não foi possível enviar o RDV.");
+      const mensagem = data?.error ?? "Não foi possível enviar o RDV.";
+      setErro(mensagem);
+      showError(mensagem);
       return;
     }
     setMostrarConfirmacao(false);
@@ -140,7 +148,12 @@ function AcaoEnvio({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () =>
     setReabrindo(true);
     const response = await apiFetchClient(`/api/rdvs/${rdv.id}/reabrir`, { method: "POST" });
     setReabrindo(false);
-    if (response.ok) await onAtualizar();
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível reabrir o RDV.");
+      return;
+    }
+    await onAtualizar();
   }
 
   if (rdv.status === "reprovado") {
@@ -272,6 +285,7 @@ function SecaoItensDespesa({
   editavel: boolean;
   onAtualizar: () => Promise<void>;
 }) {
+  const { showError } = useToast();
   const [categoriaId, setCategoriaId] = useState("");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
@@ -303,7 +317,9 @@ function SecaoItensDespesa({
 
     if (!response.ok) {
       const data = await response.json().catch(() => null);
-      setErro(data?.error ?? "Não foi possível adicionar o item.");
+      const mensagem = data?.error ?? "Não foi possível adicionar o item.";
+      setErro(mensagem);
+      showError(mensagem);
       return;
     }
 
@@ -316,18 +332,26 @@ function SecaoItensDespesa({
 
   async function removerItem(itemId: string) {
     const response = await apiFetchClient(`/api/rdvs/${rdvId}/itens-despesa/${itemId}`, { method: "DELETE" });
-    if (response.ok) await onAtualizar();
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível remover o item.");
+      return;
+    }
+    await onAtualizar();
   }
 
   async function verComprovante(itemId: string) {
     const response = await apiFetchClient(`/api/rdvs/${rdvId}/itens-despesa/${itemId}/comprovante`);
-    if (!response.ok) return;
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível abrir o comprovante.");
+      return;
+    }
     const { url } = await response.json();
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
   async function enviarComprovante(itemId: string, arquivo: File) {
-    setErro(null);
     setUploadIdAtivo(itemId);
     const formData = new FormData();
     formData.append("arquivo", arquivo);
@@ -339,26 +363,25 @@ function SecaoItensDespesa({
       });
     } catch {
       setUploadIdAtivo(null);
-      setErro("Não foi possível enviar o comprovante. Verifique sua conexão e tente novamente.");
+      showError("Não foi possível enviar o comprovante. Verifique sua conexão e tente novamente.");
       return;
     }
     setUploadIdAtivo(null);
     if (!response.ok) {
       const data = await response.json().catch(() => null);
-      setErro(data?.error ?? "Não foi possível salvar o comprovante.");
+      showError(data?.error ?? "Não foi possível salvar o comprovante.");
       return;
     }
     await onAtualizar();
   }
 
   async function removerComprovante(itemId: string) {
-    setErro(null);
     const response = await apiFetchClient(`/api/rdvs/${rdvId}/itens-despesa/${itemId}/comprovante`, {
       method: "DELETE",
     });
     if (!response.ok) {
       const data = await response.json().catch(() => null);
-      setErro(data?.error ?? "Não foi possível remover o comprovante.");
+      showError(data?.error ?? "Não foi possível remover o comprovante.");
       return;
     }
     await onAtualizar();
@@ -367,7 +390,6 @@ function SecaoItensDespesa({
   return (
     <section className="mb-8">
       <h2 className="mb-3 text-lg font-semibold text-gray-900">Itens de despesa</h2>
-      {erro && <p className="mb-3 text-sm text-red-600">{erro}</p>}
 
       {itens.length === 0 ? (
         <p className="mb-4 text-sm text-gray-500">Nenhum item de despesa adicionado.</p>
@@ -486,6 +508,7 @@ function SecaoItensDespesa({
               className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
             />
           </div>
+          {erro && <p className="mt-2 text-sm text-red-600">{erro}</p>}
           <button
             type="submit"
             disabled={enviando}
@@ -510,6 +533,7 @@ function SecaoItensKm({
   editavel: boolean;
   onAtualizar: () => Promise<void>;
 }) {
+  const { showError } = useToast();
   const [data, setData] = useState("");
   const [trajeto, setTrajeto] = useState("");
   const [km, setKm] = useState("");
@@ -535,7 +559,9 @@ function SecaoItensKm({
 
     if (!response.ok) {
       const respData = await response.json().catch(() => null);
-      setErro(respData?.error ?? "Não foi possível adicionar o km.");
+      const mensagem = respData?.error ?? "Não foi possível adicionar o km.";
+      setErro(mensagem);
+      showError(mensagem);
       return;
     }
 
@@ -548,7 +574,12 @@ function SecaoItensKm({
 
   async function removerItem(itemId: string) {
     const response = await apiFetchClient(`/api/rdvs/${rdvId}/itens-km/${itemId}`, { method: "DELETE" });
-    if (response.ok) await onAtualizar();
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível remover o km.");
+      return;
+    }
+    await onAtualizar();
   }
 
   return (

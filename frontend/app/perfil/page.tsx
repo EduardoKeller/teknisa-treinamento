@@ -3,6 +3,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
+import { useToast } from "@/components/toast";
 
 interface DadosBancarios {
   usuario_id: string;
@@ -14,6 +15,7 @@ interface DadosBancarios {
 }
 
 export default function PerfilPage() {
+  const { showError } = useToast();
   const [carregando, setCarregando] = useState(true);
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
@@ -67,7 +69,9 @@ export default function PerfilPage() {
 
     if (!response.ok) {
       const data = await response.json().catch(() => null);
-      setErro(data?.error ?? "Não foi possível salvar seus dados bancários.");
+      const mensagem = data?.error ?? "Não foi possível salvar seus dados bancários.";
+      setErro(mensagem);
+      showError(mensagem);
       return;
     }
 
