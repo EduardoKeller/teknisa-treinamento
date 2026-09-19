@@ -1,43 +1,7 @@
+import Link from "next/link";
 import { apiFetch } from "@/lib/api";
 import { LogoutButton } from "./logout-button";
-
-const STATUS_LABEL = {
-  rascunho: "Rascunho",
-  enviado: "Enviado",
-  aprovado: "Aprovado",
-  reprovado: "Reprovado",
-  pago: "Pago",
-} as const;
-
-const STATUS_CLASS = {
-  rascunho: "bg-gray-100 text-gray-700",
-  enviado: "bg-blue-100 text-blue-700",
-  aprovado: "bg-green-100 text-green-700",
-  reprovado: "bg-red-100 text-red-700",
-  pago: "bg-purple-100 text-purple-700",
-} as const;
-
-type StatusRdv = keyof typeof STATUS_LABEL;
-
-interface Rdv {
-  id: string;
-  unop_ug: string;
-  motivo_viagem: string | null;
-  periodo_inicio: string;
-  periodo_fim: string;
-  status: StatusRdv;
-  valor_reembolso: number;
-  criado_em: string;
-  empresas: { nome: string } | null;
-}
-
-function formatarData(iso: string) {
-  return new Date(iso).toLocaleDateString("pt-BR", { timeZone: "UTC" });
-}
-
-function formatarValor(valor: number) {
-  return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-}
+import { Rdv, STATUS_LABEL, STATUS_CLASS, formatarData, formatarValor } from "@/lib/types";
 
 export default async function MeusRdvsPage() {
   const response = await apiFetch("/api/rdvs");
@@ -59,7 +23,15 @@ export default async function MeusRdvsPage() {
           <h1 className="text-2xl font-semibold text-gray-900">Meus RDVs</h1>
           <p className="text-sm text-gray-500">Relatórios de despesas de viagem que você criou</p>
         </div>
-        <LogoutButton />
+        <div className="flex items-center gap-3">
+          <Link
+            href="/rdvs/novo"
+            className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800"
+          >
+            Novo RDV
+          </Link>
+          <LogoutButton />
+        </div>
       </div>
 
       {rdvs.length === 0 ? (
@@ -81,7 +53,11 @@ export default async function MeusRdvsPage() {
             <tbody className="divide-y divide-gray-100">
               {rdvs.map((rdv) => (
                 <tr key={rdv.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-gray-900">{rdv.empresas?.nome ?? "-"}</td>
+                  <td className="p-0">
+                    <Link href={`/rdvs/${rdv.id}`} className="block px-4 py-3 text-gray-900">
+                      {rdv.empresas?.nome ?? "-"}
+                    </Link>
+                  </td>
                   <td className="px-4 py-3 text-gray-600">{rdv.motivo_viagem ?? "-"}</td>
                   <td className="px-4 py-3 text-gray-600">
                     {formatarData(rdv.periodo_inicio)} – {formatarData(rdv.periodo_fim)}

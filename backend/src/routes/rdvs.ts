@@ -27,7 +27,7 @@ async function idsDaEquipe(gestorId: string): Promise<string[]> {
 }
 
 async function carregarRdvComPermissao(rdvId: string, usuario: Usuario) {
-  const { data: rdv, error } = await supabase.from("rdv").select("*").eq("id", rdvId).single();
+  const { data: rdv, error } = await supabase.from("rdv").select("*, empresas(nome)").eq("id", rdvId).single();
   if (error || !rdv) return { rdv: null, permitido: false };
 
   if (usuario.perfil === "financeiro" || usuario.perfil === "admin") {
