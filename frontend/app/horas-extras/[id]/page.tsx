@@ -60,6 +60,7 @@ export default function DetalheHorasExtrasPage({ params }: Props) {
   const [usuarioAtual, setUsuarioAtual] = useState<UsuarioAtual | null>(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
+  const [exportando, setExportando] = useState(false);
 
   const recarregar = useCallback(async () => {
     const response = await apiFetchClient(`/api/horas-extras/${id}`);
@@ -86,6 +87,30 @@ export default function DetalheHorasExtrasPage({ params }: Props) {
       if (response.ok) setUsuarioAtual(await response.json());
     })();
   }, [recarregar]);
+
+  async function exportarPlanilha() {
+    setExportando(true);
+    try {
+      const response = await apiFetchClient(`/api/horas-extras/${id}/exportar`);
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        showError(data?.error ?? "Não foi possível exportar este registro.");
+        return;
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      const nomeArquivo = response.headers.get("Content-Disposition")?.match(/filename="(.+)"/)?.[1];
+      link.download = nomeArquivo ?? "horas-extras.xlsx";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } finally {
+      setExportando(false);
+    }
+  }
 
   if (carregando) {
     return <div className="mx-auto max-w-4xl px-4 py-8 text-sm text-gray-500">Carregando...</div>;
@@ -138,9 +163,19 @@ export default function DetalheHorasExtrasPage({ params }: Props) {
         </span>
       </div>
 
-      <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4">
-        <p className="text-xs uppercase tracking-wide text-gray-500">Total de horas</p>
-        <p className="mt-1 text-lg font-semibold text-gray-900">{formatarHoras(he.total_horas)}</p>
+      <div className="mb-8 flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4">
+        <div>
+          <p className="text-xs uppercase tracking-wide text-gray-500">Total de horas</p>
+          <p className="mt-1 text-lg font-semibold text-gray-900">{formatarHoras(he.total_horas)}</p>
+        </div>
+        <button
+          type="button"
+          onClick={exportarPlanilha}
+          disabled={exportando || he.itens.length === 0}
+          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {exportando ? "Exportando..." : "Exportar planilha"}
+        </button>
       </div>
 
       {souDono && <AcaoEnvio he={he} onAtualizar={recarregar} />}
