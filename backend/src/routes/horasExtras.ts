@@ -3,6 +3,7 @@ import { supabase } from "../supabaseClient";
 import { autenticar, autorizar } from "../middleware/auth";
 import { Usuario } from "../types";
 import { ehDiaUtil } from "../lib/feriados";
+import { gerarPlanilhaHorasExtras } from "../lib/planilhaHorasExtras";
 
 export const horasExtrasRouter = Router();
 horasExtrasRouter.use(autenticar);
@@ -137,6 +138,36 @@ horasExtrasRouter.get("/:id", async (req, res) => {
   ]);
 
   res.json({ ...he, itens: itens ?? [], historico: historico ?? [] });
+});
+
+horasExtrasRouter.get("/:id/exportar", async (req, res) => {
+  const usuario = req.usuario!;
+  const { he, permitido } = await carregarHeComPermissao(req.params.id, usuario);
+  if (!he) {
+    res.status(404).json({ error: "Registro de horas extras não encontrado" });
+    return;
+  }
+  if (!permitido) {
+    res.status(403).json({ error: "Sem permissão para exportar este registro" });
+    return;
+  }
+
+  const { data: itens, error } = await supabase
+    .from("he_itens")
+    .select("*")
+    .eq("horas_extras_id", he.id)
+    .order("data");
+  if (error) {
+    res.status(500).json({ error: error.message });
+    return;
+  }
+
+  const buffer = await gerarPlanilhaHorasExtras(he, itens ?? []);
+  const nomeArquivo = `horas-extras-${(he.funcionario?.nome ?? "funcionario").replace(/\s+/g, "-")}-${he.periodo_inicio}.xlsx`;
+
+  res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+  res.setHeader("Content-Disposition", `attachment; filename="${nomeArquivo}"`);
+  res.send(Buffer.from(buffer));
 });
 
 horasExtrasRouter.patch("/:id", async (req, res) => {
