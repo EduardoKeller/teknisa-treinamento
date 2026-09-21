@@ -73,6 +73,15 @@ export async function gerarPlanilhaRdv(
   if (kmExtra > 0) {
     sheet.duplicateRow(KM_ROW_START + KM_ROW_CAPACITY - 1, kmExtra, true);
   }
+  // O modelo é o próprio arquivo de exemplo já preenchido, então linhas sem item
+  // novo precisam ser explicitamente limpas para não vazar dados da viagem de exemplo.
+  for (let i = 0; i < KM_ROW_CAPACITY + kmExtra; i++) {
+    const row = KM_ROW_START + i;
+    sheet.getCell(`A${row}`).value = null;
+    sheet.getCell(`B${row}`).value = null;
+    sheet.getCell(`I${row}`).value = null;
+    sheet.getCell(`J${row}`).value = null;
+  }
   itensQuilometragem.forEach((item, index) => {
     const row = KM_ROW_START + index;
     sheet.getCell(`A${row}`).value = paraData(item.data);
@@ -89,6 +98,13 @@ export async function gerarPlanilhaRdv(
   const despesaExtra = Math.max(0, itensDespesa.length - DESPESA_ROW_CAPACITY);
   if (despesaExtra > 0) {
     sheet.duplicateRow(despesaRowStart + DESPESA_ROW_CAPACITY - 1, despesaExtra, true);
+  }
+  for (let i = 0; i < DESPESA_ROW_CAPACITY + despesaExtra; i++) {
+    const row = despesaRowStart + i;
+    sheet.getCell(`A${row}`).value = null;
+    sheet.getCell(`B${row}`).value = null;
+    sheet.getCell(`D${row}`).value = null;
+    sheet.getCell(`J${row}`).value = null;
   }
   itensDespesa.forEach((item, index) => {
     const row = despesaRowStart + index;
