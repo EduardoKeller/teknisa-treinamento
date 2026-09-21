@@ -6,6 +6,7 @@ import { supabase } from "../supabaseClient";
 import { autenticar, autorizar } from "../middleware/auth";
 import { Usuario } from "../types";
 import { gerarPlanilhaRdv } from "../lib/planilhaRdv";
+import { gerarZipRdv, ArquivoParaZip } from "../lib/pacoteRdv";
 
 const EXTENSOES_POR_MIME: Record<string, string> = {
   "image/jpeg": ".jpg",
@@ -186,12 +187,48 @@ rdvsRouter.get("/:id/exportar", async (req, res) => {
     aprovadorNome = aprovador?.nome ?? null;
   }
 
-  const buffer = await gerarPlanilhaRdv(rdv, itensDespesa ?? [], itensKm ?? [], dadosBancarios ?? null, aprovadorNome);
-  const nomeArquivo = `rdv-${(rdv.funcionario?.nome ?? "funcionario").replace(/\s+/g, "-")}-${rdv.periodo_inicio}.xlsx`;
+  const planilhaBuffer = await gerarPlanilhaRdv(
+    rdv,
+    itensDespesa ?? [],
+    itensKm ?? [],
+    dadosBancarios ?? null,
+    aprovadorNome,
+  );
+  const prefixoArquivo = `rdv-${(rdv.funcionario?.nome ?? "funcionario").replace(/\s+/g, "-")}-${rdv.periodo_inicio}`;
 
-  res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-  res.setHeader("Content-Disposition", `attachment; filename="${nomeArquivo}"`);
-  res.send(Buffer.from(buffer));
+  const comprovantes: ArquivoParaZip[] = [];
+  for (const item of itensDespesa ?? []) {
+    if (!item.comprovante_url) continue;
+    const { data: arquivo, error: erroDownload } = await supabase.storage
+      .from("comprovantes")
+      .download(item.comprovante_url);
+    if (erroDownload || !arquivo) continue;
+    const extensao = extname(item.comprovante_url) || "";
+    const nomeBase = `${item.data_gasto}_${item.categorias_despesa?.nome ?? "despesa"}_${item.descricao ?? ""}`
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-zA-Z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    comprovantes.push({
+      nome: `${nomeBase}${extensao}`,
+      conteudo: Buffer.from(await arquivo.arrayBuffer()),
+    });
+  }
+
+  if (comprovantes.length === 0) {
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    res.setHeader("Content-Disposition", `attachment; filename="${prefixoArquivo}.xlsx"`);
+    res.send(Buffer.from(planilhaBuffer));
+    return;
+  }
+
+  const zipBuffer = await gerarZipRdv(
+    { nome: `${prefixoArquivo}.xlsx`, conteudo: Buffer.from(planilhaBuffer) },
+    comprovantes,
+  );
+  res.setHeader("Content-Type", "application/zip");
+  res.setHeader("Content-Disposition", `attachment; filename="${prefixoArquivo}.zip"`);
+  res.send(zipBuffer);
 });
 
 rdvsRouter.patch("/:id", async (req, res) => {
