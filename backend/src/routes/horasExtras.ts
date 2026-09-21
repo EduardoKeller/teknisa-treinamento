@@ -2,6 +2,7 @@ import { Router } from "express";
 import { supabase } from "../supabaseClient";
 import { autenticar, autorizar } from "../middleware/auth";
 import { Usuario } from "../types";
+import { ehDiaUtil } from "../lib/feriados";
 
 export const horasExtrasRouter = Router();
 horasExtrasRouter.use(autenticar);
@@ -48,12 +49,15 @@ function minutosDoHorario(horario: string): number {
   return horas * 60 + minutos;
 }
 
-function calcularHorasExtras(horaInicio: string, horaFim: string, fezIntervalo: boolean): number | null {
+function calcularHorasExtras(horaInicio: string, horaFim: string, fezIntervalo: boolean, data: string): number | null {
   const minutosInicio = minutosDoHorario(horaInicio);
   const minutosFim = minutosDoHorario(horaFim);
   const minutosTrabalhados = minutosFim - minutosInicio - (fezIntervalo ? MINUTOS_INTERVALO : 0);
   if (minutosTrabalhados <= 0) return null;
-  const minutosExtras = minutosTrabalhados - JORNADA_PADRAO_MINUTOS;
+
+  // Em dia útil, hora extra é o que passar da jornada padrão. Em final de semana ou feriado,
+  // a empresa não trabalha, então todo o tempo registrado conta como extra.
+  const minutosExtras = ehDiaUtil(data) ? minutosTrabalhados - JORNADA_PADRAO_MINUTOS : minutosTrabalhados;
   if (minutosExtras <= 0) return null;
   return Math.round((minutosExtras / 60) * 100) / 100;
 }
@@ -188,7 +192,7 @@ horasExtrasRouter.post("/:id/itens", async (req, res) => {
     res.status(400).json({ error: "A hora de fim deve ser depois da hora de início" });
     return;
   }
-  const quantidadeHoras = calcularHorasExtras(hora_inicio, hora_fim, fez_intervalo);
+  const quantidadeHoras = calcularHorasExtras(hora_inicio, hora_fim, fez_intervalo, dataItem);
   if (quantidadeHoras === null) {
     res.status(400).json({
       error: "Não há horas extras nesse intervalo (jornada padrão: 07:30–12:00 e 13:00–17:18, 8h48min)",
