@@ -130,8 +130,12 @@ export default function DetalheRdvPage({ params }: Props) {
         </span>
       </div>
 
-      {rdv.motivo_viagem && (
-        <p className="mb-6 rounded-md bg-gray-50 p-3 text-sm text-gray-700">{rdv.motivo_viagem}</p>
+      {editavel ? (
+        <InfoViagemEditavel rdv={rdv} onAtualizar={recarregar} />
+      ) : (
+        rdv.motivo_viagem && (
+          <p className="mb-6 rounded-md bg-gray-50 p-3 text-sm text-gray-700">{rdv.motivo_viagem}</p>
+        )
       )}
 
       <div className="mb-8 grid grid-cols-3 gap-4">
@@ -561,6 +565,127 @@ function AdiantamentoEditavel({
   );
 }
 
+function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () => Promise<void> }) {
+  const { showError } = useToast();
+  const [editando, setEditando] = useState(false);
+  const [motivo, setMotivo] = useState(rdv.motivo_viagem ?? "");
+  const [inicio, setInicio] = useState(rdv.periodo_inicio);
+  const [fim, setFim] = useState(rdv.periodo_fim);
+  const [salvando, setSalvando] = useState(false);
+
+  function abrirEdicao() {
+    setMotivo(rdv.motivo_viagem ?? "");
+    setInicio(rdv.periodo_inicio);
+    setFim(rdv.periodo_fim);
+    setEditando(true);
+  }
+
+  async function salvar() {
+    if (!inicio || !fim) {
+      showError("Informe o início e o fim do período.");
+      return;
+    }
+    if (inicio > fim) {
+      showError("A data inicial não pode ser depois da data final.");
+      return;
+    }
+    setSalvando(true);
+    const response = await apiFetchClient(`/api/rdvs/${rdv.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ motivo_viagem: motivo || null, periodo_inicio: inicio, periodo_fim: fim }),
+    });
+    setSalvando(false);
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível atualizar a viagem.");
+      return;
+    }
+    setEditando(false);
+    await onAtualizar();
+  }
+
+  if (!editando) {
+    return (
+      <div className="mb-6 rounded-md bg-gray-50 p-3 text-sm text-gray-700">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            {rdv.motivo_viagem && <p>{rdv.motivo_viagem}</p>}
+            <p className="mt-1 text-xs text-gray-500">
+              {formatarData(rdv.periodo_inicio)} – {formatarData(rdv.periodo_fim)}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={abrirEdicao}
+            className="shrink-0 text-xs text-gray-500 underline hover:text-gray-700"
+          >
+            Editar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mb-6 rounded-md border border-gray-200 bg-white p-3">
+      <label htmlFor="motivo-viagem" className="block text-xs font-medium text-gray-700">
+        Motivo da viagem
+      </label>
+      <textarea
+        id="motivo-viagem"
+        value={motivo}
+        onChange={(e) => setMotivo(e.target.value)}
+        rows={2}
+        className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm"
+      />
+      <div className="mt-2 grid grid-cols-2 gap-3">
+        <div>
+          <label htmlFor="periodo-inicio" className="block text-xs font-medium text-gray-700">
+            Início
+          </label>
+          <input
+            id="periodo-inicio"
+            type="date"
+            value={inicio}
+            onChange={(e) => setInicio(e.target.value)}
+            className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm"
+          />
+        </div>
+        <div>
+          <label htmlFor="periodo-fim" className="block text-xs font-medium text-gray-700">
+            Fim
+          </label>
+          <input
+            id="periodo-fim"
+            type="date"
+            value={fim}
+            onChange={(e) => setFim(e.target.value)}
+            className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm"
+          />
+        </div>
+      </div>
+      <div className="mt-3 flex gap-2">
+        <button
+          type="button"
+          onClick={salvar}
+          disabled={salvando}
+          className="rounded-md bg-gray-900 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-60"
+        >
+          {salvando ? "Salvando..." : "Salvar"}
+        </button>
+        <button
+          type="button"
+          onClick={() => setEditando(false)}
+          disabled={salvando}
+          className="rounded-md border border-gray-300 px-3 py-1.5 text-xs text-gray-700"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function SecaoItensDespesa({
   rdvId,
   itens,
@@ -586,6 +711,49 @@ function SecaoItensDespesa({
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   const [uploadIdAtivo, setUploadIdAtivo] = useState<string | null>(null);
+  const [editandoId, setEditandoId] = useState<string | null>(null);
+  const [editCategoriaId, setEditCategoriaId] = useState("");
+  const [editDescricao, setEditDescricao] = useState("");
+  const [editValor, setEditValor] = useState("");
+  const [editDataGasto, setEditDataGasto] = useState("");
+  const [salvandoEdicao, setSalvandoEdicao] = useState(false);
+
+  function iniciarEdicao(item: RdvDetalhado["itens_despesa"][number]) {
+    setEditandoId(item.id);
+    setEditCategoriaId(item.categoria_id);
+    setEditDescricao(item.descricao ?? "");
+    setEditValor(String(item.valor));
+    setEditDataGasto(item.data_gasto);
+  }
+
+  async function salvarEdicao(itemId: string) {
+    if (!editCategoriaId || !editValor || !editDataGasto) {
+      showError("Preencha categoria, valor e data.");
+      return;
+    }
+    if (editDataGasto < periodoInicio || editDataGasto > periodoFim) {
+      showError(`A data deve estar entre ${formatarData(periodoInicio)} e ${formatarData(periodoFim)}.`);
+      return;
+    }
+    setSalvandoEdicao(true);
+    const response = await apiFetchClient(`/api/rdvs/${rdvId}/itens-despesa/${itemId}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        categoria_id: editCategoriaId,
+        descricao: editDescricao || null,
+        valor: Number(editValor),
+        data_gasto: editDataGasto,
+      }),
+    });
+    setSalvandoEdicao(false);
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível salvar as alterações.");
+      return;
+    }
+    setEditandoId(null);
+    await onAtualizar();
+  }
 
   async function adicionarItem(event: FormEvent) {
     event.preventDefault();
@@ -705,64 +873,136 @@ function SecaoItensDespesa({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {itens.map((item) => (
-                <tr key={item.id}>
-                  <td className="px-4 py-2 text-gray-900">{item.categorias_despesa?.nome ?? "-"}</td>
-                  <td className="px-4 py-2 text-gray-600">{item.descricao ?? "-"}</td>
-                  <td className="px-4 py-2 text-gray-600">{formatarData(item.data_gasto)}</td>
-                  <td className="px-4 py-2 text-right text-gray-900">{formatarValor(item.valor)}</td>
-                  <td className="px-4 py-2">
-                    {item.comprovante_url ? (
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => verComprovante(item.id)}
-                          className="text-xs text-blue-600 underline hover:text-blue-800"
-                        >
-                          Ver
-                        </button>
-                        {editavel && (
-                          <button
-                            type="button"
-                            onClick={() => removerComprovante(item.id)}
-                            className="text-xs text-red-600 underline hover:text-red-800"
-                          >
-                            Remover
-                          </button>
-                        )}
-                      </div>
-                    ) : editavel ? (
-                      <label className="cursor-pointer text-xs text-gray-500 underline hover:text-gray-700">
-                        {uploadIdAtivo === item.id ? "Enviando..." : "Anexar"}
-                        <input
-                          type="file"
-                          accept="image/jpeg,image/png,image/webp,application/pdf"
-                          className="hidden"
-                          disabled={uploadIdAtivo === item.id}
-                          onChange={(e) => {
-                            const arquivo = e.target.files?.[0];
-                            if (arquivo) enviarComprovante(item.id, arquivo);
-                            e.target.value = "";
-                          }}
-                        />
-                      </label>
-                    ) : (
-                      <span className="text-xs text-gray-400">-</span>
-                    )}
-                  </td>
-                  {editavel && (
+              {itens.map((item) =>
+                editandoId === item.id ? (
+                  <tr key={item.id} className="bg-gray-50">
+                    <td className="px-4 py-2">
+                      <select
+                        value={editCategoriaId}
+                        onChange={(e) => setEditCategoriaId(e.target.value)}
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+                      >
+                        {categorias.map((categoria) => (
+                          <option key={categoria.id} value={categoria.id}>
+                            {categoria.nome}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="text"
+                        value={editDescricao}
+                        onChange={(e) => setEditDescricao(e.target.value)}
+                        placeholder="Descrição (opcional)"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="date"
+                        value={editDataGasto}
+                        min={periodoInicio}
+                        max={periodoFim}
+                        onChange={(e) => setEditDataGasto(e.target.value)}
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+                      />
+                    </td>
                     <td className="px-4 py-2 text-right">
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={editValor}
+                        onChange={(e) => setEditValor(e.target.value)}
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm"
+                      />
+                    </td>
+                    <td className="px-4 py-2 text-xs text-gray-400">-</td>
+                    <td className="px-4 py-2 text-right whitespace-nowrap">
                       <button
                         type="button"
-                        onClick={() => removerItem(item.id)}
-                        className="text-xs text-red-600 underline hover:text-red-800"
+                        onClick={() => salvarEdicao(item.id)}
+                        disabled={salvandoEdicao}
+                        className="mr-3 text-xs text-gray-900 underline hover:text-gray-700 disabled:opacity-60"
                       >
-                        Remover
+                        {salvandoEdicao ? "Salvando..." : "Salvar"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEditandoId(null)}
+                        disabled={salvandoEdicao}
+                        className="text-xs text-gray-500 underline hover:text-gray-700"
+                      >
+                        Cancelar
                       </button>
                     </td>
-                  )}
-                </tr>
-              ))}
+                  </tr>
+                ) : (
+                  <tr key={item.id}>
+                    <td className="px-4 py-2 text-gray-900">{item.categorias_despesa?.nome ?? "-"}</td>
+                    <td className="px-4 py-2 text-gray-600">{item.descricao ?? "-"}</td>
+                    <td className="px-4 py-2 text-gray-600">{formatarData(item.data_gasto)}</td>
+                    <td className="px-4 py-2 text-right text-gray-900">{formatarValor(item.valor)}</td>
+                    <td className="px-4 py-2">
+                      {item.comprovante_url ? (
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => verComprovante(item.id)}
+                            className="text-xs text-blue-600 underline hover:text-blue-800"
+                          >
+                            Ver
+                          </button>
+                          {editavel && (
+                            <button
+                              type="button"
+                              onClick={() => removerComprovante(item.id)}
+                              className="text-xs text-red-600 underline hover:text-red-800"
+                            >
+                              Remover
+                            </button>
+                          )}
+                        </div>
+                      ) : editavel ? (
+                        <label className="cursor-pointer text-xs text-gray-500 underline hover:text-gray-700">
+                          {uploadIdAtivo === item.id ? "Enviando..." : "Anexar"}
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp,application/pdf"
+                            className="hidden"
+                            disabled={uploadIdAtivo === item.id}
+                            onChange={(e) => {
+                              const arquivo = e.target.files?.[0];
+                              if (arquivo) enviarComprovante(item.id, arquivo);
+                              e.target.value = "";
+                            }}
+                          />
+                        </label>
+                      ) : (
+                        <span className="text-xs text-gray-400">-</span>
+                      )}
+                    </td>
+                    {editavel && (
+                      <td className="px-4 py-2 text-right whitespace-nowrap">
+                        <button
+                          type="button"
+                          onClick={() => iniciarEdicao(item)}
+                          className="mr-3 text-xs text-gray-500 underline hover:text-gray-700"
+                        >
+                          Editar
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removerItem(item.id)}
+                          className="text-xs text-red-600 underline hover:text-red-800"
+                        >
+                          Remover
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                ),
+              )}
             </tbody>
           </table>
         </div>
