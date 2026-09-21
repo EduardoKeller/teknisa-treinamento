@@ -480,6 +480,34 @@ rdvsRouter.post("/:id/itens-km", async (req, res) => {
   res.status(201).json(data);
 });
 
+rdvsRouter.patch("/:id/itens-km/:itemId", async (req, res) => {
+  const usuario = req.usuario!;
+  const { rdv } = await carregarRdvComPermissao(req.params.id, usuario);
+  if (!rdv || rdv.usuario_id !== usuario.id || rdv.status !== "rascunho") {
+    res.status(403).json({ error: "Só é possível editar km do próprio RDV em rascunho" });
+    return;
+  }
+  const { data: dataGasto, trajeto, km, valor_km } = req.body;
+  if (dataGasto && dataForaDoPeriodo(dataGasto, rdv)) {
+    res.status(400).json({
+      error: `A data do km deve estar dentro do período da viagem (${rdv.periodo_inicio} a ${rdv.periodo_fim})`,
+    });
+    return;
+  }
+  const { data, error } = await supabase
+    .from("itens_quilometragem")
+    .update({ data: dataGasto, trajeto, km, valor_km })
+    .eq("id", req.params.itemId)
+    .eq("rdv_id", rdv.id)
+    .select()
+    .single();
+  if (error) {
+    res.status(400).json({ error: error.message });
+    return;
+  }
+  res.json(data);
+});
+
 rdvsRouter.delete("/:id/itens-km/:itemId", async (req, res) => {
   const usuario = req.usuario!;
   const { rdv } = await carregarRdvComPermissao(req.params.id, usuario);

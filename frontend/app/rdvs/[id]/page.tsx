@@ -1084,6 +1084,49 @@ function SecaoItensKm({
   const [valorKm, setValorKm] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
+  const [editandoId, setEditandoId] = useState<string | null>(null);
+  const [editData, setEditData] = useState("");
+  const [editTrajeto, setEditTrajeto] = useState("");
+  const [editKm, setEditKm] = useState("");
+  const [editValorKm, setEditValorKm] = useState("");
+  const [salvandoEdicao, setSalvandoEdicao] = useState(false);
+
+  function iniciarEdicao(item: RdvDetalhado["itens_quilometragem"][number]) {
+    setEditandoId(item.id);
+    setEditData(item.data);
+    setEditTrajeto(item.trajeto);
+    setEditKm(String(item.km));
+    setEditValorKm(String(item.valor_km));
+  }
+
+  async function salvarEdicao(itemId: string) {
+    if (!editData || !editTrajeto || !editKm || !editValorKm) {
+      showError("Preencha data, trajeto, km e valor por km.");
+      return;
+    }
+    if (editData < periodoInicio || editData > periodoFim) {
+      showError(`A data deve estar entre ${formatarData(periodoInicio)} e ${formatarData(periodoFim)}.`);
+      return;
+    }
+    setSalvandoEdicao(true);
+    const response = await apiFetchClient(`/api/rdvs/${rdvId}/itens-km/${itemId}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        data: editData,
+        trajeto: editTrajeto,
+        km: Number(editKm),
+        valor_km: Number(editValorKm),
+      }),
+    });
+    setSalvandoEdicao(false);
+    if (!response.ok) {
+      const respData = await response.json().catch(() => null);
+      showError(respData?.error ?? "Não foi possível salvar as alterações.");
+      return;
+    }
+    setEditandoId(null);
+    await onAtualizar();
+  }
 
   async function adicionarItem(event: FormEvent) {
     event.preventDefault();
@@ -1151,26 +1194,95 @@ function SecaoItensKm({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {itens.map((item) => (
-                <tr key={item.id}>
-                  <td className="px-4 py-2 text-gray-600">{formatarData(item.data)}</td>
-                  <td className="px-4 py-2 text-gray-900">{item.trajeto}</td>
-                  <td className="px-4 py-2 text-right text-gray-600">{item.km}</td>
-                  <td className="px-4 py-2 text-right text-gray-600">{formatarValor(item.valor_km)}</td>
-                  <td className="px-4 py-2 text-right text-gray-900">{formatarValor(item.valor)}</td>
-                  {editavel && (
+              {itens.map((item) =>
+                editandoId === item.id ? (
+                  <tr key={item.id} className="bg-gray-50">
+                    <td className="px-4 py-2">
+                      <input
+                        type="date"
+                        value={editData}
+                        min={periodoInicio}
+                        max={periodoFim}
+                        onChange={(e) => setEditData(e.target.value)}
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="text"
+                        value={editTrajeto}
+                        onChange={(e) => setEditTrajeto(e.target.value)}
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+                      />
+                    </td>
                     <td className="px-4 py-2 text-right">
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        value={editKm}
+                        onChange={(e) => setEditKm(e.target.value)}
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm"
+                      />
+                    </td>
+                    <td className="px-4 py-2 text-right">
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={editValorKm}
+                        onChange={(e) => setEditValorKm(e.target.value)}
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm"
+                      />
+                    </td>
+                    <td className="px-4 py-2 text-right text-xs text-gray-400">-</td>
+                    <td className="px-4 py-2 text-right whitespace-nowrap">
                       <button
                         type="button"
-                        onClick={() => removerItem(item.id)}
-                        className="text-xs text-red-600 underline hover:text-red-800"
+                        onClick={() => salvarEdicao(item.id)}
+                        disabled={salvandoEdicao}
+                        className="mr-3 text-xs text-gray-900 underline hover:text-gray-700 disabled:opacity-60"
                       >
-                        Remover
+                        {salvandoEdicao ? "Salvando..." : "Salvar"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEditandoId(null)}
+                        disabled={salvandoEdicao}
+                        className="text-xs text-gray-500 underline hover:text-gray-700"
+                      >
+                        Cancelar
                       </button>
                     </td>
-                  )}
-                </tr>
-              ))}
+                  </tr>
+                ) : (
+                  <tr key={item.id}>
+                    <td className="px-4 py-2 text-gray-600">{formatarData(item.data)}</td>
+                    <td className="px-4 py-2 text-gray-900">{item.trajeto}</td>
+                    <td className="px-4 py-2 text-right text-gray-600">{item.km}</td>
+                    <td className="px-4 py-2 text-right text-gray-600">{formatarValor(item.valor_km)}</td>
+                    <td className="px-4 py-2 text-right text-gray-900">{formatarValor(item.valor)}</td>
+                    {editavel && (
+                      <td className="px-4 py-2 text-right whitespace-nowrap">
+                        <button
+                          type="button"
+                          onClick={() => iniciarEdicao(item)}
+                          className="mr-3 text-xs text-gray-500 underline hover:text-gray-700"
+                        >
+                          Editar
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removerItem(item.id)}
+                          className="text-xs text-red-600 underline hover:text-red-800"
+                        >
+                          Remover
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                ),
+              )}
             </tbody>
           </table>
         </div>
