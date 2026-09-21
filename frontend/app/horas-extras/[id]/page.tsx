@@ -4,6 +4,7 @@ import { use, useCallback, useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
 import { useToast } from "@/components/toast";
+import { ehDiaUtil } from "@/lib/feriados";
 import {
   HoraExtraDetalhada,
   UsuarioAtual,
@@ -28,13 +29,21 @@ function maskHora(valor: string): string {
   return `${digitos.slice(0, 2)}:${digitos.slice(2)}`;
 }
 
-function calcularHorasExtrasPreview(horaInicio: string, horaFim: string, fezIntervalo: boolean): number | null {
+function calcularHorasExtrasPreview(
+  horaInicio: string,
+  horaFim: string,
+  fezIntervalo: boolean,
+  data: string,
+): number | null {
   if (!HORA_VALIDA_REGEX.test(horaInicio) || !HORA_VALIDA_REGEX.test(horaFim)) return null;
   const [hi, mi] = horaInicio.split(":").map(Number);
   const [hf, mf] = horaFim.split(":").map(Number);
   const minutosTrabalhados = hf * 60 + mf - (hi * 60 + mi) - (fezIntervalo ? MINUTOS_INTERVALO : 0);
   if (minutosTrabalhados <= 0) return null;
-  const minutosExtras = minutosTrabalhados - JORNADA_PADRAO_MINUTOS;
+
+  // Em dia útil, hora extra é o que passar da jornada padrão. Em final de semana ou feriado,
+  // a empresa não trabalha, então todo o tempo registrado conta como extra.
+  const minutosExtras = !data || ehDiaUtil(data) ? minutosTrabalhados - JORNADA_PADRAO_MINUTOS : minutosTrabalhados;
   if (minutosExtras <= 0) return null;
   return Math.round((minutosExtras / 60) * 100) / 100;
 }
@@ -375,7 +384,7 @@ function SecaoItens({
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
 
-  const previaHoras = calcularHorasExtrasPreview(horaInicio, horaFim, fezIntervalo);
+  const previaHoras = calcularHorasExtrasPreview(horaInicio, horaFim, fezIntervalo, data);
 
   async function adicionarItem(event: FormEvent) {
     event.preventDefault();
