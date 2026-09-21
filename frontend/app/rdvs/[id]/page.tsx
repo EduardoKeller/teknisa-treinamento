@@ -30,6 +30,7 @@ export default function DetalheRdvPage({ params }: Props) {
   const [usuarioAtual, setUsuarioAtual] = useState<UsuarioAtual | null>(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
+  const [exportando, setExportando] = useState(false);
 
   const recarregar = useCallback(async () => {
     const response = await apiFetchClient(`/api/rdvs/${id}`);
@@ -46,6 +47,30 @@ export default function DetalheRdvPage({ params }: Props) {
     setErro(null);
     setCarregando(false);
   }, [id, showError]);
+
+  async function exportarPlanilha() {
+    setExportando(true);
+    try {
+      const response = await apiFetchClient(`/api/rdvs/${id}/exportar`);
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        showError(data?.error ?? "Não foi possível exportar este RDV.");
+        return;
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      const nomeArquivo = response.headers.get("Content-Disposition")?.match(/filename="(.+)"/)?.[1];
+      link.download = nomeArquivo ?? "rdv.xlsx";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } finally {
+      setExportando(false);
+    }
+  }
 
   useEffect(() => {
     recarregar();
@@ -113,6 +138,17 @@ export default function DetalheRdvPage({ params }: Props) {
         <ResumoCard titulo="Total de despesas" valor={formatarValor(rdv.valor_total_despesas)} />
         <ResumoCard titulo="Adiantamento" valor={formatarValor(rdv.adiantamento_recebido)} />
         <ResumoCard titulo="Reembolso" valor={formatarValor(rdv.valor_reembolso)} destaque />
+      </div>
+
+      <div className="mb-8 flex justify-end">
+        <button
+          type="button"
+          onClick={exportarPlanilha}
+          disabled={exportando}
+          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {exportando ? "Exportando..." : "Exportar planilha"}
+        </button>
       </div>
 
       {souDono && <AcaoEnvio rdv={rdv} onAtualizar={recarregar} />}

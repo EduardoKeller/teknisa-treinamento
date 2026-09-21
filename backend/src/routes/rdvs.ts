@@ -5,6 +5,7 @@ import { extname } from "path";
 import { supabase } from "../supabaseClient";
 import { autenticar, autorizar } from "../middleware/auth";
 import { Usuario } from "../types";
+import { gerarPlanilhaRdv } from "../lib/planilhaRdv";
 
 const EXTENSOES_POR_MIME: Record<string, string> = {
   "image/jpeg": ".jpg",
@@ -154,6 +155,43 @@ rdvsRouter.get("/:id", async (req, res) => {
   ]);
 
   res.json({ ...rdv, itens_despesa: itensDespesa ?? [], itens_quilometragem: itensKm ?? [], historico_status: historico ?? [] });
+});
+
+rdvsRouter.get("/:id/exportar", async (req, res) => {
+  const usuario = req.usuario!;
+  const { rdv, permitido } = await carregarRdvComPermissao(req.params.id, usuario);
+  if (!rdv) {
+    res.status(404).json({ error: "RDV não encontrado" });
+    return;
+  }
+  if (!permitido) {
+    res.status(403).json({ error: "Sem permissão para exportar este RDV" });
+    return;
+  }
+
+  const [{ data: itensDespesa, error: erroDespesa }, { data: itensKm, error: erroKm }, { data: dadosBancarios }] =
+    await Promise.all([
+      supabase.from("itens_despesa").select("*, categorias_despesa(nome)").eq("rdv_id", rdv.id).order("data_gasto"),
+      supabase.from("itens_quilometragem").select("*").eq("rdv_id", rdv.id).order("data"),
+      supabase.from("dados_bancarios").select("*").eq("usuario_id", rdv.usuario_id).maybeSingle(),
+    ]);
+  if (erroDespesa || erroKm) {
+    res.status(500).json({ error: (erroDespesa ?? erroKm)?.message });
+    return;
+  }
+
+  let aprovadorNome: string | null = null;
+  if (rdv.aprovador_id) {
+    const { data: aprovador } = await supabase.from("usuarios").select("nome").eq("id", rdv.aprovador_id).single();
+    aprovadorNome = aprovador?.nome ?? null;
+  }
+
+  const buffer = await gerarPlanilhaRdv(rdv, itensDespesa ?? [], itensKm ?? [], dadosBancarios ?? null, aprovadorNome);
+  const nomeArquivo = `rdv-${(rdv.funcionario?.nome ?? "funcionario").replace(/\s+/g, "-")}-${rdv.periodo_inicio}.xlsx`;
+
+  res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+  res.setHeader("Content-Disposition", `attachment; filename="${nomeArquivo}"`);
+  res.send(Buffer.from(buffer));
 });
 
 rdvsRouter.patch("/:id", async (req, res) => {
