@@ -136,7 +136,11 @@ export default function DetalheRdvPage({ params }: Props) {
 
       <div className="mb-8 grid grid-cols-3 gap-4">
         <ResumoCard titulo="Total de despesas" valor={formatarValor(rdv.valor_total_despesas)} />
-        <ResumoCard titulo="Adiantamento" valor={formatarValor(rdv.adiantamento_recebido)} />
+        {editavel ? (
+          <AdiantamentoEditavel rdv={rdv} onAtualizar={recarregar} />
+        ) : (
+          <ResumoCard titulo="Adiantamento" valor={formatarValor(rdv.adiantamento_recebido)} />
+        )}
         <ResumoCard titulo="Reembolso" valor={formatarValor(rdv.valor_reembolso)} destaque />
       </div>
 
@@ -471,6 +475,88 @@ function ResumoCard({ titulo, valor, destaque }: { titulo: string; valor: string
     <div className="rounded-lg border border-gray-200 bg-white p-4">
       <p className="text-xs uppercase tracking-wide text-gray-500">{titulo}</p>
       <p className={`mt-1 text-lg font-semibold ${destaque ? "text-gray-900" : "text-gray-700"}`}>{valor}</p>
+    </div>
+  );
+}
+
+function AdiantamentoEditavel({
+  rdv,
+  onAtualizar,
+}: {
+  rdv: RdvDetalhado;
+  onAtualizar: () => Promise<void>;
+}) {
+  const { showError } = useToast();
+  const [editando, setEditando] = useState(false);
+  const [valor, setValor] = useState(String(rdv.adiantamento_recebido));
+  const [salvando, setSalvando] = useState(false);
+
+  async function salvar() {
+    setSalvando(true);
+    const response = await apiFetchClient(`/api/rdvs/${rdv.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ adiantamento_recebido: Number(valor) || 0 }),
+    });
+    setSalvando(false);
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível atualizar o adiantamento.");
+      return;
+    }
+    setEditando(false);
+    await onAtualizar();
+  }
+
+  if (!editando) {
+    return (
+      <div className="rounded-lg border border-gray-200 bg-white p-4">
+        <p className="text-xs uppercase tracking-wide text-gray-500">Adiantamento</p>
+        <div className="mt-1 flex items-center justify-between">
+          <p className="text-lg font-semibold text-gray-700">{formatarValor(rdv.adiantamento_recebido)}</p>
+          <button
+            type="button"
+            onClick={() => {
+              setValor(String(rdv.adiantamento_recebido));
+              setEditando(true);
+            }}
+            className="text-xs text-gray-500 underline hover:text-gray-700"
+          >
+            Editar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-lg border border-gray-200 bg-white p-4">
+      <p className="text-xs uppercase tracking-wide text-gray-500">Adiantamento</p>
+      <input
+        type="number"
+        step="0.01"
+        value={valor}
+        onChange={(e) => setValor(e.target.value)}
+        className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+        autoFocus
+      />
+      <div className="mt-2 flex gap-2">
+        <button
+          type="button"
+          onClick={salvar}
+          disabled={salvando}
+          className="rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white disabled:opacity-60"
+        >
+          {salvando ? "Salvando..." : "Salvar"}
+        </button>
+        <button
+          type="button"
+          onClick={() => setEditando(false)}
+          disabled={salvando}
+          className="rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-700"
+        >
+          Cancelar
+        </button>
+      </div>
     </div>
   );
 }
