@@ -84,8 +84,8 @@ export async function gerarPlanilhaHorasExtras(
   itens.forEach((item, index) => {
     const row = sheet.getRow(headerRowIndex + 1 + index);
     row.getCell(1).value = formatarDataBR(item.data);
-    row.getCell(2).value = item.hora_inicio;
-    row.getCell(3).value = item.hora_fim;
+    row.getCell(2).value = item.hora_inicio.slice(0, 5);
+    row.getCell(3).value = item.hora_fim.slice(0, 5);
     row.getCell(4).value = item.fez_intervalo ? "Sim" : "Não";
     row.getCell(5).value = formatarHoras(item.quantidade_horas);
     row.getCell(6).value = item.justificativa ?? "-";
