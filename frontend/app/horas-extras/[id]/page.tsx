@@ -533,7 +533,7 @@ function SecaoItens({
           <p className="mb-3 text-xs text-gray-500">
             Jornada padrão: 07:30–12:00 e 13:00–17:18 (8h48min). As horas extras são calculadas automaticamente.
           </p>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <input
               type="date"
               value={data}
