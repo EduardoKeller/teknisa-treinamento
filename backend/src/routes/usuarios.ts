@@ -86,6 +86,14 @@ usuariosRouter.post("/", autorizar("admin"), async (req, res) => {
     return;
   }
 
+  const login = typeof req.body.login === "string" ? req.body.login.trim().toLowerCase() : null;
+  if (login && !LOGIN_REGEX.test(login)) {
+    res.status(400).json({
+      error: "O login deve ter de 3 a 20 caracteres, usando apenas letras minúsculas, números, ponto ou underline.",
+    });
+    return;
+  }
+
   const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
     email,
     password: senha,
@@ -99,12 +107,16 @@ usuariosRouter.post("/", autorizar("admin"), async (req, res) => {
 
   const { data, error } = await supabase
     .from("usuarios")
-    .insert({ id: authUser.user.id, nome, email, perfil, gestor_id: gestor_id ?? null })
+    .insert({ id: authUser.user.id, nome, email, perfil, gestor_id: gestor_id ?? null, login })
     .select()
     .single();
 
   if (error) {
     await supabase.auth.admin.deleteUser(authUser.user.id);
+    if (error.code === "23505") {
+      res.status(409).json({ error: "Esse login já está em uso." });
+      return;
+    }
     res.status(400).json({ error: error.message });
     return;
   }
