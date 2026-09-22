@@ -7,4 +7,5 @@ export interface Usuario {
   perfil: Perfil;
   gestor_id: string | null;
   ativo: boolean;
+  login: string | null;
 }

@@ -10,5 +10,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   }
   const usuarioAtual: UsuarioAtual = await meResponse.json();
 
+  if (!usuarioAtual.login) {
+    redirect("/configurar-login");
+  }
+
   return <AppShell usuario={usuarioAtual}>{children}</AppShell>;
 }

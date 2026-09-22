@@ -26,7 +26,7 @@ export async function autenticar(req: Request, res: Response, next: NextFunction
 
   const { data: usuario, error: usuarioError } = await supabase
     .from("usuarios")
-    .select("id, nome, email, perfil, gestor_id, ativo")
+    .select("id, nome, email, perfil, gestor_id, ativo, login")
     .eq("id", authData.user.id)
     .single();
 
