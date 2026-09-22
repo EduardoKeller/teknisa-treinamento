@@ -138,7 +138,7 @@ export default function DetalheRdvPage({ params }: Props) {
         )
       )}
 
-      <div className="mb-8 grid grid-cols-3 gap-4">
+      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <ResumoCard titulo="Total de despesas" valor={formatarValor(rdv.valor_total_despesas)} />
         {editavel ? (
           <AdiantamentoEditavel rdv={rdv} onAtualizar={recarregar} />
@@ -638,7 +638,7 @@ function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualiz
         rows={2}
         className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm"
       />
-      <div className="mt-2 grid grid-cols-2 gap-3">
+      <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
           <label htmlFor="periodo-inicio" className="block text-xs font-medium text-gray-700">
             Início
@@ -860,7 +860,7 @@ function SecaoItensDespesa({
       {itens.length === 0 ? (
         <p className="mb-4 text-sm text-gray-500">Nenhum item de despesa adicionado.</p>
       ) : (
-        <div className="mb-4 overflow-hidden rounded-lg border border-gray-200">
+        <div className="mb-4 overflow-x-auto rounded-lg border border-gray-200">
           <table className="w-full text-left text-sm">
             <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
               <tr>
@@ -1010,7 +1010,7 @@ function SecaoItensDespesa({
 
       {editavel && (
         <form onSubmit={adicionarItem} className="rounded-lg border border-dashed border-gray-300 p-4">
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <select
               value={categoriaId}
               onChange={(e) => setCategoriaId(e.target.value)}
@@ -1181,7 +1181,7 @@ function SecaoItensKm({
       {itens.length === 0 ? (
         <p className="mb-4 text-sm text-gray-500">Nenhum km registrado.</p>
       ) : (
-        <div className="mb-4 overflow-hidden rounded-lg border border-gray-200">
+        <div className="mb-4 overflow-x-auto rounded-lg border border-gray-200">
           <table className="w-full text-left text-sm">
             <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
               <tr>
@@ -1290,7 +1290,7 @@ function SecaoItensKm({
 
       {editavel && (
         <form onSubmit={adicionarItem} className="rounded-lg border border-dashed border-gray-300 p-4">
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <input
               type="date"
               value={data}

@@ -123,7 +123,7 @@ export default function PerfilPage() {
           />
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div>
             <label htmlFor="banco_numero" className="mb-1 block text-sm font-medium text-gray-700">
               Código

@@ -486,7 +486,7 @@ function SecaoItens({
       {itens.length === 0 ? (
         <p className="mb-4 text-sm text-gray-500">Nenhum item adicionado.</p>
       ) : (
-        <div className="mb-4 overflow-hidden rounded-lg border border-gray-200">
+        <div className="mb-4 overflow-x-auto rounded-lg border border-gray-200">
           <table className="w-full text-left text-sm">
             <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
               <tr>
