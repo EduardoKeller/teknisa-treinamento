@@ -18,6 +18,7 @@ export default function AdminUsuariosPage() {
   const [senha, setSenha] = useState("");
   const [perfil, setPerfil] = useState<Perfil>("funcionario");
   const [gestorId, setGestorId] = useState("");
+  const [loginNovo, setLoginNovo] = useState("");
   const [criando, setCriando] = useState(false);
 
   const carregar = async () => {
@@ -41,7 +42,14 @@ export default function AdminUsuariosPage() {
     setCriando(true);
     const response = await apiFetchClient("/api/usuarios", {
       method: "POST",
-      body: JSON.stringify({ nome, email, senha, perfil, gestor_id: gestorId || null }),
+      body: JSON.stringify({
+        nome,
+        email,
+        senha,
+        perfil,
+        gestor_id: gestorId || null,
+        login: loginNovo.trim().toLowerCase() || null,
+      }),
     });
     setCriando(false);
     if (!response.ok) {
@@ -54,6 +62,7 @@ export default function AdminUsuariosPage() {
     setSenha("");
     setPerfil("funcionario");
     setGestorId("");
+    setLoginNovo("");
     showSuccess("Usuário criado com sucesso.");
     await carregar();
   }
@@ -109,6 +118,15 @@ export default function AdminUsuariosPage() {
             placeholder="Senha inicial"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
+            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+          />
+          <input
+            type="text"
+            name="novo-usuario-login"
+            autoComplete="off"
+            placeholder="Login (opcional)"
+            value={loginNovo}
+            onChange={(e) => setLoginNovo(e.target.value)}
             className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
           />
           <select
