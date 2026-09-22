@@ -58,7 +58,10 @@ export default function AdminUsuariosPage() {
     await carregar();
   }
 
-  async function salvarEdicao(id: string, dados: { perfil: Perfil; gestor_id: string | null; ativo: boolean }) {
+  async function salvarEdicao(
+    id: string,
+    dados: { perfil: Perfil; gestor_id: string | null; ativo: boolean; login: string | null }
+  ) {
     const response = await apiFetchClient(`/api/usuarios/${id}`, {
       method: "PATCH",
       body: JSON.stringify(dados),
@@ -147,6 +150,7 @@ export default function AdminUsuariosPage() {
             <tr>
               <th className="px-4 py-2">Nome</th>
               <th className="px-4 py-2">E-mail</th>
+              <th className="px-4 py-2">Login</th>
               <th className="px-4 py-2">Perfil</th>
               <th className="px-4 py-2">Gestor</th>
               <th className="px-4 py-2">Ativo</th>
@@ -167,6 +171,7 @@ export default function AdminUsuariosPage() {
                 <tr key={usuario.id}>
                   <td className="px-4 py-2 text-gray-900">{usuario.nome}</td>
                   <td className="px-4 py-2 text-gray-600">{usuario.email}</td>
+                  <td className="px-4 py-2 text-gray-600">{usuario.login ?? "-"}</td>
                   <td className="px-4 py-2 text-gray-600">{PERFIL_LABEL[usuario.perfil]}</td>
                   <td className="px-4 py-2 text-gray-600">{usuario.gestor?.nome ?? "-"}</td>
                   <td className="px-4 py-2">
@@ -206,16 +211,26 @@ function LinhaEdicao({
   usuario: UsuarioAdmin;
   usuarios: UsuarioAdmin[];
   onCancelar: () => void;
-  onSalvar: (dados: { perfil: Perfil; gestor_id: string | null; ativo: boolean }) => void;
+  onSalvar: (dados: { perfil: Perfil; gestor_id: string | null; ativo: boolean; login: string | null }) => void;
 }) {
   const [perfil, setPerfil] = useState<Perfil>(usuario.perfil);
   const [gestorId, setGestorId] = useState(usuario.gestor_id ?? "");
   const [ativo, setAtivo] = useState(usuario.ativo);
+  const [login, setLogin] = useState(usuario.login ?? "");
 
   return (
     <tr className="bg-gray-50">
       <td className="px-4 py-2 text-gray-900">{usuario.nome}</td>
       <td className="px-4 py-2 text-gray-600">{usuario.email}</td>
+      <td className="px-4 py-2">
+        <input
+          type="text"
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
+          placeholder="sem login"
+          className="w-32 rounded-md border border-gray-300 px-2 py-1 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+        />
+      </td>
       <td className="px-4 py-2">
         <select
           value={perfil}
@@ -254,7 +269,7 @@ function LinhaEdicao({
       <td className="px-4 py-2 text-right whitespace-nowrap">
         <button
           type="button"
-          onClick={() => onSalvar({ perfil, gestor_id: gestorId || null, ativo })}
+          onClick={() => onSalvar({ perfil, gestor_id: gestorId || null, ativo, login: login.trim().toLowerCase() || null })}
           className="mr-2 text-xs text-green-700 underline hover:text-green-900"
         >
           Salvar

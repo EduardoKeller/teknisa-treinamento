@@ -114,13 +114,26 @@ usuariosRouter.post("/", autorizar("admin"), async (req, res) => {
 
 usuariosRouter.patch("/:id", autorizar("admin"), async (req, res) => {
   const { nome, perfil, gestor_id, ativo } = req.body;
+
+  const login = typeof req.body.login === "string" ? req.body.login.trim().toLowerCase() : null;
+  if (login && !LOGIN_REGEX.test(login)) {
+    res.status(400).json({
+      error: "O login deve ter de 3 a 20 caracteres, usando apenas letras minúsculas, números, ponto ou underline.",
+    });
+    return;
+  }
+
   const { data, error } = await supabase
     .from("usuarios")
-    .update({ nome, perfil, gestor_id, ativo })
+    .update({ nome, perfil, gestor_id, ativo, login })
     .eq("id", req.params.id)
-    .select()
+    .select("id, nome, email, perfil, gestor_id, ativo, login")
     .single();
   if (error) {
+    if (error.code === "23505") {
+      res.status(409).json({ error: "Esse login já está em uso." });
+      return;
+    }
     res.status(400).json({ error: error.message });
     return;
   }
