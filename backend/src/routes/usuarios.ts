@@ -17,7 +17,7 @@ usuariosRouter.post("/resolver-login", async (req, res) => {
     .from("usuarios")
     .select("email")
     .eq("ativo", true)
-    .ilike("login", login)
+    .eq("login", login.trim().toLowerCase())
     .maybeSingle();
 
   if (error || !data) {
@@ -35,13 +35,13 @@ usuariosRouter.get("/me", async (req, res) => {
 });
 
 usuariosRouter.patch("/me/login", async (req, res) => {
-  const { login } = req.body;
   if (req.usuario!.login) {
     res.status(400).json({ error: "Seu login já foi configurado." });
     return;
   }
 
-  if (typeof login !== "string" || !LOGIN_REGEX.test(login)) {
+  const login = typeof req.body.login === "string" ? req.body.login.trim().toLowerCase() : "";
+  if (!LOGIN_REGEX.test(login)) {
     res.status(400).json({
       error: "O login deve ter de 3 a 20 caracteres, usando apenas letras minúsculas, números, ponto ou underline.",
     });
