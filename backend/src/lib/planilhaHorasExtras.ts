@@ -11,9 +11,9 @@ interface HoraExtraParaPlanilha {
 interface ItemParaPlanilha {
   data: string;
   hora_inicio: string;
-  hora_fim: string;
+  hora_fim: string | null;
   fez_intervalo: boolean;
-  quantidade_horas: number;
+  quantidade_horas: number | null;
   justificativa: string | null;
 }
 
@@ -85,9 +85,9 @@ export async function gerarPlanilhaHorasExtras(
     const row = sheet.getRow(headerRowIndex + 1 + index);
     row.getCell(1).value = formatarDataBR(item.data);
     row.getCell(2).value = item.hora_inicio.slice(0, 5);
-    row.getCell(3).value = item.hora_fim.slice(0, 5);
+    row.getCell(3).value = item.hora_fim ? item.hora_fim.slice(0, 5) : "Em andamento";
     row.getCell(4).value = item.fez_intervalo ? "Sim" : "Não";
-    row.getCell(5).value = formatarHoras(item.quantidade_horas);
+    row.getCell(5).value = item.quantidade_horas === null ? "-" : formatarHoras(item.quantidade_horas);
     row.getCell(6).value = item.justificativa ?? "-";
   });
 
