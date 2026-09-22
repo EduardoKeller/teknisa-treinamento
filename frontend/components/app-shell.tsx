@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Banknote,
+  CalendarCheck,
   CheckSquare,
   ChevronDown,
   Clock,
@@ -13,6 +14,7 @@ import {
   ListChecks,
   Menu,
   Plane,
+  Receipt,
   Settings,
   Users,
   Wallet,
@@ -45,9 +47,19 @@ function montarGrupos(usuario: UsuarioAtual): NavGroup[] {
 
   const grupos: NavGroup[] = [
     {
+      id: "viagens",
+      title: "Viagens",
+      icon: Plane,
+      items: [
+        { href: "/viagens", label: "Minhas Solicitações", icon: FileText, exact: true },
+        ...(podeAprovar ? [{ href: "/viagens/aprovacoes", label: "Aprovações", icon: CheckSquare }] : []),
+        ...(podePagar ? [{ href: "/viagens/reservas", label: "Reservas", icon: CalendarCheck }] : []),
+      ],
+    },
+    {
       id: "rdv",
       title: "RDV",
-      icon: Plane,
+      icon: Receipt,
       items: [
         { href: "/rdvs", label: "Meus RDVs", icon: FileText, exact: true },
         ...(podeAprovar ? [{ href: "/aprovacoes", label: "Aprovações", icon: CheckSquare }] : []),
