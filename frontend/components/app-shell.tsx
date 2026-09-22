@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { LogoutButton } from "./logout-button";
+import { ThemeToggle } from "./theme-toggle";
 import { PERFIL_LABEL, UsuarioAtual } from "@/lib/types";
 
 interface NavItem {
@@ -79,19 +80,19 @@ function SidebarConteudo({ usuario, onNavegar }: { usuario: UsuarioAtual; onNave
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-2 px-5 py-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-900 text-white">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900">
           <LayoutDashboard className="h-5 w-5" />
         </div>
         <div>
-          <p className="text-sm font-semibold text-gray-900">Sistema de RDV</p>
-          <p className="text-xs text-gray-500">Viagens &amp; horas extras</p>
+          <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">Sistema de RDV</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Viagens &amp; horas extras</p>
         </div>
       </div>
 
       <nav className="flex-1 space-y-6 overflow-y-auto px-3 pb-4">
         {grupos.map((grupo) => (
           <div key={grupo.title}>
-            <p className="px-2 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
+            <p className="px-2 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
               {grupo.title}
             </p>
             <div className="space-y-0.5">
@@ -105,8 +106,8 @@ function SidebarConteudo({ usuario, onNavegar }: { usuario: UsuarioAtual; onNave
                     onClick={onNavegar}
                     className={`flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium transition ${
                       ativo
-                        ? "bg-gray-900 text-white"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                        ? "bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
                     }`}
                   >
                     <Icone className="h-4 w-4 shrink-0" />
@@ -119,15 +120,16 @@ function SidebarConteudo({ usuario, onNavegar }: { usuario: UsuarioAtual; onNave
         ))}
       </nav>
 
-      <div className="border-t border-gray-200 p-3">
+      <div className="border-t border-gray-200 p-3 dark:border-gray-800">
         <div className="flex items-center gap-2.5 rounded-md px-2 py-2">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-700">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300">
             {usuario.nome.slice(0, 1).toUpperCase()}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium text-gray-900">{usuario.nome}</p>
-            <p className="truncate text-xs text-gray-500">{PERFIL_LABEL[usuario.perfil]}</p>
+            <p className="truncate text-sm font-medium text-gray-900 dark:text-gray-100">{usuario.nome}</p>
+            <p className="truncate text-xs text-gray-500 dark:text-gray-400">{PERFIL_LABEL[usuario.perfil]}</p>
           </div>
+          <ThemeToggle />
         </div>
         <LogoutButton />
       </div>
@@ -139,8 +141,8 @@ export function AppShell({ usuario, children }: { usuario: UsuarioAtual; childre
   const [menuAberto, setMenuAberto] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <aside className="hidden w-64 shrink-0 border-r border-gray-200 bg-white lg:block">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
+      <aside className="hidden w-64 shrink-0 border-r border-gray-200 bg-white lg:block dark:border-gray-800 dark:bg-gray-900">
         <div className="fixed h-screen w-64">
           <SidebarConteudo usuario={usuario} />
         </div>
@@ -149,11 +151,11 @@ export function AppShell({ usuario, children }: { usuario: UsuarioAtual; childre
       {menuAberto && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div className="absolute inset-0 bg-black/40" onClick={() => setMenuAberto(false)} />
-          <div className="absolute inset-y-0 left-0 w-72 max-w-[85vw] bg-white shadow-xl">
+          <div className="absolute inset-y-0 left-0 w-72 max-w-[85vw] bg-white shadow-xl dark:bg-gray-900">
             <button
               type="button"
               onClick={() => setMenuAberto(false)}
-              className="absolute right-3 top-3 rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+              className="absolute right-3 top-3 rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
               aria-label="Fechar menu"
             >
               <X className="h-5 w-5" />
@@ -164,21 +166,24 @@ export function AppShell({ usuario, children }: { usuario: UsuarioAtual; childre
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-gray-200 bg-white px-4 py-3 lg:hidden">
-          <button
-            type="button"
-            onClick={() => setMenuAberto(true)}
-            className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100"
-            aria-label="Abrir menu"
-          >
-            <Menu className="h-5 w-5" />
-          </button>
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gray-900 text-white">
-              <LayoutDashboard className="h-4 w-4" />
+        <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-gray-200 bg-white px-4 py-3 lg:hidden dark:border-gray-800 dark:bg-gray-900">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setMenuAberto(true)}
+              className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+              aria-label="Abrir menu"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <div className="flex items-center gap-2">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900">
+                <LayoutDashboard className="h-4 w-4" />
+              </div>
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">Sistema de RDV</p>
             </div>
-            <p className="text-sm font-semibold text-gray-900">Sistema de RDV</p>
           </div>
+          <ThemeToggle />
         </header>
 
         <main className="flex-1">{children}</main>

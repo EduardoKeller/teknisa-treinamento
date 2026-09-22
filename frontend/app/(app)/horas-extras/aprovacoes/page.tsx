@@ -19,7 +19,7 @@ export default async function AprovacoesHorasExtrasPage() {
   if (!response.ok) {
     return (
       <div className="mx-auto max-w-5xl px-4 py-8">
-        <p className="text-sm text-red-600">Não foi possível carregar as aprovações pendentes.</p>
+        <p className="text-sm text-red-600 dark:text-red-400">Não foi possível carregar as aprovações pendentes.</p>
       </div>
     );
   }
@@ -30,22 +30,22 @@ export default async function AprovacoesHorasExtrasPage() {
     <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Aprovações de horas extras</h1>
-          <p className="text-sm text-gray-500">Registros aguardando sua aprovação</p>
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Aprovações de horas extras</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Registros aguardando sua aprovação</p>
         </div>
-        <Link href="/horas-extras" className="text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/horas-extras" className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
           Minhas Horas Extras
         </Link>
       </div>
 
       {registros.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-gray-300 p-10 text-center text-sm text-gray-500">
+        <div className="rounded-lg border border-dashed border-gray-300 p-10 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
           Nenhum registro aguardando aprovação no momento.
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-gray-200">
+        <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-800">
           <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
+            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500 dark:bg-gray-800 dark:text-gray-400">
               <tr>
                 <th className="px-4 py-3">Funcionário</th>
                 <th className="px-4 py-3">Período</th>
@@ -53,15 +53,15 @@ export default async function AprovacoesHorasExtrasPage() {
                 <th className="px-4 py-3 text-right">Total de horas</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
               {registros.map((he) => (
-                <tr key={he.id} className="hover:bg-gray-50">
+                <tr key={he.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
                   <td className="p-0">
-                    <Link href={`/horas-extras/${he.id}`} className="block px-4 py-3 text-gray-900">
+                    <Link href={`/horas-extras/${he.id}`} className="block px-4 py-3 text-gray-900 dark:text-gray-100">
                       {he.funcionario?.nome ?? "-"}
                     </Link>
                   </td>
-                  <td className="px-4 py-3 text-gray-600">
+                  <td className="px-4 py-3 text-gray-600 dark:text-gray-400">
                     {formatarData(he.periodo_inicio)} – {formatarData(he.periodo_fim)}
                   </td>
                   <td className="px-4 py-3">
@@ -69,7 +69,7 @@ export default async function AprovacoesHorasExtrasPage() {
                       {STATUS_LABEL[he.status]}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right font-medium text-gray-900">{formatarHoras(he.total_horas)}</td>
+                  <td className="px-4 py-3 text-right font-medium text-gray-900 dark:text-gray-100">{formatarHoras(he.total_horas)}</td>
                 </tr>
               ))}
             </tbody>

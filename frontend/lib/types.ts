@@ -108,11 +108,11 @@ export const STATUS_LABEL: Record<StatusRdv, string> = {
 };
 
 export const STATUS_CLASS: Record<StatusRdv, string> = {
-  rascunho: "bg-gray-100 text-gray-700",
-  enviado: "bg-blue-100 text-blue-700",
-  aprovado: "bg-green-100 text-green-700",
-  reprovado: "bg-red-100 text-red-700",
-  pago: "bg-purple-100 text-purple-700",
+  rascunho: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
+  enviado: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
+  aprovado: "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300",
+  reprovado: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300",
+  pago: "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300",
 };
 
 export interface ItemHoraExtra {

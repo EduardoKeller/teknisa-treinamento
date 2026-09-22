@@ -14,7 +14,7 @@ export function AdminNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex gap-4 border-b border-gray-200">
+    <nav className="flex gap-4 border-b border-gray-200 dark:border-gray-800">
       {ABAS.map((aba) => {
         const ativa = pathname.startsWith(aba.href);
         return (
@@ -23,8 +23,8 @@ export function AdminNav() {
             href={aba.href}
             className={`border-b-2 px-1 pb-2 text-sm transition ${
               ativa
-                ? "border-gray-900 font-medium text-gray-900"
-                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-900"
+                ? "border-gray-900 font-medium text-gray-900 dark:border-gray-100 dark:text-gray-100"
+                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-900 dark:text-gray-400 dark:hover:border-gray-700 dark:hover:text-gray-100"
             }`}
           >
             {aba.label}

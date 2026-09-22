@@ -79,22 +79,22 @@ export default function PerfilPage() {
   }
 
   if (carregando) {
-    return <div className="mx-auto max-w-lg px-4 py-8 text-sm text-gray-500">Carregando...</div>;
+    return <div className="mx-auto max-w-lg px-4 py-8 text-sm text-gray-500 dark:text-gray-400">Carregando...</div>;
   }
 
   return (
     <div className="mx-auto max-w-lg px-4 py-8">
-      <Link href="/rdvs" className="text-sm text-gray-500 hover:text-gray-700">
+      <Link href="/rdvs" className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
         ← Meus RDVs
       </Link>
-      <h1 className="mt-1 text-2xl font-semibold text-gray-900">Dados bancários</h1>
-      <p className="text-sm text-gray-500">
+      <h1 className="mt-1 text-2xl font-semibold text-gray-900 dark:text-gray-100">Dados bancários</h1>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
         Usados para o depósito do reembolso e para confirmar sua identidade ao enviar um RDV.
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-4 rounded-lg border border-gray-200 bg-white p-6">
+      <form onSubmit={handleSubmit} className="mt-6 space-y-4 rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
         <div>
-          <label htmlFor="cpf" className="mb-1 block text-sm font-medium text-gray-700">
+          <label htmlFor="cpf" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
             CPF
           </label>
           <input
@@ -104,12 +104,12 @@ export default function PerfilPage() {
             value={cpf}
             onChange={(e) => setCpf(e.target.value)}
             placeholder="000.000.000-00"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
           />
         </div>
 
         <div>
-          <label htmlFor="banco_nome" className="mb-1 block text-sm font-medium text-gray-700">
+          <label htmlFor="banco_nome" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
             Banco
           </label>
           <input
@@ -119,13 +119,13 @@ export default function PerfilPage() {
             value={bancoNome}
             onChange={(e) => setBancoNome(e.target.value)}
             placeholder="Ex.: Nu Pagamentos S.A"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
           />
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div>
-            <label htmlFor="banco_numero" className="mb-1 block text-sm font-medium text-gray-700">
+            <label htmlFor="banco_numero" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Código
             </label>
             <input
@@ -135,11 +135,11 @@ export default function PerfilPage() {
               value={bancoNumero}
               onChange={(e) => setBancoNumero(e.target.value)}
               placeholder="0260"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
           <div>
-            <label htmlFor="agencia" className="mb-1 block text-sm font-medium text-gray-700">
+            <label htmlFor="agencia" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Agência
             </label>
             <input
@@ -148,11 +148,11 @@ export default function PerfilPage() {
               required
               value={agencia}
               onChange={(e) => setAgencia(e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
           <div>
-            <label htmlFor="conta" className="mb-1 block text-sm font-medium text-gray-700">
+            <label htmlFor="conta" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Conta
             </label>
             <input
@@ -161,18 +161,18 @@ export default function PerfilPage() {
               required
               value={contaCorrente}
               onChange={(e) => setContaCorrente(e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
         </div>
 
-        {erro && <p className="text-sm text-red-600">{erro}</p>}
-        {sucesso && <p className="text-sm text-green-600">Dados salvos com sucesso.</p>}
+        {erro && <p className="text-sm text-red-600 dark:text-red-400">{erro}</p>}
+        {sucesso && <p className="text-sm text-green-600 dark:text-green-400">Dados salvos com sucesso.</p>}
 
         <button
           type="submit"
           disabled={salvando}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
         >
           {salvando ? "Salvando..." : "Salvar"}
         </button>

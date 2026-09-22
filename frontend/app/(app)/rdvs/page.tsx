@@ -12,7 +12,7 @@ export default async function MeusRdvsPage() {
   if (!response.ok) {
     return (
       <div className="mx-auto max-w-5xl px-4 py-8">
-        <p className="text-sm text-red-600">Não foi possível carregar seus RDVs. Tente novamente mais tarde.</p>
+        <p className="text-sm text-red-600 dark:text-red-400">Não foi possível carregar seus RDVs. Tente novamente mais tarde.</p>
       </div>
     );
   }
@@ -23,25 +23,25 @@ export default async function MeusRdvsPage() {
     <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Meus RDVs</h1>
-          <p className="text-sm text-gray-500">Relatórios de despesas de viagem que você criou</p>
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Meus RDVs</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Relatórios de despesas de viagem que você criou</p>
         </div>
         <Link
           href="/rdvs/novo"
-          className="inline-flex w-fit items-center rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800"
+          className="inline-flex w-fit items-center rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
         >
           Novo RDV
         </Link>
       </div>
 
       {rdvs.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-gray-300 p-10 text-center text-sm text-gray-500">
+        <div className="rounded-lg border border-dashed border-gray-300 p-10 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
           Você ainda não criou nenhum RDV.
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-gray-200">
+        <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-800">
           <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
+            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500 dark:bg-gray-800 dark:text-gray-400">
               <tr>
                 <th className="px-4 py-3">Empresa</th>
                 <th className="px-4 py-3">Motivo</th>
@@ -50,16 +50,16 @@ export default async function MeusRdvsPage() {
                 <th className="px-4 py-3 text-right">Reembolso</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
               {rdvs.map((rdv) => (
-                <tr key={rdv.id} className="hover:bg-gray-50">
+                <tr key={rdv.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
                   <td className="p-0">
-                    <Link href={`/rdvs/${rdv.id}`} className="block px-4 py-3 text-gray-900">
+                    <Link href={`/rdvs/${rdv.id}`} className="block px-4 py-3 text-gray-900 dark:text-gray-100">
                       {rdv.empresas?.nome ?? "-"}
                     </Link>
                   </td>
-                  <td className="px-4 py-3 text-gray-600">{rdv.motivo_viagem ?? "-"}</td>
-                  <td className="px-4 py-3 text-gray-600">
+                  <td className="px-4 py-3 text-gray-600 dark:text-gray-400">{rdv.motivo_viagem ?? "-"}</td>
+                  <td className="px-4 py-3 text-gray-600 dark:text-gray-400">
                     {formatarData(rdv.periodo_inicio)} – {formatarData(rdv.periodo_fim)}
                   </td>
                   <td className="px-4 py-3">
@@ -67,7 +67,7 @@ export default async function MeusRdvsPage() {
                       {STATUS_LABEL[rdv.status]}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right font-medium text-gray-900">
+                  <td className="px-4 py-3 text-right font-medium text-gray-900 dark:text-gray-100">
                     {formatarValor(rdv.valor_reembolso)}
                   </td>
                 </tr>

@@ -85,14 +85,14 @@ export default function DetalheRdvPage({ params }: Props) {
   }, [recarregar]);
 
   if (carregando) {
-    return <div className="mx-auto max-w-4xl px-4 py-8 text-sm text-gray-500">Carregando...</div>;
+    return <div className="mx-auto max-w-4xl px-4 py-8 text-sm text-gray-500 dark:text-gray-400">Carregando...</div>;
   }
 
   if (erro || !rdv) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-8">
-        <p className="text-sm text-red-600">{erro ?? "RDV não encontrado."}</p>
-        <Link href="/rdvs" className="mt-2 inline-block text-sm text-gray-500 hover:text-gray-700">
+        <p className="text-sm text-red-600 dark:text-red-400">{erro ?? "RDV não encontrado."}</p>
+        <Link href="/rdvs" className="mt-2 inline-block text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
           ← Meus RDVs
         </Link>
       </div>
@@ -113,14 +113,14 @@ export default function DetalheRdvPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <Link href={linkVoltaHref} className="text-sm text-gray-500 hover:text-gray-700">
+      <Link href={linkVoltaHref} className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
         {linkVoltaLabel}
       </Link>
 
       <div className="mt-2 mb-6 flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">{rdv.empresas?.nome ?? "RDV"}</h1>
-          <p className="text-sm text-gray-500">
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{rdv.empresas?.nome ?? "RDV"}</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             {!souDono && rdv.funcionario?.nome && `${rdv.funcionario.nome} · `}
             {rdv.centro_custo?.nome ?? "-"} · {formatarData(rdv.periodo_inicio)} – {formatarData(rdv.periodo_fim)}
           </p>
@@ -134,7 +134,7 @@ export default function DetalheRdvPage({ params }: Props) {
         <InfoViagemEditavel rdv={rdv} onAtualizar={recarregar} />
       ) : (
         rdv.motivo_viagem && (
-          <p className="mb-6 rounded-md bg-gray-50 p-3 text-sm text-gray-700">{rdv.motivo_viagem}</p>
+          <p className="mb-6 rounded-md bg-gray-50 p-3 text-sm text-gray-700 dark:bg-gray-800 dark:text-gray-300">{rdv.motivo_viagem}</p>
         )
       )}
 
@@ -153,7 +153,7 @@ export default function DetalheRdvPage({ params }: Props) {
           type="button"
           onClick={exportarPlanilha}
           disabled={exportando}
-          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
         >
           {exportando ? "Exportando..." : "Exportar planilha"}
         </button>
@@ -238,16 +238,16 @@ function AcaoEnvio({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () =>
   if (rdv.status === "reprovado") {
     const ultimaReprovacao = [...rdv.historico_status].reverse().find((h) => h.status_novo === "reprovado");
     return (
-      <div className="mb-8 rounded-lg border border-red-200 bg-red-50 p-4">
-        <p className="text-sm font-medium text-red-800">Este RDV foi reprovado</p>
+      <div className="mb-8 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950">
+        <p className="text-sm font-medium text-red-800 dark:text-red-300">Este RDV foi reprovado</p>
         {ultimaReprovacao?.justificativa && (
-          <p className="mt-1 text-sm text-red-700">{ultimaReprovacao.justificativa}</p>
+          <p className="mt-1 text-sm text-red-700 dark:text-red-400">{ultimaReprovacao.justificativa}</p>
         )}
         <button
           type="button"
           onClick={reabrir}
           disabled={reabrindo}
-          className="mt-3 rounded-md bg-red-800 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-red-900 disabled:opacity-60"
+          className="mt-3 rounded-md bg-red-800 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-red-900 disabled:opacity-60 dark:bg-red-700 dark:hover:bg-red-600"
         >
           {reabrindo ? "Reabrindo..." : "Corrigir e reenviar"}
         </button>
@@ -260,18 +260,18 @@ function AcaoEnvio({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () =>
   }
 
   return (
-    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4">
+    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
       {!mostrarConfirmacao ? (
         <button
           type="button"
           onClick={() => setMostrarConfirmacao(true)}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
+          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
         >
           Enviar para aprovação
         </button>
       ) : (
         <div>
-          <p className="mb-2 text-sm text-gray-700">
+          <p className="mb-2 text-sm text-gray-700 dark:text-gray-300">
             Confirme seu CPF cadastrado para enviar este RDV para aprovação.
           </p>
           <div className="flex items-center gap-2">
@@ -280,13 +280,13 @@ function AcaoEnvio({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () =>
               value={cpf}
               onChange={(e) => setCpf(e.target.value)}
               placeholder="000.000.000-00"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <button
               type="button"
               onClick={enviar}
               disabled={enviando}
-              className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+              className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
             >
               {enviando ? "Enviando..." : "Confirmar envio"}
             </button>
@@ -296,13 +296,13 @@ function AcaoEnvio({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () =>
                 setMostrarConfirmacao(false);
                 setErro(null);
               }}
-              className="text-sm text-gray-500 hover:text-gray-700"
+              className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
             >
               Cancelar
             </button>
           </div>
           {erro && (
-            <p className="mt-2 text-sm text-red-600">
+            <p className="mt-2 text-sm text-red-600 dark:text-red-400">
               {erro}
               {erro.includes("dados bancários") && (
                 <>
@@ -360,14 +360,14 @@ function AcaoAprovacao({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: (
   }
 
   return (
-    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4">
+    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
       {!mostrarReprovacao ? (
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={aprovar}
             disabled={processando}
-            className="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 disabled:opacity-60"
+            className="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 disabled:opacity-60 dark:bg-green-600 dark:hover:bg-green-500"
           >
             {processando ? "Aprovando..." : "Aprovar"}
           </button>
@@ -375,14 +375,14 @@ function AcaoAprovacao({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: (
             type="button"
             onClick={() => setMostrarReprovacao(true)}
             disabled={processando}
-            className="rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:opacity-60"
+            className="rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:opacity-60 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950"
           >
             Reprovar
           </button>
         </div>
       ) : (
         <div>
-          <label htmlFor="justificativa" className="mb-1 block text-sm font-medium text-gray-700">
+          <label htmlFor="justificativa" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
             Justificativa da reprovação
           </label>
           <textarea
@@ -391,14 +391,14 @@ function AcaoAprovacao({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: (
             value={justificativa}
             onChange={(e) => setJustificativa(e.target.value)}
             placeholder="Explique o motivo da reprovação"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
           />
           <div className="mt-3 flex items-center gap-2">
             <button
               type="button"
               onClick={reprovar}
               disabled={processando}
-              className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-800 disabled:opacity-60"
+              className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-800 disabled:opacity-60 dark:bg-red-600 dark:hover:bg-red-500"
             >
               {processando ? "Reprovando..." : "Confirmar reprovação"}
             </button>
@@ -408,7 +408,7 @@ function AcaoAprovacao({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: (
                 setMostrarReprovacao(false);
                 setJustificativa("");
               }}
-              className="text-sm text-gray-500 hover:text-gray-700"
+              className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
             >
               Cancelar
             </button>
@@ -436,15 +436,15 @@ function AcaoPagamento({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: (
   }
 
   return (
-    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4">
-      <p className="mb-3 text-sm text-gray-700">
+    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+      <p className="mb-3 text-sm text-gray-700 dark:text-gray-300">
         RDV aprovado. Confirme quando o reembolso de {formatarValor(rdv.valor_reembolso)} for depositado.
       </p>
       <button
         type="button"
         onClick={pagar}
         disabled={processando}
-        className="rounded-md bg-purple-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-purple-800 disabled:opacity-60"
+        className="rounded-md bg-purple-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-purple-800 disabled:opacity-60 dark:bg-purple-600 dark:hover:bg-purple-500"
       >
         {processando ? "Registrando..." : "Marcar como pago"}
       </button>
@@ -457,16 +457,16 @@ function SecaoHistorico({ historico }: { historico: RdvDetalhado["historico_stat
 
   return (
     <section className="mt-8">
-      <h2 className="mb-3 text-lg font-semibold text-gray-900">Histórico</h2>
+      <h2 className="mb-3 text-lg font-semibold text-gray-900 dark:text-gray-100">Histórico</h2>
       <ul className="space-y-2">
         {historico.map((item) => (
-          <li key={item.id} className="rounded-md border border-gray-200 bg-white p-3 text-sm">
-            <span className="font-medium text-gray-900">
+          <li key={item.id} className="rounded-md border border-gray-200 bg-white p-3 text-sm dark:border-gray-800 dark:bg-gray-900">
+            <span className="font-medium text-gray-900 dark:text-gray-100">
               {item.status_anterior ? `${STATUS_LABEL[item.status_anterior]} → ` : ""}
               {STATUS_LABEL[item.status_novo]}
             </span>
-            <span className="ml-2 text-xs text-gray-500">{formatarData(item.criado_em)}</span>
-            {item.justificativa && <p className="mt-1 text-gray-600">{item.justificativa}</p>}
+            <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">{formatarData(item.criado_em)}</span>
+            {item.justificativa && <p className="mt-1 text-gray-600 dark:text-gray-400">{item.justificativa}</p>}
           </li>
         ))}
       </ul>
@@ -476,9 +476,9 @@ function SecaoHistorico({ historico }: { historico: RdvDetalhado["historico_stat
 
 function ResumoCard({ titulo, valor, destaque }: { titulo: string; valor: string; destaque?: boolean }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4">
-      <p className="text-xs uppercase tracking-wide text-gray-500">{titulo}</p>
-      <p className={`mt-1 text-lg font-semibold ${destaque ? "text-gray-900" : "text-gray-700"}`}>{valor}</p>
+    <div className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+      <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{titulo}</p>
+      <p className={`mt-1 text-lg font-semibold ${destaque ? "text-gray-900 dark:text-gray-100" : "text-gray-700 dark:text-gray-300"}`}>{valor}</p>
     </div>
   );
 }
@@ -513,17 +513,17 @@ function AdiantamentoEditavel({
 
   if (!editando) {
     return (
-      <div className="rounded-lg border border-gray-200 bg-white p-4">
-        <p className="text-xs uppercase tracking-wide text-gray-500">Adiantamento</p>
+      <div className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+        <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Adiantamento</p>
         <div className="mt-1 flex items-center justify-between">
-          <p className="text-lg font-semibold text-gray-700">{formatarValor(rdv.adiantamento_recebido)}</p>
+          <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">{formatarValor(rdv.adiantamento_recebido)}</p>
           <button
             type="button"
             onClick={() => {
               setValor(String(rdv.adiantamento_recebido));
               setEditando(true);
             }}
-            className="text-xs text-gray-500 underline hover:text-gray-700"
+            className="text-xs text-gray-500 underline hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
           >
             Editar
           </button>
@@ -533,14 +533,14 @@ function AdiantamentoEditavel({
   }
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4">
-      <p className="text-xs uppercase tracking-wide text-gray-500">Adiantamento</p>
+    <div className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+      <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Adiantamento</p>
       <input
         type="number"
         step="0.01"
         value={valor}
         onChange={(e) => setValor(e.target.value)}
-        className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+        className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-100"
         autoFocus
       />
       <div className="mt-2 flex gap-2">
@@ -548,7 +548,7 @@ function AdiantamentoEditavel({
           type="button"
           onClick={salvar}
           disabled={salvando}
-          className="rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white disabled:opacity-60"
+          className="rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900"
         >
           {salvando ? "Salvando..." : "Salvar"}
         </button>
@@ -556,7 +556,7 @@ function AdiantamentoEditavel({
           type="button"
           onClick={() => setEditando(false)}
           disabled={salvando}
-          className="rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-700"
+          className="rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-700 dark:border-gray-700 dark:text-gray-300"
         >
           Cancelar
         </button>
@@ -606,18 +606,18 @@ function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualiz
 
   if (!editando) {
     return (
-      <div className="mb-6 rounded-md bg-gray-50 p-3 text-sm text-gray-700">
+      <div className="mb-6 rounded-md bg-gray-50 p-3 text-sm text-gray-700 dark:bg-gray-800 dark:text-gray-300">
         <div className="flex items-start justify-between gap-3">
           <div>
             {rdv.motivo_viagem && <p>{rdv.motivo_viagem}</p>}
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
               {formatarData(rdv.periodo_inicio)} – {formatarData(rdv.periodo_fim)}
             </p>
           </div>
           <button
             type="button"
             onClick={abrirEdicao}
-            className="shrink-0 text-xs text-gray-500 underline hover:text-gray-700"
+            className="shrink-0 text-xs text-gray-500 underline hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
           >
             Editar
           </button>
@@ -627,8 +627,8 @@ function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualiz
   }
 
   return (
-    <div className="mb-6 rounded-md border border-gray-200 bg-white p-3">
-      <label htmlFor="motivo-viagem" className="block text-xs font-medium text-gray-700">
+    <div className="mb-6 rounded-md border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-gray-900">
+      <label htmlFor="motivo-viagem" className="block text-xs font-medium text-gray-700 dark:text-gray-300">
         Motivo da viagem
       </label>
       <textarea
@@ -636,11 +636,11 @@ function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualiz
         value={motivo}
         onChange={(e) => setMotivo(e.target.value)}
         rows={2}
-        className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm"
+        className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-700 dark:text-gray-100"
       />
       <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
-          <label htmlFor="periodo-inicio" className="block text-xs font-medium text-gray-700">
+          <label htmlFor="periodo-inicio" className="block text-xs font-medium text-gray-700 dark:text-gray-300">
             Início
           </label>
           <input
@@ -648,11 +648,11 @@ function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualiz
             type="date"
             value={inicio}
             onChange={(e) => setInicio(e.target.value)}
-            className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm"
+            className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-700 dark:text-gray-100"
           />
         </div>
         <div>
-          <label htmlFor="periodo-fim" className="block text-xs font-medium text-gray-700">
+          <label htmlFor="periodo-fim" className="block text-xs font-medium text-gray-700 dark:text-gray-300">
             Fim
           </label>
           <input
@@ -660,7 +660,7 @@ function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualiz
             type="date"
             value={fim}
             onChange={(e) => setFim(e.target.value)}
-            className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm"
+            className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-700 dark:text-gray-100"
           />
         </div>
       </div>
@@ -669,7 +669,7 @@ function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualiz
           type="button"
           onClick={salvar}
           disabled={salvando}
-          className="rounded-md bg-gray-900 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-60"
+          className="rounded-md bg-gray-900 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900"
         >
           {salvando ? "Salvando..." : "Salvar"}
         </button>
@@ -677,7 +677,7 @@ function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualiz
           type="button"
           onClick={() => setEditando(false)}
           disabled={salvando}
-          className="rounded-md border border-gray-300 px-3 py-1.5 text-xs text-gray-700"
+          className="rounded-md border border-gray-300 px-3 py-1.5 text-xs text-gray-700 dark:border-gray-700 dark:text-gray-300"
         >
           Cancelar
         </button>
@@ -855,14 +855,14 @@ function SecaoItensDespesa({
 
   return (
     <section className="mb-8">
-      <h2 className="mb-3 text-lg font-semibold text-gray-900">Itens de despesa</h2>
+      <h2 className="mb-3 text-lg font-semibold text-gray-900 dark:text-gray-100">Itens de despesa</h2>
 
       {itens.length === 0 ? (
-        <p className="mb-4 text-sm text-gray-500">Nenhum item de despesa adicionado.</p>
+        <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">Nenhum item de despesa adicionado.</p>
       ) : (
-        <div className="mb-4 overflow-x-auto rounded-lg border border-gray-200">
+        <div className="mb-4 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-800">
           <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
+            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500 dark:bg-gray-800 dark:text-gray-400">
               <tr>
                 <th className="px-4 py-2">Categoria</th>
                 <th className="px-4 py-2">Descrição</th>
@@ -872,15 +872,15 @@ function SecaoItensDespesa({
                 {editavel && <th className="px-4 py-2" />}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
               {itens.map((item) =>
                 editandoId === item.id ? (
-                  <tr key={item.id} className="bg-gray-50">
+                  <tr key={item.id} className="bg-gray-50 dark:bg-gray-800">
                     <td className="px-4 py-2">
                       <select
                         value={editCategoriaId}
                         onChange={(e) => setEditCategoriaId(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-100"
                       >
                         {categorias.map((categoria) => (
                           <option key={categoria.id} value={categoria.id}>
@@ -895,7 +895,7 @@ function SecaoItensDespesa({
                         value={editDescricao}
                         onChange={(e) => setEditDescricao(e.target.value)}
                         placeholder="Descrição (opcional)"
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-100"
                       />
                     </td>
                     <td className="px-4 py-2">
@@ -905,7 +905,7 @@ function SecaoItensDespesa({
                         min={periodoInicio}
                         max={periodoFim}
                         onChange={(e) => setEditDataGasto(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-100"
                       />
                     </td>
                     <td className="px-4 py-2 text-right">
@@ -914,16 +914,16 @@ function SecaoItensDespesa({
                         step="0.01"
                         value={editValor}
                         onChange={(e) => setEditValor(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm dark:border-gray-700 dark:text-gray-100"
                       />
                     </td>
-                    <td className="px-4 py-2 text-xs text-gray-400">-</td>
+                    <td className="px-4 py-2 text-xs text-gray-400 dark:text-gray-500">-</td>
                     <td className="px-4 py-2 text-right whitespace-nowrap">
                       <button
                         type="button"
                         onClick={() => salvarEdicao(item.id)}
                         disabled={salvandoEdicao}
-                        className="mr-3 text-xs text-gray-900 underline hover:text-gray-700 disabled:opacity-60"
+                        className="mr-3 text-xs text-gray-900 underline hover:text-gray-700 disabled:opacity-60 dark:text-gray-100 dark:hover:text-gray-300"
                       >
                         {salvandoEdicao ? "Salvando..." : "Salvar"}
                       </button>
@@ -931,7 +931,7 @@ function SecaoItensDespesa({
                         type="button"
                         onClick={() => setEditandoId(null)}
                         disabled={salvandoEdicao}
-                        className="text-xs text-gray-500 underline hover:text-gray-700"
+                        className="text-xs text-gray-500 underline hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                       >
                         Cancelar
                       </button>
@@ -939,17 +939,17 @@ function SecaoItensDespesa({
                   </tr>
                 ) : (
                   <tr key={item.id}>
-                    <td className="px-4 py-2 text-gray-900">{item.categorias_despesa?.nome ?? "-"}</td>
-                    <td className="px-4 py-2 text-gray-600">{item.descricao ?? "-"}</td>
-                    <td className="px-4 py-2 text-gray-600">{formatarData(item.data_gasto)}</td>
-                    <td className="px-4 py-2 text-right text-gray-900">{formatarValor(item.valor)}</td>
+                    <td className="px-4 py-2 text-gray-900 dark:text-gray-100">{item.categorias_despesa?.nome ?? "-"}</td>
+                    <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{item.descricao ?? "-"}</td>
+                    <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{formatarData(item.data_gasto)}</td>
+                    <td className="px-4 py-2 text-right text-gray-900 dark:text-gray-100">{formatarValor(item.valor)}</td>
                     <td className="px-4 py-2">
                       {item.comprovante_url ? (
                         <div className="flex items-center gap-2">
                           <button
                             type="button"
                             onClick={() => verComprovante(item.id)}
-                            className="text-xs text-blue-600 underline hover:text-blue-800"
+                            className="text-xs text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                           >
                             Ver
                           </button>
@@ -957,14 +957,14 @@ function SecaoItensDespesa({
                             <button
                               type="button"
                               onClick={() => removerComprovante(item.id)}
-                              className="text-xs text-red-600 underline hover:text-red-800"
+                              className="text-xs text-red-600 underline hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
                             >
                               Remover
                             </button>
                           )}
                         </div>
                       ) : editavel ? (
-                        <label className="cursor-pointer text-xs text-gray-500 underline hover:text-gray-700">
+                        <label className="cursor-pointer text-xs text-gray-500 underline hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
                           {uploadIdAtivo === item.id ? "Enviando..." : "Anexar"}
                           <input
                             type="file"
@@ -979,7 +979,7 @@ function SecaoItensDespesa({
                           />
                         </label>
                       ) : (
-                        <span className="text-xs text-gray-400">-</span>
+                        <span className="text-xs text-gray-400 dark:text-gray-500">-</span>
                       )}
                     </td>
                     {editavel && (
@@ -987,14 +987,14 @@ function SecaoItensDespesa({
                         <button
                           type="button"
                           onClick={() => iniciarEdicao(item)}
-                          className="mr-3 text-xs text-gray-500 underline hover:text-gray-700"
+                          className="mr-3 text-xs text-gray-500 underline hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                         >
                           Editar
                         </button>
                         <button
                           type="button"
                           onClick={() => removerItem(item.id)}
-                          className="text-xs text-red-600 underline hover:text-red-800"
+                          className="text-xs text-red-600 underline hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
                         >
                           Remover
                         </button>
@@ -1009,12 +1009,12 @@ function SecaoItensDespesa({
       )}
 
       {editavel && (
-        <form onSubmit={adicionarItem} className="rounded-lg border border-dashed border-gray-300 p-4">
+        <form onSubmit={adicionarItem} className="rounded-lg border border-dashed border-gray-300 p-4 dark:border-gray-700">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <select
               value={categoriaId}
               onChange={(e) => setCategoriaId(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             >
               <option value="">Categoria</option>
               {categorias.map((categoria) => (
@@ -1028,7 +1028,7 @@ function SecaoItensDespesa({
               placeholder="Descrição (opcional)"
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="number"
@@ -1037,7 +1037,7 @@ function SecaoItensDespesa({
               placeholder="Valor"
               value={valor}
               onChange={(e) => setValor(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="date"
@@ -1045,14 +1045,14 @@ function SecaoItensDespesa({
               onChange={(e) => setDataGasto(e.target.value)}
               min={periodoInicio}
               max={periodoFim}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
-          {erro && <p className="mt-2 text-sm text-red-600">{erro}</p>}
+          {erro && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{erro}</p>}
           <button
             type="submit"
             disabled={enviando}
-            className="mt-3 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+            className="mt-3 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
           >
             {enviando ? "Adicionando..." : "Adicionar item"}
           </button>
@@ -1176,14 +1176,14 @@ function SecaoItensKm({
 
   return (
     <section>
-      <h2 className="mb-3 text-lg font-semibold text-gray-900">Quilometragem</h2>
+      <h2 className="mb-3 text-lg font-semibold text-gray-900 dark:text-gray-100">Quilometragem</h2>
 
       {itens.length === 0 ? (
-        <p className="mb-4 text-sm text-gray-500">Nenhum km registrado.</p>
+        <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">Nenhum km registrado.</p>
       ) : (
-        <div className="mb-4 overflow-x-auto rounded-lg border border-gray-200">
+        <div className="mb-4 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-800">
           <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
+            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500 dark:bg-gray-800 dark:text-gray-400">
               <tr>
                 <th className="px-4 py-2">Data</th>
                 <th className="px-4 py-2">Trajeto</th>
@@ -1193,10 +1193,10 @@ function SecaoItensKm({
                 {editavel && <th className="px-4 py-2" />}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
               {itens.map((item) =>
                 editandoId === item.id ? (
-                  <tr key={item.id} className="bg-gray-50">
+                  <tr key={item.id} className="bg-gray-50 dark:bg-gray-800">
                     <td className="px-4 py-2">
                       <input
                         type="date"
@@ -1204,7 +1204,7 @@ function SecaoItensKm({
                         min={periodoInicio}
                         max={periodoFim}
                         onChange={(e) => setEditData(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-100"
                       />
                     </td>
                     <td className="px-4 py-2">
@@ -1212,7 +1212,7 @@ function SecaoItensKm({
                         type="text"
                         value={editTrajeto}
                         onChange={(e) => setEditTrajeto(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-100"
                       />
                     </td>
                     <td className="px-4 py-2 text-right">
@@ -1222,7 +1222,7 @@ function SecaoItensKm({
                         step="0.1"
                         value={editKm}
                         onChange={(e) => setEditKm(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm dark:border-gray-700 dark:text-gray-100"
                       />
                     </td>
                     <td className="px-4 py-2 text-right">
@@ -1232,16 +1232,16 @@ function SecaoItensKm({
                         step="0.01"
                         value={editValorKm}
                         onChange={(e) => setEditValorKm(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm dark:border-gray-700 dark:text-gray-100"
                       />
                     </td>
-                    <td className="px-4 py-2 text-right text-xs text-gray-400">-</td>
+                    <td className="px-4 py-2 text-right text-xs text-gray-400 dark:text-gray-500">-</td>
                     <td className="px-4 py-2 text-right whitespace-nowrap">
                       <button
                         type="button"
                         onClick={() => salvarEdicao(item.id)}
                         disabled={salvandoEdicao}
-                        className="mr-3 text-xs text-gray-900 underline hover:text-gray-700 disabled:opacity-60"
+                        className="mr-3 text-xs text-gray-900 underline hover:text-gray-700 disabled:opacity-60 dark:text-gray-100 dark:hover:text-gray-300"
                       >
                         {salvandoEdicao ? "Salvando..." : "Salvar"}
                       </button>
@@ -1249,7 +1249,7 @@ function SecaoItensKm({
                         type="button"
                         onClick={() => setEditandoId(null)}
                         disabled={salvandoEdicao}
-                        className="text-xs text-gray-500 underline hover:text-gray-700"
+                        className="text-xs text-gray-500 underline hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                       >
                         Cancelar
                       </button>
@@ -1257,24 +1257,24 @@ function SecaoItensKm({
                   </tr>
                 ) : (
                   <tr key={item.id}>
-                    <td className="px-4 py-2 text-gray-600">{formatarData(item.data)}</td>
-                    <td className="px-4 py-2 text-gray-900">{item.trajeto}</td>
-                    <td className="px-4 py-2 text-right text-gray-600">{item.km}</td>
-                    <td className="px-4 py-2 text-right text-gray-600">{formatarValor(item.valor_km)}</td>
-                    <td className="px-4 py-2 text-right text-gray-900">{formatarValor(item.valor)}</td>
+                    <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{formatarData(item.data)}</td>
+                    <td className="px-4 py-2 text-gray-900 dark:text-gray-100">{item.trajeto}</td>
+                    <td className="px-4 py-2 text-right text-gray-600 dark:text-gray-400">{item.km}</td>
+                    <td className="px-4 py-2 text-right text-gray-600 dark:text-gray-400">{formatarValor(item.valor_km)}</td>
+                    <td className="px-4 py-2 text-right text-gray-900 dark:text-gray-100">{formatarValor(item.valor)}</td>
                     {editavel && (
                       <td className="px-4 py-2 text-right whitespace-nowrap">
                         <button
                           type="button"
                           onClick={() => iniciarEdicao(item)}
-                          className="mr-3 text-xs text-gray-500 underline hover:text-gray-700"
+                          className="mr-3 text-xs text-gray-500 underline hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                         >
                           Editar
                         </button>
                         <button
                           type="button"
                           onClick={() => removerItem(item.id)}
-                          className="text-xs text-red-600 underline hover:text-red-800"
+                          className="text-xs text-red-600 underline hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
                         >
                           Remover
                         </button>
@@ -1289,7 +1289,7 @@ function SecaoItensKm({
       )}
 
       {editavel && (
-        <form onSubmit={adicionarItem} className="rounded-lg border border-dashed border-gray-300 p-4">
+        <form onSubmit={adicionarItem} className="rounded-lg border border-dashed border-gray-300 p-4 dark:border-gray-700">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <input
               type="date"
@@ -1297,14 +1297,14 @@ function SecaoItensKm({
               onChange={(e) => setData(e.target.value)}
               min={periodoInicio}
               max={periodoFim}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="text"
               placeholder="Trajeto"
               value={trajeto}
               onChange={(e) => setTrajeto(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="number"
@@ -1313,7 +1313,7 @@ function SecaoItensKm({
               placeholder="Km"
               value={km}
               onChange={(e) => setKm(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="number"
@@ -1322,14 +1322,14 @@ function SecaoItensKm({
               placeholder="Valor por km"
               value={valorKm}
               onChange={(e) => setValorKm(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
-          {erro && <p className="mt-2 text-sm text-red-600">{erro}</p>}
+          {erro && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{erro}</p>}
           <button
             type="submit"
             disabled={enviando}
-            className="mt-3 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+            className="mt-3 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
           >
             {enviando ? "Adicionando..." : "Adicionar km"}
           </button>

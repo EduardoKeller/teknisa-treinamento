@@ -17,7 +17,7 @@ export function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
-      className="mt-1 flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium text-gray-500 transition hover:bg-gray-100 hover:text-gray-900"
+      className="mt-1 flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
     >
       <LogOut className="h-4 w-4" />
       Sair
