@@ -335,7 +335,7 @@ function AcaoAprovacao({ he, onAtualizar }: { he: HoraExtraDetalhada; onAtualiza
             value={justificativa}
             onChange={(e) => setJustificativa(e.target.value)}
             placeholder="Explique o motivo da reprovação"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
           />
           <div className="mt-3 flex items-center gap-2">
             <button
@@ -551,7 +551,7 @@ function SecaoItens({
               onChange={(e) => setData(e.target.value)}
               min={periodoInicio}
               max={periodoFim}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="text"
@@ -560,7 +560,7 @@ function SecaoItens({
               maxLength={5}
               value={horaInicio}
               onChange={(e) => setHoraInicio(maskHora(e.target.value))}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="text"
@@ -569,14 +569,14 @@ function SecaoItens({
               maxLength={5}
               value={horaFim}
               onChange={(e) => setHoraFim(maskHora(e.target.value))}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="text"
               placeholder="Justificativa (opcional)"
               value={justificativa}
               onChange={(e) => setJustificativa(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
           <label className="mt-3 flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">

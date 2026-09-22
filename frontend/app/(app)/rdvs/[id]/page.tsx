@@ -280,7 +280,7 @@ function AcaoEnvio({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () =>
               value={cpf}
               onChange={(e) => setCpf(e.target.value)}
               placeholder="000.000.000-00"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <button
               type="button"
@@ -391,7 +391,7 @@ function AcaoAprovacao({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: (
             value={justificativa}
             onChange={(e) => setJustificativa(e.target.value)}
             placeholder="Explique o motivo da reprovação"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
           />
           <div className="mt-3 flex items-center gap-2">
             <button
@@ -540,7 +540,7 @@ function AdiantamentoEditavel({
         step="0.01"
         value={valor}
         onChange={(e) => setValor(e.target.value)}
-        className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-100"
+        className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
         autoFocus
       />
       <div className="mt-2 flex gap-2">
@@ -636,7 +636,7 @@ function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualiz
         value={motivo}
         onChange={(e) => setMotivo(e.target.value)}
         rows={2}
-        className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-700 dark:text-gray-100"
+        className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
       />
       <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
@@ -648,7 +648,7 @@ function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualiz
             type="date"
             value={inicio}
             onChange={(e) => setInicio(e.target.value)}
-            className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-700 dark:text-gray-100"
+            className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
           />
         </div>
         <div>
@@ -660,7 +660,7 @@ function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualiz
             type="date"
             value={fim}
             onChange={(e) => setFim(e.target.value)}
-            className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-700 dark:text-gray-100"
+            className="mt-1 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
           />
         </div>
       </div>
@@ -880,7 +880,7 @@ function SecaoItensDespesa({
                       <select
                         value={editCategoriaId}
                         onChange={(e) => setEditCategoriaId(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-100"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                       >
                         {categorias.map((categoria) => (
                           <option key={categoria.id} value={categoria.id}>
@@ -895,7 +895,7 @@ function SecaoItensDespesa({
                         value={editDescricao}
                         onChange={(e) => setEditDescricao(e.target.value)}
                         placeholder="Descrição (opcional)"
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-100"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                       />
                     </td>
                     <td className="px-4 py-2">
@@ -905,7 +905,7 @@ function SecaoItensDespesa({
                         min={periodoInicio}
                         max={periodoFim}
                         onChange={(e) => setEditDataGasto(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-100"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                       />
                     </td>
                     <td className="px-4 py-2 text-right">
@@ -914,7 +914,7 @@ function SecaoItensDespesa({
                         step="0.01"
                         value={editValor}
                         onChange={(e) => setEditValor(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm dark:border-gray-700 dark:text-gray-100"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                       />
                     </td>
                     <td className="px-4 py-2 text-xs text-gray-400 dark:text-gray-500">-</td>
@@ -1014,7 +1014,7 @@ function SecaoItensDespesa({
             <select
               value={categoriaId}
               onChange={(e) => setCategoriaId(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             >
               <option value="">Categoria</option>
               {categorias.map((categoria) => (
@@ -1028,7 +1028,7 @@ function SecaoItensDespesa({
               placeholder="Descrição (opcional)"
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="number"
@@ -1037,7 +1037,7 @@ function SecaoItensDespesa({
               placeholder="Valor"
               value={valor}
               onChange={(e) => setValor(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="date"
@@ -1045,7 +1045,7 @@ function SecaoItensDespesa({
               onChange={(e) => setDataGasto(e.target.value)}
               min={periodoInicio}
               max={periodoFim}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
           {erro && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{erro}</p>}
@@ -1204,7 +1204,7 @@ function SecaoItensKm({
                         min={periodoInicio}
                         max={periodoFim}
                         onChange={(e) => setEditData(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-100"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                       />
                     </td>
                     <td className="px-4 py-2">
@@ -1212,7 +1212,7 @@ function SecaoItensKm({
                         type="text"
                         value={editTrajeto}
                         onChange={(e) => setEditTrajeto(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:text-gray-100"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                       />
                     </td>
                     <td className="px-4 py-2 text-right">
@@ -1222,7 +1222,7 @@ function SecaoItensKm({
                         step="0.1"
                         value={editKm}
                         onChange={(e) => setEditKm(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm dark:border-gray-700 dark:text-gray-100"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                       />
                     </td>
                     <td className="px-4 py-2 text-right">
@@ -1232,7 +1232,7 @@ function SecaoItensKm({
                         step="0.01"
                         value={editValorKm}
                         onChange={(e) => setEditValorKm(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm dark:border-gray-700 dark:text-gray-100"
+                        className="w-full rounded-md border border-gray-300 px-2 py-1 text-right text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                       />
                     </td>
                     <td className="px-4 py-2 text-right text-xs text-gray-400 dark:text-gray-500">-</td>
@@ -1297,14 +1297,14 @@ function SecaoItensKm({
               onChange={(e) => setData(e.target.value)}
               min={periodoInicio}
               max={periodoFim}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="text"
               placeholder="Trajeto"
               value={trajeto}
               onChange={(e) => setTrajeto(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="number"
@@ -1313,7 +1313,7 @@ function SecaoItensKm({
               placeholder="Km"
               value={km}
               onChange={(e) => setKm(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="number"
@@ -1322,7 +1322,7 @@ function SecaoItensKm({
               placeholder="Valor por km"
               value={valorKm}
               onChange={(e) => setValorKm(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
           {erro && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{erro}</p>}

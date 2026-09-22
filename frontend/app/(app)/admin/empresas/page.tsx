@@ -68,7 +68,7 @@ export default function AdminEmpresasPage() {
           placeholder="Nome da empresa"
           value={nome}
           onChange={(e) => setNome(e.target.value)}
-          className="flex-1 rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+          className="flex-1 rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
         />
         <button
           type="submit"

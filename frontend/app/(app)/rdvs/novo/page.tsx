@@ -111,7 +111,7 @@ export default function NovoRdvPage() {
             value={empresaId}
             onChange={(e) => setEmpresaId(e.target.value)}
             disabled={carregandoEmpresas}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none disabled:bg-gray-50 dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100 dark:disabled:bg-gray-800"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none disabled:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100 dark:disabled:bg-gray-800"
           >
             <option value="">{carregandoEmpresas ? "Carregando..." : "Selecione a empresa"}</option>
             {empresas.map((empresa) => (
@@ -132,7 +132,7 @@ export default function NovoRdvPage() {
             value={centroCustoId}
             onChange={(e) => setCentroCustoId(e.target.value)}
             disabled={carregandoCentros}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none disabled:bg-gray-50 dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100 dark:disabled:bg-gray-800"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none disabled:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100 dark:disabled:bg-gray-800"
           >
             <option value="">{carregandoCentros ? "Carregando..." : "Selecione o centro de custo"}</option>
             {centrosCusto.map((centro) => (
@@ -153,7 +153,7 @@ export default function NovoRdvPage() {
             value={motivoViagem}
             onChange={(e) => setMotivoViagem(e.target.value)}
             placeholder="Descreva o motivo da viagem"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
           />
         </div>
 
@@ -168,7 +168,7 @@ export default function NovoRdvPage() {
               required
               value={periodoInicio}
               onChange={(e) => setPeriodoInicio(e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
           <div>
@@ -181,7 +181,7 @@ export default function NovoRdvPage() {
               required
               value={periodoFim}
               onChange={(e) => setPeriodoFim(e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
         </div>
@@ -197,7 +197,7 @@ export default function NovoRdvPage() {
             step="0.01"
             value={adiantamentoRecebido}
             onChange={(e) => setAdiantamentoRecebido(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
           />
           <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Deixe 0 se não recebeu adiantamento.</p>
         </div>
