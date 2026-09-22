@@ -4,15 +4,31 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+
 export default function LoginPage() {
   const router = useRouter();
   const supabase = createClient();
 
-  const [email, setEmail] = useState("");
+  const [identificador, setIdentificador] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState<string | null>(null);
   const [mensagem, setMensagem] = useState<string | null>(null);
   const [carregando, setCarregando] = useState(false);
+
+  async function resolverEmail(valor: string): Promise<string | null> {
+    if (valor.includes("@")) return valor;
+
+    const response = await fetch(`${API_URL}/api/usuarios/resolver-login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ login: valor }),
+    });
+
+    if (!response.ok) return null;
+    const data = await response.json();
+    return data.email as string;
+  }
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -20,12 +36,19 @@ export default function LoginPage() {
     setMensagem(null);
     setCarregando(true);
 
+    const email = await resolverEmail(identificador.trim());
+    if (!email) {
+      setCarregando(false);
+      setErro("E-mail/login ou senha inválidos.");
+      return;
+    }
+
     const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
 
     setCarregando(false);
 
     if (error) {
-      setErro("E-mail ou senha inválidos.");
+      setErro("E-mail/login ou senha inválidos.");
       return;
     }
 
@@ -37,8 +60,9 @@ export default function LoginPage() {
     setErro(null);
     setMensagem(null);
 
+    const email = await resolverEmail(identificador.trim());
     if (!email) {
-      setErro("Informe seu e-mail para receber o link de redefinição.");
+      setErro("Informe seu e-mail ou login para receber o link de redefinição.");
       return;
     }
 
@@ -56,22 +80,22 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-sm rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
         <h1 className="mb-1 text-xl font-semibold text-gray-900">Sistema de RDV</h1>
-        <p className="mb-6 text-sm text-gray-500">Entre com seu e-mail corporativo</p>
+        <p className="mb-6 text-sm text-gray-500">Entre com seu e-mail ou login</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">
-              E-mail
+            <label htmlFor="identificador" className="mb-1 block text-sm font-medium text-gray-700">
+              E-mail ou login
             </label>
             <input
-              id="email"
-              type="email"
-              autoComplete="email"
+              id="identificador"
+              type="text"
+              autoComplete="username"
               required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              value={identificador}
+              onChange={(event) => setIdentificador(event.target.value)}
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
-              placeholder="voce@empresa.com"
+              placeholder="voce@empresa.com ou seu.login"
             />
           </div>
 
