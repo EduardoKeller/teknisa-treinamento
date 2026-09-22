@@ -63,6 +63,23 @@ function calcularHorasExtras(horaInicio: string, horaFim: string, fezIntervalo: 
   return Math.round((minutosExtras / 60) * 100) / 100;
 }
 
+function agoraBrasil(): { data: string; hora: string } {
+  const agora = new Date();
+  const data = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(agora);
+  const hora = new Intl.DateTimeFormat("pt-BR", {
+    timeZone: "America/Sao_Paulo",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(agora);
+  return { data, hora };
+}
+
 async function registrarHistorico(
   heId: string,
   usuarioId: string,
@@ -250,6 +267,105 @@ horasExtrasRouter.post("/:id/itens", async (req, res) => {
   res.status(201).json(data);
 });
 
+horasExtrasRouter.post("/:id/itens/iniciar", async (req, res) => {
+  const usuario = req.usuario!;
+  const { he } = await carregarHeComPermissao(req.params.id, usuario);
+  if (!he || he.usuario_id !== usuario.id || he.status !== "rascunho") {
+    res.status(403).json({ error: "Só é possível bater ponto no próprio registro em rascunho" });
+    return;
+  }
+
+  const { data: itemAberto } = await supabase
+    .from("he_itens")
+    .select("id")
+    .eq("horas_extras_id", he.id)
+    .is("hora_fim", null)
+    .maybeSingle();
+  if (itemAberto) {
+    res.status(400).json({ error: "Já existe um ponto em aberto. Encerre o expediente antes de iniciar outro." });
+    return;
+  }
+
+  const { data: dataAtual, hora } = agoraBrasil();
+  const { data, error } = await supabase
+    .from("he_itens")
+    .insert({
+      horas_extras_id: he.id,
+      data: dataAtual,
+      hora_inicio: hora,
+      hora_fim: null,
+      quantidade_horas: null,
+      fez_intervalo: true,
+    })
+    .select()
+    .single();
+  if (error) {
+    res.status(400).json({ error: error.message });
+    return;
+  }
+  res.status(201).json(data);
+});
+
+horasExtrasRouter.patch("/:id/itens/:itemId/encerrar", async (req, res) => {
+  const usuario = req.usuario!;
+  const { he } = await carregarHeComPermissao(req.params.id, usuario);
+  if (!he || he.usuario_id !== usuario.id || he.status !== "rascunho") {
+    res.status(403).json({ error: "Só é possível encerrar o ponto do próprio registro em rascunho" });
+    return;
+  }
+
+  const { data: item, error: erroItem } = await supabase
+    .from("he_itens")
+    .select("*")
+    .eq("id", req.params.itemId)
+    .eq("horas_extras_id", he.id)
+    .single();
+  if (erroItem || !item) {
+    res.status(404).json({ error: "Item não encontrado" });
+    return;
+  }
+  if (item.hora_fim) {
+    res.status(400).json({ error: "Esse ponto já foi encerrado" });
+    return;
+  }
+
+  const { fez_intervalo, justificativa } = req.body;
+  if (fez_intervalo === undefined) {
+    res.status(400).json({ error: "Informe se fez intervalo de almoço" });
+    return;
+  }
+
+  const { hora } = agoraBrasil();
+  if (hora <= item.hora_inicio) {
+    res.status(400).json({ error: "O horário de encerramento precisa ser depois do início" });
+    return;
+  }
+
+  const quantidadeHoras = calcularHorasExtras(item.hora_inicio, hora, fez_intervalo, item.data);
+  if (quantidadeHoras === null) {
+    await supabase.from("he_itens").delete().eq("id", item.id);
+    res.json({ descartado: true, message: "Sem horas extras nesse expediente — o ponto foi descartado." });
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from("he_itens")
+    .update({
+      hora_fim: hora,
+      fez_intervalo,
+      justificativa: justificativa || item.justificativa,
+      quantidade_horas: quantidadeHoras,
+    })
+    .eq("id", item.id)
+    .select()
+    .single();
+  if (error) {
+    res.status(400).json({ error: error.message });
+    return;
+  }
+  res.json(data);
+});
+
 horasExtrasRouter.delete("/:id/itens/:itemId", async (req, res) => {
   const usuario = req.usuario!;
   const { he } = await carregarHeComPermissao(req.params.id, usuario);
@@ -279,6 +395,17 @@ horasExtrasRouter.post("/:id/enviar", async (req, res) => {
     .eq("horas_extras_id", he.id);
   if (!count) {
     res.status(400).json({ error: "Adicione ao menos um item antes de enviar" });
+    return;
+  }
+
+  const { data: itemAberto } = await supabase
+    .from("he_itens")
+    .select("id")
+    .eq("horas_extras_id", he.id)
+    .is("hora_fim", null)
+    .maybeSingle();
+  if (itemAberto) {
+    res.status(400).json({ error: "Encerre o ponto em aberto antes de enviar para aprovação" });
     return;
   }
 

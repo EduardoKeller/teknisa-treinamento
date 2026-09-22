@@ -7,6 +7,7 @@ import { useToast } from "@/components/toast";
 import { ehDiaUtil } from "@/lib/feriados";
 import {
   HoraExtraDetalhada,
+  ItemHoraExtra,
   UsuarioAtual,
   STATUS_LABEL,
   STATUS_CLASS,
@@ -479,9 +480,13 @@ function SecaoItens({
     await onAtualizar();
   }
 
+  const itemAberto = itens.find((item) => !item.hora_fim) ?? null;
+
   return (
     <section className="mb-8">
       <h2 className="mb-3 text-lg font-semibold text-gray-900">Dias com horas extras</h2>
+
+      {editavel && <CartaoBaterPonto heId={heId} itemAberto={itemAberto} onAtualizar={onAtualizar} />}
 
       {itens.length === 0 ? (
         <p className="mb-4 text-sm text-gray-500">Nenhum item adicionado.</p>
@@ -504,10 +509,16 @@ function SecaoItens({
                 <tr key={item.id}>
                   <td className="px-4 py-2 text-gray-600">{formatarData(item.data)}</td>
                   <td className="px-4 py-2 text-gray-600">{item.hora_inicio.slice(0, 5)}</td>
-                  <td className="px-4 py-2 text-gray-600">{item.hora_fim.slice(0, 5)}</td>
+                  <td className="px-4 py-2 text-gray-600">
+                    {item.hora_fim ? (
+                      item.hora_fim.slice(0, 5)
+                    ) : (
+                      <span className="text-xs font-medium text-blue-600">Em andamento</span>
+                    )}
+                  </td>
                   <td className="px-4 py-2 text-gray-600">{item.fez_intervalo ? "Sim" : "Não"}</td>
                   <td className="px-4 py-2 text-right font-medium text-gray-900">
-                    {formatarHoras(item.quantidade_horas)}
+                    {item.quantidade_horas === null ? "-" : formatarHoras(item.quantidade_horas)}
                   </td>
                   <td className="px-4 py-2 text-gray-600">{item.justificativa ?? "-"}</td>
                   {editavel && (
@@ -590,6 +601,92 @@ function SecaoItens({
         </form>
       )}
     </section>
+  );
+}
+
+function CartaoBaterPonto({
+  heId,
+  itemAberto,
+  onAtualizar,
+}: {
+  heId: string;
+  itemAberto: ItemHoraExtra | null;
+  onAtualizar: () => Promise<void>;
+}) {
+  const { showError, showSuccess } = useToast();
+  const [processando, setProcessando] = useState(false);
+  const [fezIntervalo, setFezIntervalo] = useState(true);
+
+  async function iniciar() {
+    setProcessando(true);
+    const response = await apiFetchClient(`/api/horas-extras/${heId}/itens/iniciar`, { method: "POST" });
+    setProcessando(false);
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível bater ponto.");
+      return;
+    }
+    await onAtualizar();
+  }
+
+  async function encerrar() {
+    if (!itemAberto) return;
+    setProcessando(true);
+    const response = await apiFetchClient(`/api/horas-extras/${heId}/itens/${itemAberto.id}/encerrar`, {
+      method: "PATCH",
+      body: JSON.stringify({ fez_intervalo: fezIntervalo }),
+    });
+    setProcessando(false);
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível encerrar o ponto.");
+      return;
+    }
+    const resultado = await response.json();
+    if (resultado?.descartado) {
+      showSuccess(resultado.message);
+    }
+    setFezIntervalo(true);
+    await onAtualizar();
+  }
+
+  if (!itemAberto) {
+    return (
+      <div className="mb-6 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="text-sm font-medium text-gray-900">Bater ponto</p>
+          <p className="text-xs text-gray-500">Registra o horário de início agora, direto do servidor.</p>
+        </div>
+        <button
+          type="button"
+          onClick={iniciar}
+          disabled={processando}
+          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+        >
+          {processando ? "Batendo ponto..." : "Bater ponto"}
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
+      <p className="text-sm font-medium text-gray-900">
+        Ponto batido às {itemAberto.hora_inicio.slice(0, 5)} ({formatarData(itemAberto.data)})
+      </p>
+      <label className="mt-2 flex items-center gap-2 text-sm text-gray-700">
+        <input type="checkbox" checked={fezIntervalo} onChange={(e) => setFezIntervalo(e.target.checked)} />
+        Fiz o intervalo de almoço (12:00–13:00)
+      </label>
+      <button
+        type="button"
+        onClick={encerrar}
+        disabled={processando}
+        className="mt-3 rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+      >
+        {processando ? "Encerrando..." : "Encerrar expediente"}
+      </button>
+    </div>
   );
 }
 
