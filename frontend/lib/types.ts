@@ -8,6 +8,7 @@ export interface UsuarioAtual {
   perfil: Perfil;
   gestor_id: string | null;
   ativo: boolean;
+  login: string | null;
 }
 
 export interface UsuarioAdmin extends UsuarioAtual {
