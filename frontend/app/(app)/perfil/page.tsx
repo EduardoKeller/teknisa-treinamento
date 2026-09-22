@@ -104,7 +104,7 @@ export default function PerfilPage() {
             value={cpf}
             onChange={(e) => setCpf(e.target.value)}
             placeholder="000.000.000-00"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
           />
         </div>
 
@@ -119,7 +119,7 @@ export default function PerfilPage() {
             value={bancoNome}
             onChange={(e) => setBancoNome(e.target.value)}
             placeholder="Ex.: Nu Pagamentos S.A"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
           />
         </div>
 
@@ -135,7 +135,7 @@ export default function PerfilPage() {
               value={bancoNumero}
               onChange={(e) => setBancoNumero(e.target.value)}
               placeholder="0260"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
           <div>
@@ -148,7 +148,7 @@ export default function PerfilPage() {
               required
               value={agencia}
               onChange={(e) => setAgencia(e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
           <div>
@@ -161,7 +161,7 @@ export default function PerfilPage() {
               required
               value={contaCorrente}
               onChange={(e) => setContaCorrente(e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
         </div>
