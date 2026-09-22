@@ -1,13 +1,10 @@
 import Link from "next/link";
 import { apiFetch } from "@/lib/api";
-import { LogoutButton } from "../rdvs/logout-button";
 import { HoraExtra, UsuarioAtual, STATUS_LABEL, STATUS_CLASS, formatarData, formatarHoras } from "@/lib/types";
 
 export default async function MinhasHorasExtrasPage() {
   const meResponse = await apiFetch("/api/usuarios/me");
   const usuarioAtual: UsuarioAtual | null = meResponse.ok ? await meResponse.json() : null;
-  const podeAprovar = usuarioAtual ? ["aprovador", "financeiro", "admin"].includes(usuarioAtual.perfil) : false;
-  const podePagar = usuarioAtual ? ["financeiro", "admin"].includes(usuarioAtual.perfil) : false;
 
   const query = usuarioAtual && usuarioAtual.perfil !== "funcionario" ? `?usuario_id=${usuarioAtual.id}` : "";
   const response = await apiFetch(`/api/horas-extras${query}`);
@@ -29,28 +26,12 @@ export default async function MinhasHorasExtrasPage() {
           <h1 className="text-2xl font-semibold text-gray-900">Minhas Horas Extras</h1>
           <p className="text-sm text-gray-500">Registros de horas extras que você lançou</p>
         </div>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          {podeAprovar && (
-            <Link href="/horas-extras/aprovacoes" className="text-sm text-gray-500 hover:text-gray-700">
-              Aprovações
-            </Link>
-          )}
-          {podePagar && (
-            <Link href="/horas-extras/pagamentos" className="text-sm text-gray-500 hover:text-gray-700">
-              Pagamentos
-            </Link>
-          )}
-          <Link href="/rdvs" className="text-sm text-gray-500 hover:text-gray-700">
-            RDVs
-          </Link>
-          <Link
-            href="/horas-extras/novo"
-            className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800"
-          >
-            Novo registro
-          </Link>
-          <LogoutButton />
-        </div>
+        <Link
+          href="/horas-extras/novo"
+          className="inline-flex w-fit items-center rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800"
+        >
+          Novo registro
+        </Link>
       </div>
 
       {registros.length === 0 ? (

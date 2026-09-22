@@ -1,14 +1,10 @@
 import Link from "next/link";
 import { apiFetch } from "@/lib/api";
-import { LogoutButton } from "./logout-button";
 import { Rdv, UsuarioAtual, STATUS_LABEL, STATUS_CLASS, formatarData, formatarValor } from "@/lib/types";
 
 export default async function MeusRdvsPage() {
   const meResponse = await apiFetch("/api/usuarios/me");
   const usuarioAtual: UsuarioAtual | null = meResponse.ok ? await meResponse.json() : null;
-  const podeAprovar = usuarioAtual ? ["aprovador", "financeiro", "admin"].includes(usuarioAtual.perfil) : false;
-  const podePagar = usuarioAtual ? ["financeiro", "admin"].includes(usuarioAtual.perfil) : false;
-  const ehAdmin = usuarioAtual?.perfil === "admin";
 
   const query = usuarioAtual && usuarioAtual.perfil !== "funcionario" ? `?usuario_id=${usuarioAtual.id}` : "";
   const response = await apiFetch(`/api/rdvs${query}`);
@@ -30,36 +26,12 @@ export default async function MeusRdvsPage() {
           <h1 className="text-2xl font-semibold text-gray-900">Meus RDVs</h1>
           <p className="text-sm text-gray-500">Relatórios de despesas de viagem que você criou</p>
         </div>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          {podeAprovar && (
-            <Link href="/aprovacoes" className="text-sm text-gray-500 hover:text-gray-700">
-              Aprovações
-            </Link>
-          )}
-          {podePagar && (
-            <Link href="/pagamentos" className="text-sm text-gray-500 hover:text-gray-700">
-              Pagamentos
-            </Link>
-          )}
-          {ehAdmin && (
-            <Link href="/admin" className="text-sm text-gray-500 hover:text-gray-700">
-              Admin
-            </Link>
-          )}
-          <Link href="/horas-extras" className="text-sm text-gray-500 hover:text-gray-700">
-            Horas Extras
-          </Link>
-          <Link href="/perfil" className="text-sm text-gray-500 hover:text-gray-700">
-            Dados bancários
-          </Link>
-          <Link
-            href="/rdvs/novo"
-            className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800"
-          >
-            Novo RDV
-          </Link>
-          <LogoutButton />
-        </div>
+        <Link
+          href="/rdvs/novo"
+          className="inline-flex w-fit items-center rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800"
+        >
+          Novo RDV
+        </Link>
       </div>
 
       {rdvs.length === 0 ? (
