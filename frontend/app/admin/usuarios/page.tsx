@@ -80,7 +80,7 @@ export default function AdminUsuariosPage() {
     <div>
       <form onSubmit={criarUsuario} autoComplete="off" className="mb-6 rounded-lg border border-dashed border-gray-300 p-4">
         <h2 className="mb-3 text-sm font-semibold text-gray-900">Novo usuário</h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <input
             type="text"
             name="novo-usuario-nome"
@@ -141,7 +141,7 @@ export default function AdminUsuariosPage() {
         </button>
       </form>
 
-      <div className="overflow-hidden rounded-lg border border-gray-200">
+      <div className="overflow-x-auto rounded-lg border border-gray-200">
         <table className="w-full text-left text-sm">
           <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
             <tr>
