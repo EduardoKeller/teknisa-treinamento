@@ -77,14 +77,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
-        <h1 className="mb-1 text-xl font-semibold text-gray-900">Sistema de RDV</h1>
-        <p className="mb-6 text-sm text-gray-500">Entre com seu e-mail ou login</p>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-gray-950">
+      <div className="w-full max-w-sm rounded-xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <h1 className="mb-1 text-xl font-semibold text-gray-900 dark:text-gray-100">Sistema de RDV</h1>
+        <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">Entre com seu e-mail ou login</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="identificador" className="mb-1 block text-sm font-medium text-gray-700">
+            <label htmlFor="identificador" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               E-mail ou login
             </label>
             <input
@@ -94,13 +94,13 @@ export default function LoginPage() {
               required
               value={identificador}
               onChange={(event) => setIdentificador(event.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
               placeholder="voce@empresa.com ou seu.login"
             />
           </div>
 
           <div>
-            <label htmlFor="senha" className="mb-1 block text-sm font-medium text-gray-700">
+            <label htmlFor="senha" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Senha
             </label>
             <input
@@ -110,18 +110,18 @@ export default function LoginPage() {
               required
               value={senha}
               onChange={(event) => setSenha(event.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
               placeholder="••••••••"
             />
           </div>
 
-          {erro && <p className="text-sm text-red-600">{erro}</p>}
-          {mensagem && <p className="text-sm text-green-600">{mensagem}</p>}
+          {erro && <p className="text-sm text-red-600 dark:text-red-400">{erro}</p>}
+          {mensagem && <p className="text-sm text-green-600 dark:text-green-400">{mensagem}</p>}
 
           <button
             type="submit"
             disabled={carregando}
-            className="w-full rounded-md bg-gray-900 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+            className="w-full rounded-md bg-gray-900 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
           >
             {carregando ? "Entrando..." : "Entrar"}
           </button>
@@ -130,7 +130,7 @@ export default function LoginPage() {
         <button
           type="button"
           onClick={handleEsqueciSenha}
-          className="mt-4 text-sm text-gray-500 underline hover:text-gray-700"
+          className="mt-4 text-sm text-gray-500 underline hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
         >
           Esqueci minha senha
         </button>

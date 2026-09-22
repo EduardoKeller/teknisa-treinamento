@@ -85,13 +85,13 @@ export default function AdminUsuariosPage() {
   }
 
   if (carregando) {
-    return <p className="text-sm text-gray-500">Carregando...</p>;
+    return <p className="text-sm text-gray-500 dark:text-gray-400">Carregando...</p>;
   }
 
   return (
     <div>
-      <form onSubmit={criarUsuario} autoComplete="off" className="mb-6 rounded-lg border border-dashed border-gray-300 p-4">
-        <h2 className="mb-3 text-sm font-semibold text-gray-900">Novo usuário</h2>
+      <form onSubmit={criarUsuario} autoComplete="off" className="mb-6 rounded-lg border border-dashed border-gray-300 p-4 dark:border-gray-700">
+        <h2 className="mb-3 text-sm font-semibold text-gray-900 dark:text-gray-100">Novo usuário</h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <input
             type="text"
@@ -100,7 +100,7 @@ export default function AdminUsuariosPage() {
             placeholder="Nome"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
           />
           <input
             type="text"
@@ -109,7 +109,7 @@ export default function AdminUsuariosPage() {
             placeholder="E-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
           />
           <input
             type="text"
@@ -118,7 +118,7 @@ export default function AdminUsuariosPage() {
             placeholder="Senha inicial"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
-            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
           />
           <input
             type="text"
@@ -127,12 +127,12 @@ export default function AdminUsuariosPage() {
             placeholder="Login (opcional)"
             value={loginNovo}
             onChange={(e) => setLoginNovo(e.target.value)}
-            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
           />
           <select
             value={perfil}
             onChange={(e) => setPerfil(e.target.value as Perfil)}
-            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
           >
             {PERFIS.map((p) => (
               <option key={p} value={p}>
@@ -143,7 +143,7 @@ export default function AdminUsuariosPage() {
           <select
             value={gestorId}
             onChange={(e) => setGestorId(e.target.value)}
-            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+            className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
           >
             <option value="">Sem gestor</option>
             {usuarios.map((u) => (
@@ -156,15 +156,15 @@ export default function AdminUsuariosPage() {
         <button
           type="submit"
           disabled={criando}
-          className="mt-3 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+          className="mt-3 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
         >
           {criando ? "Criando..." : "Criar usuário"}
         </button>
       </form>
 
-      <div className="overflow-x-auto rounded-lg border border-gray-200">
+      <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-800">
         <table className="w-full text-left text-sm">
-          <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
+          <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500 dark:bg-gray-800 dark:text-gray-400">
             <tr>
               <th className="px-4 py-2">Nome</th>
               <th className="px-4 py-2">E-mail</th>
@@ -175,7 +175,7 @@ export default function AdminUsuariosPage() {
               <th className="px-4 py-2" />
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
             {usuarios.map((usuario) =>
               editandoId === usuario.id ? (
                 <LinhaEdicao
@@ -187,15 +187,17 @@ export default function AdminUsuariosPage() {
                 />
               ) : (
                 <tr key={usuario.id}>
-                  <td className="px-4 py-2 text-gray-900">{usuario.nome}</td>
-                  <td className="px-4 py-2 text-gray-600">{usuario.email}</td>
-                  <td className="px-4 py-2 text-gray-600">{usuario.login ?? "-"}</td>
-                  <td className="px-4 py-2 text-gray-600">{PERFIL_LABEL[usuario.perfil]}</td>
-                  <td className="px-4 py-2 text-gray-600">{usuario.gestor?.nome ?? "-"}</td>
+                  <td className="px-4 py-2 text-gray-900 dark:text-gray-100">{usuario.nome}</td>
+                  <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{usuario.email}</td>
+                  <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{usuario.login ?? "-"}</td>
+                  <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{PERFIL_LABEL[usuario.perfil]}</td>
+                  <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{usuario.gestor?.nome ?? "-"}</td>
                   <td className="px-4 py-2">
                     <span
                       className={`rounded-full px-2 py-1 text-xs font-medium ${
-                        usuario.ativo ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
+                        usuario.ativo
+                          ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
+                          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
                       }`}
                     >
                       {usuario.ativo ? "Ativo" : "Inativo"}
@@ -205,7 +207,7 @@ export default function AdminUsuariosPage() {
                     <button
                       type="button"
                       onClick={() => setEditandoId(usuario.id)}
-                      className="text-xs text-blue-600 underline hover:text-blue-800"
+                      className="text-xs text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                     >
                       Editar
                     </button>
@@ -237,23 +239,23 @@ function LinhaEdicao({
   const [login, setLogin] = useState(usuario.login ?? "");
 
   return (
-    <tr className="bg-gray-50">
-      <td className="px-4 py-2 text-gray-900">{usuario.nome}</td>
-      <td className="px-4 py-2 text-gray-600">{usuario.email}</td>
+    <tr className="bg-gray-50 dark:bg-gray-800">
+      <td className="px-4 py-2 text-gray-900 dark:text-gray-100">{usuario.nome}</td>
+      <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{usuario.email}</td>
       <td className="px-4 py-2">
         <input
           type="text"
           value={login}
           onChange={(e) => setLogin(e.target.value)}
           placeholder="sem login"
-          className="w-32 rounded-md border border-gray-300 px-2 py-1 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+          className="w-32 rounded-md border border-gray-300 px-2 py-1 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
         />
       </td>
       <td className="px-4 py-2">
         <select
           value={perfil}
           onChange={(e) => setPerfil(e.target.value as Perfil)}
-          className="rounded-md border border-gray-300 px-2 py-1 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+          className="rounded-md border border-gray-300 px-2 py-1 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
         >
           {PERFIS.map((p) => (
             <option key={p} value={p}>
@@ -266,7 +268,7 @@ function LinhaEdicao({
         <select
           value={gestorId}
           onChange={(e) => setGestorId(e.target.value)}
-          className="rounded-md border border-gray-300 px-2 py-1 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+          className="rounded-md border border-gray-300 px-2 py-1 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
         >
           <option value="">Sem gestor</option>
           {usuarios
@@ -279,7 +281,7 @@ function LinhaEdicao({
         </select>
       </td>
       <td className="px-4 py-2">
-        <label className="flex items-center gap-1 text-xs text-gray-600">
+        <label className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
           <input type="checkbox" checked={ativo} onChange={(e) => setAtivo(e.target.checked)} />
           Ativo
         </label>
@@ -288,11 +290,11 @@ function LinhaEdicao({
         <button
           type="button"
           onClick={() => onSalvar({ perfil, gestor_id: gestorId || null, ativo, login: login.trim().toLowerCase() || null })}
-          className="mr-2 text-xs text-green-700 underline hover:text-green-900"
+          className="mr-2 text-xs text-green-700 underline hover:text-green-900 dark:text-green-400 dark:hover:text-green-300"
         >
           Salvar
         </button>
-        <button type="button" onClick={onCancelar} className="text-xs text-gray-500 underline hover:text-gray-700">
+        <button type="button" onClick={onCancelar} className="text-xs text-gray-500 underline hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
           Cancelar
         </button>
       </td>

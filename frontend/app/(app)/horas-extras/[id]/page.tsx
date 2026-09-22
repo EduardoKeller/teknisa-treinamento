@@ -114,14 +114,14 @@ export default function DetalheHorasExtrasPage({ params }: Props) {
   }
 
   if (carregando) {
-    return <div className="mx-auto max-w-4xl px-4 py-8 text-sm text-gray-500">Carregando...</div>;
+    return <div className="mx-auto max-w-4xl px-4 py-8 text-sm text-gray-500 dark:text-gray-400">Carregando...</div>;
   }
 
   if (erro || !he) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-8">
-        <p className="text-sm text-red-600">{erro ?? "Registro não encontrado."}</p>
-        <Link href="/horas-extras" className="mt-2 inline-block text-sm text-gray-500 hover:text-gray-700">
+        <p className="text-sm text-red-600 dark:text-red-400">{erro ?? "Registro não encontrado."}</p>
+        <Link href="/horas-extras" className="mt-2 inline-block text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
           ← Minhas Horas Extras
         </Link>
       </div>
@@ -146,16 +146,16 @@ export default function DetalheHorasExtrasPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <Link href={linkVoltaHref} className="text-sm text-gray-500 hover:text-gray-700">
+      <Link href={linkVoltaHref} className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
         {linkVoltaLabel}
       </Link>
 
       <div className="mt-2 mb-6 flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
             {!souDono && he.funcionario?.nome ? he.funcionario.nome : "Horas extras"}
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             {formatarData(he.periodo_inicio)} – {formatarData(he.periodo_fim)}
           </p>
         </div>
@@ -164,16 +164,16 @@ export default function DetalheHorasExtrasPage({ params }: Props) {
         </span>
       </div>
 
-      <div className="mb-8 flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4">
+      <div className="mb-8 flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
         <div>
-          <p className="text-xs uppercase tracking-wide text-gray-500">Total de horas</p>
-          <p className="mt-1 text-lg font-semibold text-gray-900">{formatarHoras(he.total_horas)}</p>
+          <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Total de horas</p>
+          <p className="mt-1 text-lg font-semibold text-gray-900 dark:text-gray-100">{formatarHoras(he.total_horas)}</p>
         </div>
         <button
           type="button"
           onClick={exportarPlanilha}
           disabled={exportando || he.itens.length === 0}
-          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
         >
           {exportando ? "Exportando..." : "Exportar planilha"}
         </button>
@@ -229,16 +229,16 @@ function AcaoEnvio({ he, onAtualizar }: { he: HoraExtraDetalhada; onAtualizar: (
   if (he.status === "reprovado") {
     const ultimaReprovacao = [...he.historico].reverse().find((h) => h.status_novo === "reprovado");
     return (
-      <div className="mb-8 rounded-lg border border-red-200 bg-red-50 p-4">
-        <p className="text-sm font-medium text-red-800">Este registro foi reprovado</p>
+      <div className="mb-8 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950">
+        <p className="text-sm font-medium text-red-800 dark:text-red-300">Este registro foi reprovado</p>
         {ultimaReprovacao?.justificativa && (
-          <p className="mt-1 text-sm text-red-700">{ultimaReprovacao.justificativa}</p>
+          <p className="mt-1 text-sm text-red-700 dark:text-red-400">{ultimaReprovacao.justificativa}</p>
         )}
         <button
           type="button"
           onClick={reabrir}
           disabled={reabrindo}
-          className="mt-3 rounded-md bg-red-800 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-red-900 disabled:opacity-60"
+          className="mt-3 rounded-md bg-red-800 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-red-900 disabled:opacity-60 dark:bg-red-700 dark:hover:bg-red-600"
         >
           {reabrindo ? "Reabrindo..." : "Corrigir e reenviar"}
         </button>
@@ -251,12 +251,12 @@ function AcaoEnvio({ he, onAtualizar }: { he: HoraExtraDetalhada; onAtualizar: (
   }
 
   return (
-    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4">
+    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
       <button
         type="button"
         onClick={enviar}
         disabled={enviando}
-        className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+        className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
       >
         {enviando ? "Enviando..." : "Enviar para aprovação"}
       </button>
@@ -304,14 +304,14 @@ function AcaoAprovacao({ he, onAtualizar }: { he: HoraExtraDetalhada; onAtualiza
   }
 
   return (
-    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4">
+    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
       {!mostrarReprovacao ? (
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={aprovar}
             disabled={processando}
-            className="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 disabled:opacity-60"
+            className="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 disabled:opacity-60 dark:bg-green-600 dark:hover:bg-green-500"
           >
             {processando ? "Aprovando..." : "Aprovar"}
           </button>
@@ -319,14 +319,14 @@ function AcaoAprovacao({ he, onAtualizar }: { he: HoraExtraDetalhada; onAtualiza
             type="button"
             onClick={() => setMostrarReprovacao(true)}
             disabled={processando}
-            className="rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:opacity-60"
+            className="rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:opacity-60 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950"
           >
             Reprovar
           </button>
         </div>
       ) : (
         <div>
-          <label htmlFor="justificativa" className="mb-1 block text-sm font-medium text-gray-700">
+          <label htmlFor="justificativa" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
             Justificativa da reprovação
           </label>
           <textarea
@@ -335,14 +335,14 @@ function AcaoAprovacao({ he, onAtualizar }: { he: HoraExtraDetalhada; onAtualiza
             value={justificativa}
             onChange={(e) => setJustificativa(e.target.value)}
             placeholder="Explique o motivo da reprovação"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
           />
           <div className="mt-3 flex items-center gap-2">
             <button
               type="button"
               onClick={reprovar}
               disabled={processando}
-              className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-800 disabled:opacity-60"
+              className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-800 disabled:opacity-60 dark:bg-red-600 dark:hover:bg-red-500"
             >
               {processando ? "Reprovando..." : "Confirmar reprovação"}
             </button>
@@ -352,7 +352,7 @@ function AcaoAprovacao({ he, onAtualizar }: { he: HoraExtraDetalhada; onAtualiza
                 setMostrarReprovacao(false);
                 setJustificativa("");
               }}
-              className="text-sm text-gray-500 hover:text-gray-700"
+              className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
             >
               Cancelar
             </button>
@@ -380,15 +380,15 @@ function AcaoPagamento({ he, onAtualizar }: { he: HoraExtraDetalhada; onAtualiza
   }
 
   return (
-    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4">
-      <p className="mb-3 text-sm text-gray-700">
+    <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+      <p className="mb-3 text-sm text-gray-700 dark:text-gray-300">
         Registro aprovado com {formatarHoras(he.total_horas)}. Confirme quando o pagamento for processado.
       </p>
       <button
         type="button"
         onClick={pagar}
         disabled={processando}
-        className="rounded-md bg-purple-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-purple-800 disabled:opacity-60"
+        className="rounded-md bg-purple-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-purple-800 disabled:opacity-60 dark:bg-purple-600 dark:hover:bg-purple-500"
       >
         {processando ? "Registrando..." : "Marcar como pago"}
       </button>
@@ -484,16 +484,16 @@ function SecaoItens({
 
   return (
     <section className="mb-8">
-      <h2 className="mb-3 text-lg font-semibold text-gray-900">Dias com horas extras</h2>
+      <h2 className="mb-3 text-lg font-semibold text-gray-900 dark:text-gray-100">Dias com horas extras</h2>
 
       {editavel && <CartaoBaterPonto heId={heId} itemAberto={itemAberto} onAtualizar={onAtualizar} />}
 
       {itens.length === 0 ? (
-        <p className="mb-4 text-sm text-gray-500">Nenhum item adicionado.</p>
+        <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">Nenhum item adicionado.</p>
       ) : (
-        <div className="mb-4 overflow-x-auto rounded-lg border border-gray-200">
+        <div className="mb-4 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-800">
           <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
+            <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500 dark:bg-gray-800 dark:text-gray-400">
               <tr>
                 <th className="px-4 py-2">Data</th>
                 <th className="px-4 py-2">Início</th>
@@ -504,29 +504,29 @@ function SecaoItens({
                 {editavel && <th className="px-4 py-2" />}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
               {itens.map((item) => (
                 <tr key={item.id}>
-                  <td className="px-4 py-2 text-gray-600">{formatarData(item.data)}</td>
-                  <td className="px-4 py-2 text-gray-600">{item.hora_inicio.slice(0, 5)}</td>
-                  <td className="px-4 py-2 text-gray-600">
+                  <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{formatarData(item.data)}</td>
+                  <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{item.hora_inicio.slice(0, 5)}</td>
+                  <td className="px-4 py-2 text-gray-600 dark:text-gray-400">
                     {item.hora_fim ? (
                       item.hora_fim.slice(0, 5)
                     ) : (
-                      <span className="text-xs font-medium text-blue-600">Em andamento</span>
+                      <span className="text-xs font-medium text-blue-600 dark:text-blue-400">Em andamento</span>
                     )}
                   </td>
-                  <td className="px-4 py-2 text-gray-600">{item.fez_intervalo ? "Sim" : "Não"}</td>
-                  <td className="px-4 py-2 text-right font-medium text-gray-900">
+                  <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{item.fez_intervalo ? "Sim" : "Não"}</td>
+                  <td className="px-4 py-2 text-right font-medium text-gray-900 dark:text-gray-100">
                     {item.quantidade_horas === null ? "-" : formatarHoras(item.quantidade_horas)}
                   </td>
-                  <td className="px-4 py-2 text-gray-600">{item.justificativa ?? "-"}</td>
+                  <td className="px-4 py-2 text-gray-600 dark:text-gray-400">{item.justificativa ?? "-"}</td>
                   {editavel && (
                     <td className="px-4 py-2 text-right">
                       <button
                         type="button"
                         onClick={() => removerItem(item.id)}
-                        className="text-xs text-red-600 underline hover:text-red-800"
+                        className="text-xs text-red-600 underline hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
                       >
                         Remover
                       </button>
@@ -540,8 +540,8 @@ function SecaoItens({
       )}
 
       {editavel && (
-        <form onSubmit={adicionarItem} className="rounded-lg border border-dashed border-gray-300 p-4">
-          <p className="mb-3 text-xs text-gray-500">
+        <form onSubmit={adicionarItem} className="rounded-lg border border-dashed border-gray-300 p-4 dark:border-gray-700">
+          <p className="mb-3 text-xs text-gray-500 dark:text-gray-400">
             Jornada padrão: 07:30–12:00 e 13:00–17:18 (8h48min). As horas extras são calculadas automaticamente.
           </p>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -551,7 +551,7 @@ function SecaoItens({
               onChange={(e) => setData(e.target.value)}
               min={periodoInicio}
               max={periodoFim}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="text"
@@ -560,7 +560,7 @@ function SecaoItens({
               maxLength={5}
               value={horaInicio}
               onChange={(e) => setHoraInicio(maskHora(e.target.value))}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="text"
@@ -569,32 +569,32 @@ function SecaoItens({
               maxLength={5}
               value={horaFim}
               onChange={(e) => setHoraFim(maskHora(e.target.value))}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
             <input
               type="text"
               placeholder="Justificativa (opcional)"
               value={justificativa}
               onChange={(e) => setJustificativa(e.target.value)}
-              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
-          <label className="mt-3 flex items-center gap-2 text-sm text-gray-700">
+          <label className="mt-3 flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
             <input type="checkbox" checked={fezIntervalo} onChange={(e) => setFezIntervalo(e.target.checked)} />
             Fiz o intervalo de almoço (12:00–13:00)
           </label>
           {HORA_VALIDA_REGEX.test(horaInicio) && HORA_VALIDA_REGEX.test(horaFim) && (
-            <p className="mt-2 text-sm text-gray-600">
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
               {previaHoras === null
                 ? "Sem horas extras nesse intervalo."
                 : `Horas extras calculadas: ${formatarHoras(previaHoras)}`}
             </p>
           )}
-          {erro && <p className="mt-2 text-sm text-red-600">{erro}</p>}
+          {erro && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{erro}</p>}
           <button
             type="submit"
             disabled={enviando}
-            className="mt-3 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+            className="mt-3 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
           >
             {enviando ? "Adicionando..." : "Adicionar item"}
           </button>
@@ -652,16 +652,16 @@ function CartaoBaterPonto({
 
   if (!itemAberto) {
     return (
-      <div className="mb-6 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-6 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 sm:flex-row sm:items-center sm:justify-between dark:border-gray-800 dark:bg-gray-900">
         <div>
-          <p className="text-sm font-medium text-gray-900">Bater ponto</p>
-          <p className="text-xs text-gray-500">Registra o horário de início agora, direto do servidor.</p>
+          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Bater ponto</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Registra o horário de início agora, direto do servidor.</p>
         </div>
         <button
           type="button"
           onClick={iniciar}
           disabled={processando}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
         >
           {processando ? "Batendo ponto..." : "Bater ponto"}
         </button>
@@ -670,11 +670,11 @@ function CartaoBaterPonto({
   }
 
   return (
-    <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
-      <p className="text-sm font-medium text-gray-900">
+    <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950">
+      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
         Ponto batido às {itemAberto.hora_inicio.slice(0, 5)} ({formatarData(itemAberto.data)})
       </p>
-      <label className="mt-2 flex items-center gap-2 text-sm text-gray-700">
+      <label className="mt-2 flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
         <input type="checkbox" checked={fezIntervalo} onChange={(e) => setFezIntervalo(e.target.checked)} />
         Fiz o intervalo de almoço (12:00–13:00)
       </label>
@@ -682,7 +682,7 @@ function CartaoBaterPonto({
         type="button"
         onClick={encerrar}
         disabled={processando}
-        className="mt-3 rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+        className="mt-3 rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
       >
         {processando ? "Encerrando..." : "Encerrar expediente"}
       </button>
@@ -695,16 +695,16 @@ function SecaoHistorico({ historico }: { historico: HoraExtraDetalhada["historic
 
   return (
     <section className="mt-8">
-      <h2 className="mb-3 text-lg font-semibold text-gray-900">Histórico</h2>
+      <h2 className="mb-3 text-lg font-semibold text-gray-900 dark:text-gray-100">Histórico</h2>
       <ul className="space-y-2">
         {historico.map((item) => (
-          <li key={item.id} className="rounded-md border border-gray-200 bg-white p-3 text-sm">
-            <span className="font-medium text-gray-900">
+          <li key={item.id} className="rounded-md border border-gray-200 bg-white p-3 text-sm dark:border-gray-800 dark:bg-gray-900">
+            <span className="font-medium text-gray-900 dark:text-gray-100">
               {item.status_anterior ? `${STATUS_LABEL[item.status_anterior]} → ` : ""}
               {STATUS_LABEL[item.status_novo]}
             </span>
-            <span className="ml-2 text-xs text-gray-500">{formatarData(item.criado_em)}</span>
-            {item.justificativa && <p className="mt-1 text-gray-600">{item.justificativa}</p>}
+            <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">{formatarData(item.criado_em)}</span>
+            {item.justificativa && <p className="mt-1 text-gray-600 dark:text-gray-400">{item.justificativa}</p>}
           </li>
         ))}
       </ul>

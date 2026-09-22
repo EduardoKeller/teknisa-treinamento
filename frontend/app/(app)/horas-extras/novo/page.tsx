@@ -51,17 +51,17 @@ export default function NovoRegistroHorasExtrasPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <div className="mb-6">
-        <Link href="/horas-extras" className="text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/horas-extras" className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
           ← Minhas Horas Extras
         </Link>
-        <h1 className="mt-1 text-2xl font-semibold text-gray-900">Novo registro de horas extras</h1>
-        <p className="text-sm text-gray-500">Informe o período de referência para começar a lançar as horas</p>
+        <h1 className="mt-1 text-2xl font-semibold text-gray-900 dark:text-gray-100">Novo registro de horas extras</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Informe o período de referência para começar a lançar as horas</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5 rounded-lg border border-gray-200 bg-white p-6">
+      <form onSubmit={handleSubmit} className="space-y-5 rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="periodo_inicio" className="mb-1 block text-sm font-medium text-gray-700">
+            <label htmlFor="periodo_inicio" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Início
             </label>
             <input
@@ -70,11 +70,11 @@ export default function NovoRegistroHorasExtrasPage() {
               required
               value={periodoInicio}
               onChange={(e) => setPeriodoInicio(e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
           <div>
-            <label htmlFor="periodo_fim" className="mb-1 block text-sm font-medium text-gray-700">
+            <label htmlFor="periodo_fim" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Fim
             </label>
             <input
@@ -83,22 +83,22 @@ export default function NovoRegistroHorasExtrasPage() {
               required
               value={periodoFim}
               onChange={(e) => setPeriodoFim(e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:text-gray-100 dark:focus:border-gray-100"
             />
           </div>
         </div>
 
-        {erro && <p className="text-sm text-red-600">{erro}</p>}
+        {erro && <p className="text-sm text-red-600 dark:text-red-400">{erro}</p>}
 
         <div className="flex items-center gap-3 pt-2">
           <button
             type="submit"
             disabled={enviando}
-            className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60"
+            className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
           >
             {enviando ? "Criando..." : "Criar registro"}
           </button>
-          <Link href="/horas-extras" className="text-sm text-gray-500 hover:text-gray-700">
+          <Link href="/horas-extras" className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
             Cancelar
           </Link>
         </div>

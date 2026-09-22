@@ -45,8 +45,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             role="alert"
             className={`pointer-events-auto flex items-start gap-3 rounded-lg border p-3 text-sm shadow-lg ${
               toast.type === "error"
-                ? "border-red-200 bg-red-50 text-red-700"
-                : "border-green-200 bg-green-50 text-green-700"
+                ? "border-red-200 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-300"
+                : "border-green-200 bg-green-50 text-green-700 dark:border-green-900 dark:bg-green-950 dark:text-green-300"
             }`}
           >
             <span className="flex-1">{toast.message}</span>
