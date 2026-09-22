@@ -1,16 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Banknote,
   CheckSquare,
+  ChevronDown,
   Clock,
+  FileText,
   LayoutDashboard,
+  ListChecks,
   Menu,
   Plane,
   Settings,
+  Users,
   Wallet,
   X,
 } from "lucide-react";
@@ -26,9 +30,13 @@ interface NavItem {
 }
 
 interface NavGroup {
+  id: string;
   title: string;
+  icon: typeof Plane;
   items: NavItem[];
 }
+
+const STORAGE_KEY = "rdv-sidebar-grupos";
 
 function montarGrupos(usuario: UsuarioAtual): NavGroup[] {
   const podeAprovar = ["aprovador", "financeiro", "admin"].includes(usuario.perfil);
@@ -37,17 +45,21 @@ function montarGrupos(usuario: UsuarioAtual): NavGroup[] {
 
   const grupos: NavGroup[] = [
     {
+      id: "rdv",
       title: "RDV",
+      icon: Plane,
       items: [
-        { href: "/rdvs", label: "Meus RDVs", icon: Plane, exact: true },
+        { href: "/rdvs", label: "Meus RDVs", icon: FileText, exact: true },
         ...(podeAprovar ? [{ href: "/aprovacoes", label: "Aprovações", icon: CheckSquare }] : []),
-        ...(podePagar ? [{ href: "/pagamentos", label: "Pagamentos", icon: Wallet }] : []),
+        ...(podePagar ? [{ href: "/pagamentos", label: "Reembolsos", icon: Wallet }] : []),
       ],
     },
     {
-      title: "Horas extras",
+      id: "horas",
+      title: "Jornada & Horas",
+      icon: Clock,
       items: [
-        { href: "/horas-extras", label: "Meus registros", icon: Clock, exact: true },
+        { href: "/horas-extras", label: "Meus registros", icon: ListChecks, exact: true },
         ...(podeAprovar
           ? [{ href: "/horas-extras/aprovacoes", label: "Aprovações", icon: CheckSquare }]
           : []),
@@ -57,10 +69,12 @@ function montarGrupos(usuario: UsuarioAtual): NavGroup[] {
       ],
     },
     {
-      title: "Conta",
+      id: "config",
+      title: "Configurações",
+      icon: Settings,
       items: [
         { href: "/perfil", label: "Dados bancários", icon: Banknote },
-        ...(ehAdmin ? [{ href: "/admin", label: "Administração", icon: Settings }] : []),
+        ...(ehAdmin ? [{ href: "/admin", label: "Administração", icon: Users }] : []),
       ],
     },
   ];
@@ -73,9 +87,50 @@ function ehAtivo(pathname: string, item: NavItem) {
   return pathname === item.href || pathname.startsWith(`${item.href}/`);
 }
 
+function grupoContemRotaAtiva(pathname: string, grupo: NavGroup) {
+  return grupo.items.some((item) => ehAtivo(pathname, item));
+}
+
+function carregarEstado(): Record<string, boolean> {
+  try {
+    const bruto = localStorage.getItem(STORAGE_KEY);
+    return bruto ? JSON.parse(bruto) : {};
+  } catch {
+    return {};
+  }
+}
+
+function salvarEstado(estado: Record<string, boolean>) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(estado));
+  } catch {
+    // localStorage indisponível (modo privado etc.) — ignora
+  }
+}
+
 function SidebarConteudo({ usuario, onNavegar }: { usuario: UsuarioAtual; onNavegar?: () => void }) {
   const pathname = usePathname();
   const grupos = montarGrupos(usuario);
+  const [abertos, setAbertos] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    // localStorage só existe no cliente; ler aqui (em vez de no useState) evita mismatch de hidratação.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setAbertos(carregarEstado());
+  }, []);
+
+  function alternarGrupo(id: string) {
+    setAbertos((atual) => {
+      const proximo = { ...atual, [id]: !estaAberto(id) };
+      salvarEstado(proximo);
+      return proximo;
+    });
+  }
+
+  function estaAberto(id: string) {
+    if (id in abertos) return abertos[id];
+    return true;
+  }
 
   return (
     <div className="flex h-full flex-col">
@@ -89,35 +144,49 @@ function SidebarConteudo({ usuario, onNavegar }: { usuario: UsuarioAtual; onNave
         </div>
       </div>
 
-      <nav className="flex-1 space-y-6 overflow-y-auto px-3 pb-4">
-        {grupos.map((grupo) => (
-          <div key={grupo.title}>
-            <p className="px-2 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">
-              {grupo.title}
-            </p>
-            <div className="space-y-0.5">
-              {grupo.items.map((item) => {
-                const Icone = item.icon;
-                const ativo = ehAtivo(pathname, item);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={onNavegar}
-                    className={`flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium transition ${
-                      ativo
-                        ? "bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
-                    }`}
-                  >
-                    <Icone className="h-4 w-4 shrink-0" />
-                    {item.label}
-                  </Link>
-                );
-              })}
+      <nav className="flex-1 space-y-1 overflow-y-auto px-3 pb-4">
+        {grupos.map((grupo) => {
+          const GrupoIcone = grupo.icon;
+          const aberto = estaAberto(grupo.id) || grupoContemRotaAtiva(pathname, grupo);
+          return (
+            <div key={grupo.id}>
+              <button
+                type="button"
+                onClick={() => alternarGrupo(grupo.id)}
+                className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-xs font-semibold uppercase tracking-wide text-gray-400 transition hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+              >
+                <GrupoIcone className="h-3.5 w-3.5 shrink-0" />
+                <span className="flex-1 text-left">{grupo.title}</span>
+                <ChevronDown
+                  className={`h-3.5 w-3.5 shrink-0 transition-transform ${aberto ? "rotate-0" : "-rotate-90"}`}
+                />
+              </button>
+              {aberto && (
+                <div className="space-y-0.5 pb-2">
+                  {grupo.items.map((item) => {
+                    const Icone = item.icon;
+                    const ativo = ehAtivo(pathname, item);
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={onNavegar}
+                        className={`flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium transition ${
+                          ativo
+                            ? "bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
+                            : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                        }`}
+                      >
+                        <Icone className="h-4 w-4 shrink-0" />
+                        {item.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </nav>
 
       <div className="border-t border-gray-200 p-3 dark:border-gray-800">
