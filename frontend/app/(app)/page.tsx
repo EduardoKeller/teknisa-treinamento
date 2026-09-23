@@ -78,6 +78,16 @@ export default async function InicioPage() {
   const heParaPagar: HoraExtra[] = hePagarResp?.ok ? await hePagarResp.json() : [];
   const viagensParaReservar: SolicitacaoViagem[] = viagensReservarResp?.ok ? await viagensReservarResp.json() : [];
 
+  const pendenciasCorrecao = [
+    { label: "RDVs", count: meusRdvs.filter((r) => r.status === "reprovado").length, href: "/rdvs" },
+    { label: "Horas Extras", count: minhasHe.filter((h) => h.status === "reprovado").length, href: "/horas-extras" },
+    {
+      label: "Solicitações de Viagem",
+      count: minhasViagens.filter((v) => v.status === "reprovado").length,
+      href: "/viagens",
+    },
+  ].filter((p) => p.count > 0);
+
   const pendenciasAprovacao = [
     { label: "RDVs", count: rdvsParaAprovar.length, href: "/aprovacoes" },
     { label: "Horas Extras", count: heParaAprovar.length, href: "/horas-extras/aprovacoes" },
@@ -104,8 +114,18 @@ export default async function InicioPage() {
         <p className="text-sm text-gray-500 dark:text-gray-400">Aqui está um resumo do que está em andamento</p>
       </div>
 
-      {(pendenciasAprovacao.length > 0 || pendenciasPagamento.length > 0) && (
+      {(pendenciasCorrecao.length > 0 || pendenciasAprovacao.length > 0 || pendenciasPagamento.length > 0) && (
         <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {pendenciasCorrecao.map((p) => (
+            <Link
+              key={`corrigir-${p.label}`}
+              href={p.href}
+              className="rounded-lg border border-red-200 bg-red-50 p-4 transition hover:bg-red-100 dark:border-red-900 dark:bg-red-950 dark:hover:bg-red-900"
+            >
+              <p className="text-2xl font-semibold text-red-800 dark:text-red-300">{p.count}</p>
+              <p className="text-sm text-red-700 dark:text-red-400">{p.label} reprovado(s) — revise e reenvie</p>
+            </Link>
+          ))}
           {pendenciasAprovacao.map((p) => (
             <Link
               key={`aprovar-${p.label}`}
