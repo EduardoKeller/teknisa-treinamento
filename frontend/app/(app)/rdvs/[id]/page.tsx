@@ -4,6 +4,7 @@ import { use, useCallback, useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
 import { useToast } from "@/components/toast";
+import { ValorReembolso } from "@/components/valor-reembolso";
 import {
   CategoriaDespesa,
   RdvDetalhado,
@@ -145,7 +146,7 @@ export default function DetalheRdvPage({ params }: Props) {
         ) : (
           <ResumoCard titulo="Adiantamento" valor={formatarValor(rdv.adiantamento_recebido)} />
         )}
-        <ResumoCard titulo="Reembolso" valor={formatarValor(rdv.valor_reembolso)} destaque />
+        <ResumoCard titulo="Reembolso" valor={<ValorReembolso valor={rdv.valor_reembolso} destaque />} />
       </div>
 
       <div className="mb-8 flex justify-end">
@@ -438,7 +439,16 @@ function AcaoPagamento({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: (
   return (
     <div className="mb-8 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
       <p className="mb-3 text-sm text-gray-700 dark:text-gray-300">
-        RDV aprovado. Confirme quando o reembolso de {formatarValor(rdv.valor_reembolso)} for depositado.
+        {rdv.valor_reembolso > 0 && (
+          <>RDV aprovado. Confirme quando o reembolso de {formatarValor(rdv.valor_reembolso)} for depositado ao funcionário.</>
+        )}
+        {rdv.valor_reembolso < 0 && (
+          <>
+            RDV aprovado. Confirme quando os {formatarValor(Math.abs(rdv.valor_reembolso))} a devolver forem recebidos do
+            funcionário.
+          </>
+        )}
+        {rdv.valor_reembolso === 0 && <>RDV aprovado, sem valor pendente. Confirme para encerrar.</>}
       </p>
       <button
         type="button"
@@ -474,7 +484,15 @@ function SecaoHistorico({ historico }: { historico: RdvDetalhado["historico_stat
   );
 }
 
-function ResumoCard({ titulo, valor, destaque }: { titulo: string; valor: string; destaque?: boolean }) {
+function ResumoCard({
+  titulo,
+  valor,
+  destaque,
+}: {
+  titulo: string;
+  valor: React.ReactNode;
+  destaque?: boolean;
+}) {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
       <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{titulo}</p>
