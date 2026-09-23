@@ -249,7 +249,7 @@ export default function NovaSolicitacaoViagemPage() {
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <div>
                     <label htmlFor="checkin_data" className={LABEL_CLASS}>
                       Entrada
@@ -276,7 +276,7 @@ export default function NovaSolicitacaoViagemPage() {
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <div>
                     <label htmlFor="checkout_data" className={LABEL_CLASS}>
                       Saída
@@ -405,7 +405,7 @@ export default function NovaSolicitacaoViagemPage() {
                     className={INPUT_CLASS}
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <div>
                     <label htmlFor="passageiro_cpf" className={LABEL_CLASS}>
                       CPF
