@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
 import { useToast } from "@/components/toast";
+import { CampoObrigatorio } from "@/components/campo-obrigatorio";
 import { CentroCusto, Empresa } from "@/lib/types";
 
 export default function NovoRdvPage() {
@@ -101,9 +102,14 @@ export default function NovoRdvPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5 rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          <span className="text-red-500 dark:text-red-400">*</span> campos obrigatórios
+        </p>
+
         <div>
           <label htmlFor="empresa" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
             Empresa
+            <CampoObrigatorio />
           </label>
           <select
             id="empresa"
@@ -125,6 +131,7 @@ export default function NovoRdvPage() {
         <div>
           <label htmlFor="centro_custo" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
             Centro de custo
+            <CampoObrigatorio />
           </label>
           <select
             id="centro_custo"
@@ -161,6 +168,7 @@ export default function NovoRdvPage() {
           <div>
             <label htmlFor="periodo_inicio" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Início
+              <CampoObrigatorio />
             </label>
             <input
               id="periodo_inicio"
@@ -174,6 +182,7 @@ export default function NovoRdvPage() {
           <div>
             <label htmlFor="periodo_fim" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Fim
+              <CampoObrigatorio />
             </label>
             <input
               id="periodo_fim"
