@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
 import { useToast } from "@/components/toast";
+import { SeletorCidade } from "@/components/seletor-cidade";
 import { CentroCusto, Empresa } from "@/lib/types";
 
 const INPUT_CLASS =
@@ -313,11 +314,14 @@ export default function NovaSolicitacaoViagemPage() {
                   <label htmlFor="cidade" className={LABEL_CLASS}>
                     Cidade
                   </label>
-                  <input
+                  <SeletorCidade
                     id="cidade"
-                    type="text"
-                    value={cidade}
-                    onChange={(e) => setCidade(e.target.value)}
+                    valor={cidade}
+                    onChange={setCidade}
+                    onSelecionar={(m) => {
+                      setCidade(m.nome);
+                      setEstado(m.uf);
+                    }}
                     className={INPUT_CLASS}
                   />
                 </div>
@@ -452,12 +456,12 @@ export default function NovaSolicitacaoViagemPage() {
                     <label htmlFor="ida_de" className={LABEL_CLASS}>
                       De
                     </label>
-                    <input
+                    <SeletorCidade
                       id="ida_de"
-                      type="text"
                       placeholder="Cidade/UF"
-                      value={idaDe}
-                      onChange={(e) => setIdaDe(e.target.value)}
+                      valor={idaDe}
+                      onChange={setIdaDe}
+                      onSelecionar={(m) => setIdaDe(`${m.nome}/${m.uf}`)}
                       className={INPUT_CLASS}
                     />
                   </div>
@@ -465,12 +469,12 @@ export default function NovaSolicitacaoViagemPage() {
                     <label htmlFor="ida_para" className={LABEL_CLASS}>
                       Para
                     </label>
-                    <input
+                    <SeletorCidade
                       id="ida_para"
-                      type="text"
                       placeholder="Cidade/UF"
-                      value={idaPara}
-                      onChange={(e) => setIdaPara(e.target.value)}
+                      valor={idaPara}
+                      onChange={setIdaPara}
+                      onSelecionar={(m) => setIdaPara(`${m.nome}/${m.uf}`)}
                       className={INPUT_CLASS}
                     />
                   </div>
@@ -508,12 +512,12 @@ export default function NovaSolicitacaoViagemPage() {
                     <label htmlFor="volta_de" className={LABEL_CLASS}>
                       De
                     </label>
-                    <input
+                    <SeletorCidade
                       id="volta_de"
-                      type="text"
                       placeholder="Cidade/UF"
-                      value={voltaDe}
-                      onChange={(e) => setVoltaDe(e.target.value)}
+                      valor={voltaDe}
+                      onChange={setVoltaDe}
+                      onSelecionar={(m) => setVoltaDe(`${m.nome}/${m.uf}`)}
                       className={INPUT_CLASS}
                     />
                   </div>
@@ -521,12 +525,12 @@ export default function NovaSolicitacaoViagemPage() {
                     <label htmlFor="volta_para" className={LABEL_CLASS}>
                       Para
                     </label>
-                    <input
+                    <SeletorCidade
                       id="volta_para"
-                      type="text"
                       placeholder="Cidade/UF"
-                      value={voltaPara}
-                      onChange={(e) => setVoltaPara(e.target.value)}
+                      valor={voltaPara}
+                      onChange={setVoltaPara}
+                      onSelecionar={(m) => setVoltaPara(`${m.nome}/${m.uf}`)}
                       className={INPUT_CLASS}
                     />
                   </div>
