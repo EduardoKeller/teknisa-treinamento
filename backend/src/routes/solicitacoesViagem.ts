@@ -2,6 +2,7 @@ import { Router } from "express";
 import { supabase } from "../supabaseClient";
 import { autenticar, autorizar } from "../middleware/auth";
 import { Usuario } from "../types";
+import { gerarNomeArquivoSeguro, uploadComprovante } from "../lib/uploadComprovante";
 
 export const solicitacoesViagemRouter = Router();
 solicitacoesViagemRouter.use(autenticar);
@@ -369,5 +370,102 @@ solicitacoesViagemRouter.post("/:id/reservar", autorizar("financeiro", "admin"),
   }
 
   await registrarHistorico(solicitacao.id, usuario.id, "aprovado", "reservado");
+  res.json(data);
+});
+
+solicitacoesViagemRouter.post(
+  "/:id/comprovante",
+  autorizar("financeiro", "admin"),
+  uploadComprovante.single("arquivo"),
+  async (req, res) => {
+    const { data: solicitacao, error: erroBusca } = await supabase
+      .from("solicitacoes_viagem")
+      .select("id, status, comprovante_reserva_url")
+      .eq("id", req.params.id)
+      .single();
+    if (erroBusca || !solicitacao || !["aprovado", "reservado"].includes(solicitacao.status)) {
+      res.status(403).json({ error: "Solicitação não encontrada ou ainda não está aprovada" });
+      return;
+    }
+
+    if (!req.file) {
+      res.status(400).json({ error: "Envie um arquivo no campo 'arquivo'" });
+      return;
+    }
+
+    const nomeArquivo = gerarNomeArquivoSeguro(req.file.originalname, req.file.mimetype);
+    const caminho = `solicitacoes-viagem/${solicitacao.id}/${nomeArquivo}`;
+    const { error: uploadError } = await supabase.storage
+      .from("comprovantes")
+      .upload(caminho, req.file.buffer, { contentType: req.file.mimetype });
+
+    if (uploadError) {
+      res.status(400).json({ error: uploadError.message });
+      return;
+    }
+
+    if (solicitacao.comprovante_reserva_url) {
+      await supabase.storage.from("comprovantes").remove([solicitacao.comprovante_reserva_url]);
+    }
+
+    const { data, error } = await supabase
+      .from("solicitacoes_viagem")
+      .update({ comprovante_reserva_url: caminho })
+      .eq("id", solicitacao.id)
+      .select()
+      .single();
+
+    if (error) {
+      res.status(400).json({ error: error.message });
+      return;
+    }
+    res.status(201).json(data);
+  }
+);
+
+solicitacoesViagemRouter.get("/:id/comprovante", async (req, res) => {
+  const usuario = req.usuario!;
+  const { solicitacao, permitido } = await carregarSolicitacaoComPermissao(req.params.id, usuario);
+  if (!solicitacao || !permitido || !solicitacao.comprovante_reserva_url) {
+    res.status(404).json({ error: "Comprovante não encontrado" });
+    return;
+  }
+
+  const { data, error } = await supabase.storage
+    .from("comprovantes")
+    .createSignedUrl(solicitacao.comprovante_reserva_url, 60);
+
+  if (error || !data) {
+    res.status(400).json({ error: error?.message ?? "Erro ao gerar link do comprovante" });
+    return;
+  }
+
+  res.json({ url: data.signedUrl, expiraEm: 60 });
+});
+
+solicitacoesViagemRouter.delete("/:id/comprovante", autorizar("financeiro", "admin"), async (req, res) => {
+  const { data: solicitacao, error: erroBusca } = await supabase
+    .from("solicitacoes_viagem")
+    .select("id, comprovante_reserva_url")
+    .eq("id", req.params.id)
+    .single();
+  if (erroBusca || !solicitacao || !solicitacao.comprovante_reserva_url) {
+    res.status(404).json({ error: "Comprovante não encontrado" });
+    return;
+  }
+
+  await supabase.storage.from("comprovantes").remove([solicitacao.comprovante_reserva_url]);
+
+  const { data, error } = await supabase
+    .from("solicitacoes_viagem")
+    .update({ comprovante_reserva_url: null })
+    .eq("id", solicitacao.id)
+    .select()
+    .single();
+
+  if (error) {
+    res.status(400).json({ error: error.message });
+    return;
+  }
   res.json(data);
 });

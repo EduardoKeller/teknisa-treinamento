@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
 import { useToast } from "@/components/toast";
@@ -214,6 +214,12 @@ export default function DetalheSolicitacaoViagemPage({ params }: Props) {
               )}
             </div>
           )}
+          <ComprovanteReserva
+            id={id}
+            comprovanteUrl={solicitacao.comprovante_reserva_url}
+            podeGerenciar={podeReservar}
+            onAtualizar={() => recarregar(id)}
+          />
         </div>
       )}
 
@@ -530,6 +536,108 @@ function AcaoReservar({
       >
         {processando ? "Salvando..." : "Marcar como reservado"}
       </button>
+    </div>
+  );
+}
+
+function ComprovanteReserva({
+  id,
+  comprovanteUrl,
+  podeGerenciar,
+  onAtualizar,
+}: {
+  id: string;
+  comprovanteUrl: string | null;
+  podeGerenciar: boolean;
+  onAtualizar: () => Promise<void>;
+}) {
+  const { showError, showSuccess } = useToast();
+  const [processando, setProcessando] = useState(false);
+
+  async function verComprovante() {
+    const response = await apiFetchClient(`/api/solicitacoes-viagem/${id}/comprovante`);
+    if (!response.ok) {
+      showError("Não foi possível abrir o comprovante.");
+      return;
+    }
+    const { url } = await response.json();
+    window.open(url, "_blank");
+  }
+
+  async function enviarArquivo(event: ChangeEvent<HTMLInputElement>) {
+    const arquivo = event.target.files?.[0];
+    event.target.value = "";
+    if (!arquivo) return;
+
+    const formData = new FormData();
+    formData.append("arquivo", arquivo);
+
+    setProcessando(true);
+    const response = await apiFetchClient(`/api/solicitacoes-viagem/${id}/comprovante`, {
+      method: "POST",
+      body: formData,
+    });
+    setProcessando(false);
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      showError(data?.error ?? "Não foi possível anexar o comprovante.");
+      return;
+    }
+    showSuccess("Comprovante anexado.");
+    await onAtualizar();
+  }
+
+  async function removerComprovante() {
+    setProcessando(true);
+    const response = await apiFetchClient(`/api/solicitacoes-viagem/${id}/comprovante`, { method: "DELETE" });
+    setProcessando(false);
+
+    if (!response.ok) {
+      showError("Não foi possível remover o comprovante.");
+      return;
+    }
+    await onAtualizar();
+  }
+
+  if (!comprovanteUrl && !podeGerenciar) return null;
+
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-purple-200 pt-3 dark:border-purple-900">
+      {comprovanteUrl ? (
+        <>
+          <button
+            type="button"
+            onClick={verComprovante}
+            className="inline-flex items-center gap-1.5 rounded-md border border-purple-700 px-3 py-1.5 text-sm font-medium text-purple-800 transition hover:bg-purple-100 dark:border-purple-600 dark:text-purple-300 dark:hover:bg-purple-900"
+          >
+            📎 Ver comprovante
+          </button>
+          {podeGerenciar && (
+            <button
+              type="button"
+              onClick={removerComprovante}
+              disabled={processando}
+              className="text-xs text-purple-700 underline hover:text-purple-900 disabled:opacity-60 dark:text-purple-400 dark:hover:text-purple-300"
+            >
+              Remover
+            </button>
+          )}
+        </>
+      ) : (
+        podeGerenciar && (
+          <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-purple-700 px-3 py-1.5 text-sm font-medium text-purple-800 transition hover:bg-purple-100 dark:border-purple-600 dark:text-purple-300 dark:hover:bg-purple-900">
+            {processando ? "Enviando..." : "Anexar comprovante"}
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,application/pdf"
+              onChange={enviarArquivo}
+              disabled={processando}
+              className="hidden"
+            />
+          </label>
+        )
+      )}
     </div>
   );
 }
