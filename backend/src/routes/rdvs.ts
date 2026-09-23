@@ -1,42 +1,14 @@
 import { Router } from "express";
-import multer from "multer";
-import { randomUUID } from "crypto";
 import { extname } from "path";
 import { supabase } from "../supabaseClient";
 import { autenticar, autorizar } from "../middleware/auth";
 import { Usuario } from "../types";
 import { gerarPlanilhaRdv } from "../lib/planilhaRdv";
 import { gerarZipRdv, ArquivoParaZip } from "../lib/pacoteRdv";
-
-const EXTENSOES_POR_MIME: Record<string, string> = {
-  "image/jpeg": ".jpg",
-  "image/png": ".png",
-  "image/webp": ".webp",
-  "application/pdf": ".pdf",
-};
-
-function gerarNomeArquivoSeguro(originalname: string, mimetype: string): string {
-  const extensaoOriginal = extname(originalname).toLowerCase().replace(/[^a-z0-9.]/g, "");
-  const extensao = /^\.[a-z0-9]+$/.test(extensaoOriginal) ? extensaoOriginal : EXTENSOES_POR_MIME[mimetype] ?? "";
-  return `${Date.now()}-${randomUUID()}${extensao}`;
-}
+import { gerarNomeArquivoSeguro, uploadComprovante } from "../lib/uploadComprovante";
 
 export const rdvsRouter = Router();
 rdvsRouter.use(autenticar);
-
-const TIPOS_COMPROVANTE_PERMITIDOS = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
-
-const uploadComprovante = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
-    if (!TIPOS_COMPROVANTE_PERMITIDOS.includes(file.mimetype)) {
-      cb(new Error("Tipo de arquivo não suportado. Envie uma imagem (JPEG/PNG/WEBP) ou PDF."));
-      return;
-    }
-    cb(null, true);
-  },
-});
 
 async function idsDaEquipe(gestorId: string): Promise<string[]> {
   const { data } = await supabase.from("usuarios").select("id").eq("gestor_id", gestorId);
