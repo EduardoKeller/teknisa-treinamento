@@ -202,6 +202,7 @@ export interface SolicitacaoViagem {
   observacoes_passagem: string | null;
 
   detalhes_reserva: string | null;
+  passagem_numero_voo: string | null;
 
   criado_em: string;
   enviado_em: string | null;

@@ -342,7 +342,7 @@ solicitacoesViagemRouter.post("/:id/reservar", autorizar("financeiro", "admin"),
     return;
   }
 
-  const { detalhes_reserva } = req.body;
+  const { detalhes_reserva, passagem_numero_voo } = req.body;
   if (!detalhes_reserva) {
     res.status(400).json({ error: "Descreva os detalhes da reserva confirmada" });
     return;
@@ -353,6 +353,7 @@ solicitacoesViagemRouter.post("/:id/reservar", autorizar("financeiro", "admin"),
     .update({
       status: "reservado",
       detalhes_reserva,
+      passagem_numero_voo: passagem_numero_voo || null,
       reservado_em: new Date().toISOString(),
       reservado_por_id: usuario.id,
     })

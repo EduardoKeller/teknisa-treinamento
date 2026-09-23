@@ -176,6 +176,16 @@ export default function DetalheSolicitacaoViagemPage({ params }: Props) {
         <div className="mb-6 rounded-lg border border-purple-200 bg-purple-50 p-4 dark:border-purple-900 dark:bg-purple-950">
           <p className="text-sm font-medium text-purple-800 dark:text-purple-300">Reserva confirmada</p>
           <p className="mt-1 text-sm text-purple-700 dark:text-purple-400">{solicitacao.detalhes_reserva}</p>
+          {solicitacao.passagem_numero_voo && (
+            <a
+              href={`https://flightaware.com/live/flight/${encodeURIComponent(solicitacao.passagem_numero_voo.replace(/\s+/g, ""))}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-purple-700 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-500"
+            >
+              Acompanhar voo {solicitacao.passagem_numero_voo} ↗
+            </a>
+          )}
         </div>
       )}
 
@@ -192,7 +202,11 @@ export default function DetalheSolicitacaoViagemPage({ params }: Props) {
       )}
 
       {podeReservar && solicitacao.status === "aprovado" && (
-        <AcaoReservar id={id} onAtualizar={() => recarregar(id)} />
+        <AcaoReservar
+          id={id}
+          incluiPassagem={solicitacao.inclui_passagem}
+          onAtualizar={() => recarregar(id)}
+        />
       )}
 
       {solicitacao.historico.length > 0 && (
@@ -377,9 +391,18 @@ function AcaoAprovacao({ id, onAtualizar }: { id: string; onAtualizar: () => Pro
   );
 }
 
-function AcaoReservar({ id, onAtualizar }: { id: string; onAtualizar: () => Promise<void> }) {
+function AcaoReservar({
+  id,
+  incluiPassagem,
+  onAtualizar,
+}: {
+  id: string;
+  incluiPassagem: boolean;
+  onAtualizar: () => Promise<void>;
+}) {
   const { showError } = useToast();
   const [detalhes, setDetalhes] = useState("");
+  const [numeroVoo, setNumeroVoo] = useState("");
   const [processando, setProcessando] = useState(false);
 
   async function reservar() {
@@ -390,7 +413,7 @@ function AcaoReservar({ id, onAtualizar }: { id: string; onAtualizar: () => Prom
     setProcessando(true);
     const response = await apiFetchClient(`/api/solicitacoes-viagem/${id}/reservar`, {
       method: "POST",
-      body: JSON.stringify({ detalhes_reserva: detalhes }),
+      body: JSON.stringify({ detalhes_reserva: detalhes, passagem_numero_voo: numeroVoo || null }),
     });
     setProcessando(false);
     if (!response.ok) {
@@ -414,6 +437,23 @@ function AcaoReservar({ id, onAtualizar }: { id: string; onAtualizar: () => Prom
         onChange={(e) => setDetalhes(e.target.value)}
         className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
       />
+
+      {incluiPassagem && (
+        <div className="mt-3">
+          <label htmlFor="numero_voo" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Número do voo (opcional — gera link de acompanhamento em tempo real)
+          </label>
+          <input
+            id="numero_voo"
+            type="text"
+            placeholder="Ex.: LA4321, G31234, AD4321"
+            value={numeroVoo}
+            onChange={(e) => setNumeroVoo(e.target.value)}
+            className="w-full max-w-xs rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
+          />
+        </div>
+      )}
+
       <button
         type="button"
         onClick={reservar}
