@@ -10,6 +10,7 @@ import {
   ChevronDown,
   Clock,
   FileText,
+  Home,
   LayoutDashboard,
   ListChecks,
   Menu,
@@ -157,6 +158,19 @@ function SidebarConteudo({ usuario, onNavegar }: { usuario: UsuarioAtual; onNave
       </div>
 
       <nav className="flex-1 space-y-1 overflow-y-auto px-3 pb-4">
+        <Link
+          href="/"
+          onClick={onNavegar}
+          className={`mb-2 flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium transition ${
+            pathname === "/"
+              ? "bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+          }`}
+        >
+          <Home className="h-4 w-4 shrink-0" />
+          Início
+        </Link>
+
         {grupos.map((grupo) => {
           const GrupoIcone = grupo.icon;
           const aberto = estaAberto(grupo.id) || grupoContemRotaAtiva(pathname, grupo);
