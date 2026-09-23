@@ -3,8 +3,27 @@ import { redirect } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 import { Rdv, UsuarioAtual, STATUS_LABEL, STATUS_CLASS, formatarData } from "@/lib/types";
 import { ValorReembolso } from "@/components/valor-reembolso";
+import { AbasStatus } from "@/components/abas-status";
 
-export default async function AprovacoesPage() {
+const ABAS = [
+  { valor: "enviado", rotulo: "Pendentes" },
+  { valor: "aprovado", rotulo: "Aprovados" },
+  { valor: "reprovado", rotulo: "Reprovados" },
+  { valor: "todos", rotulo: "Todos" },
+];
+
+const MENSAGEM_VAZIO: Record<string, string> = {
+  enviado: "Nenhum RDV aguardando aprovação no momento.",
+  aprovado: "Nenhum RDV aprovado ainda.",
+  reprovado: "Nenhum RDV reprovado.",
+  todos: "Nenhum RDV encontrado.",
+};
+
+interface Props {
+  searchParams: Promise<{ status?: string }>;
+}
+
+export default async function AprovacoesPage({ searchParams }: Props) {
   const meResponse = await apiFetch("/api/usuarios/me");
   if (!meResponse.ok) {
     redirect("/login");
@@ -15,33 +34,39 @@ export default async function AprovacoesPage() {
     redirect("/rdvs");
   }
 
-  const response = await apiFetch("/api/rdvs?status=enviado");
+  const { status } = await searchParams;
+  const aba = ABAS.some((a) => a.valor === status) ? status! : "enviado";
+
+  const response = await apiFetch(aba === "todos" ? "/api/rdvs" : `/api/rdvs?status=${aba}`);
 
   if (!response.ok) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-8">
-        <p className="text-sm text-red-600 dark:text-red-400">Não foi possível carregar as aprovações pendentes.</p>
+        <p className="text-sm text-red-600 dark:text-red-400">Não foi possível carregar os RDVs.</p>
       </div>
     );
   }
 
-  const rdvs: Rdv[] = await response.json();
+  const todos: Rdv[] = await response.json();
+  const rdvs = aba === "todos" ? todos.filter((rdv) => rdv.status !== "rascunho") : todos;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Aprovações pendentes</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">RDVs aguardando sua aprovação</p>
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Aprovações</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">RDVs da sua equipe, com histórico de aprovações e reprovações</p>
         </div>
         <Link href="/rdvs" className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
           Meus RDVs
         </Link>
       </div>
 
+      <AbasStatus basePath="/aprovacoes" abas={ABAS} ativa={aba} />
+
       {rdvs.length === 0 ? (
         <div className="rounded-lg border border-dashed border-gray-300 p-10 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
-          Nenhum RDV aguardando aprovação no momento.
+          {MENSAGEM_VAZIO[aba]}
         </div>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-800">
