@@ -16,6 +16,14 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+const COMPANHIAS = ["LATAM", "GOL", "Azul", "Outra"] as const;
+
+const URL_MINHAS_VIAGENS: Record<string, string> = {
+  LATAM: "https://www.latamairlines.com/br/pt/minhas-viagens",
+  GOL: "https://b2c.voegol.com.br/minhas-viagens",
+  Azul: "https://www.voeazul.com.br/br/pt/home/minhas-viagens",
+};
+
 const CAMPO_LABEL = "text-xs font-medium uppercase tracking-wide text-gray-400 dark:text-gray-500";
 const CAMPO_VALOR = "text-sm text-gray-900 dark:text-gray-100";
 
@@ -176,15 +184,35 @@ export default function DetalheSolicitacaoViagemPage({ params }: Props) {
         <div className="mb-6 rounded-lg border border-purple-200 bg-purple-50 p-4 dark:border-purple-900 dark:bg-purple-950">
           <p className="text-sm font-medium text-purple-800 dark:text-purple-300">Reserva confirmada</p>
           <p className="mt-1 text-sm text-purple-700 dark:text-purple-400">{solicitacao.detalhes_reserva}</p>
-          {solicitacao.passagem_numero_voo && (
-            <a
-              href={`https://flightaware.com/live/flight/${encodeURIComponent(solicitacao.passagem_numero_voo.replace(/\s+/g, ""))}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-purple-700 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-500"
-            >
-              Acompanhar voo {solicitacao.passagem_numero_voo} ↗
-            </a>
+          {solicitacao.passagem_localizador && (
+            <p className="mt-1 text-sm text-purple-700 dark:text-purple-400">
+              Localizador: <span className="font-medium">{solicitacao.passagem_localizador}</span>
+              {solicitacao.passagem_companhia && ` · ${solicitacao.passagem_companhia}`}
+            </p>
+          )}
+          {(solicitacao.passagem_numero_voo || (solicitacao.passagem_companhia && URL_MINHAS_VIAGENS[solicitacao.passagem_companhia])) && (
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              {solicitacao.passagem_numero_voo && (
+                <a
+                  href={`https://flightaware.com/live/flight/${encodeURIComponent(solicitacao.passagem_numero_voo.replace(/\s+/g, ""))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-md bg-purple-700 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-500"
+                >
+                  Acompanhar voo {solicitacao.passagem_numero_voo} ↗
+                </a>
+              )}
+              {solicitacao.passagem_companhia && URL_MINHAS_VIAGENS[solicitacao.passagem_companhia] && (
+                <a
+                  href={URL_MINHAS_VIAGENS[solicitacao.passagem_companhia]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-purple-700 px-3 py-1.5 text-sm font-medium text-purple-800 transition hover:bg-purple-100 dark:border-purple-600 dark:text-purple-300 dark:hover:bg-purple-900"
+                >
+                  Consultar no site da {solicitacao.passagem_companhia} ↗
+                </a>
+              )}
+            </div>
           )}
         </div>
       )}
@@ -403,6 +431,8 @@ function AcaoReservar({
   const { showError } = useToast();
   const [detalhes, setDetalhes] = useState("");
   const [numeroVoo, setNumeroVoo] = useState("");
+  const [localizador, setLocalizador] = useState("");
+  const [companhia, setCompanhia] = useState("");
   const [processando, setProcessando] = useState(false);
 
   async function reservar() {
@@ -413,7 +443,12 @@ function AcaoReservar({
     setProcessando(true);
     const response = await apiFetchClient(`/api/solicitacoes-viagem/${id}/reservar`, {
       method: "POST",
-      body: JSON.stringify({ detalhes_reserva: detalhes, passagem_numero_voo: numeroVoo || null }),
+      body: JSON.stringify({
+        detalhes_reserva: detalhes,
+        passagem_numero_voo: numeroVoo || null,
+        passagem_localizador: localizador || null,
+        passagem_companhia: companhia || null,
+      }),
     });
     setProcessando(false);
     if (!response.ok) {
@@ -439,18 +474,51 @@ function AcaoReservar({
       />
 
       {incluiPassagem && (
-        <div className="mt-3">
-          <label htmlFor="numero_voo" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Número do voo (opcional — gera link de acompanhamento em tempo real)
-          </label>
-          <input
-            id="numero_voo"
-            type="text"
-            placeholder="Ex.: LA4321, G31234, AD4321"
-            value={numeroVoo}
-            onChange={(e) => setNumeroVoo(e.target.value)}
-            className="w-full max-w-xs rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
-          />
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div>
+            <label htmlFor="numero_voo" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Número do voo (opcional)
+            </label>
+            <input
+              id="numero_voo"
+              type="text"
+              placeholder="Ex.: LA4321, G31234"
+              value={numeroVoo}
+              onChange={(e) => setNumeroVoo(e.target.value)}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
+            />
+          </div>
+          <div>
+            <label htmlFor="localizador" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Localizador (opcional)
+            </label>
+            <input
+              id="localizador"
+              type="text"
+              placeholder="Ex.: XPTO12"
+              value={localizador}
+              onChange={(e) => setLocalizador(e.target.value)}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
+            />
+          </div>
+          <div>
+            <label htmlFor="companhia" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Companhia aérea
+            </label>
+            <select
+              id="companhia"
+              value={companhia}
+              onChange={(e) => setCompanhia(e.target.value)}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-100"
+            >
+              <option value="">Não informar</option>
+              {COMPANHIAS.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       )}
 
