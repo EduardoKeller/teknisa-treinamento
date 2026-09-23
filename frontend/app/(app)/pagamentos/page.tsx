@@ -18,7 +18,7 @@ export default async function PagamentosPage() {
 
   if (!response.ok) {
     return (
-      <div className="mx-auto max-w-5xl px-4 py-8">
+      <div className="mx-auto max-w-7xl px-4 py-8">
         <p className="text-sm text-red-600 dark:text-red-400">Não foi possível carregar os pagamentos pendentes.</p>
       </div>
     );
@@ -27,7 +27,7 @@ export default async function PagamentosPage() {
   const rdvs: Rdv[] = await response.json();
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Pagamentos pendentes</h1>

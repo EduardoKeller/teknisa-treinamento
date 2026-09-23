@@ -85,12 +85,12 @@ export default function DetalheRdvPage({ params }: Props) {
   }, [recarregar]);
 
   if (carregando) {
-    return <div className="mx-auto max-w-4xl px-4 py-8 text-sm text-gray-500 dark:text-gray-400">Carregando...</div>;
+    return <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-gray-500 dark:text-gray-400">Carregando...</div>;
   }
 
   if (erro || !rdv) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-8">
+      <div className="mx-auto max-w-6xl px-4 py-8">
         <p className="text-sm text-red-600 dark:text-red-400">{erro ?? "RDV não encontrado."}</p>
         <Link href="/rdvs" className="mt-2 inline-block text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
           ← Meus RDVs
@@ -112,7 +112,7 @@ export default function DetalheRdvPage({ params }: Props) {
   const linkVoltaLabel = souDono ? "← Meus RDVs" : linkVoltaHref === "/pagamentos" ? "← Pagamentos" : "← Aprovações";
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
+    <div className="mx-auto max-w-6xl px-4 py-8">
       <Link href={linkVoltaHref} className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
         {linkVoltaLabel}
       </Link>
@@ -265,7 +265,7 @@ function AcaoEnvio({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () =>
         <button
           type="button"
           onClick={() => setMostrarConfirmacao(true)}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
         >
           Enviar para aprovação
         </button>
@@ -286,7 +286,7 @@ function AcaoEnvio({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualizar: () =>
               type="button"
               onClick={enviar}
               disabled={enviando}
-              className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-60"
             >
               {enviando ? "Enviando..." : "Confirmar envio"}
             </button>
@@ -548,7 +548,7 @@ function AdiantamentoEditavel({
           type="button"
           onClick={salvar}
           disabled={salvando}
-          className="rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900"
+          className="rounded-md bg-blue-600 px-2 py-1 text-xs font-medium text-white disabled:opacity-60"
         >
           {salvando ? "Salvando..." : "Salvar"}
         </button>
@@ -669,7 +669,7 @@ function InfoViagemEditavel({ rdv, onAtualizar }: { rdv: RdvDetalhado; onAtualiz
           type="button"
           onClick={salvar}
           disabled={salvando}
-          className="rounded-md bg-gray-900 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900"
+          className="rounded-md bg-blue-600 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-60"
         >
           {salvando ? "Salvando..." : "Salvar"}
         </button>
@@ -1052,7 +1052,7 @@ function SecaoItensDespesa({
           <button
             type="submit"
             disabled={enviando}
-            className="mt-3 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+            className="mt-3 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-60"
           >
             {enviando ? "Adicionando..." : "Adicionar item"}
           </button>
@@ -1329,7 +1329,7 @@ function SecaoItensKm({
           <button
             type="submit"
             disabled={enviando}
-            className="mt-3 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+            className="mt-3 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-60"
           >
             {enviando ? "Adicionando..." : "Adicionar km"}
           </button>

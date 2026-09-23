@@ -114,12 +114,12 @@ export default function DetalheHorasExtrasPage({ params }: Props) {
   }
 
   if (carregando) {
-    return <div className="mx-auto max-w-4xl px-4 py-8 text-sm text-gray-500 dark:text-gray-400">Carregando...</div>;
+    return <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-gray-500 dark:text-gray-400">Carregando...</div>;
   }
 
   if (erro || !he) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-8">
+      <div className="mx-auto max-w-6xl px-4 py-8">
         <p className="text-sm text-red-600 dark:text-red-400">{erro ?? "Registro não encontrado."}</p>
         <Link href="/horas-extras" className="mt-2 inline-block text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
           ← Minhas Horas Extras
@@ -145,7 +145,7 @@ export default function DetalheHorasExtrasPage({ params }: Props) {
       : "← Aprovações";
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
+    <div className="mx-auto max-w-6xl px-4 py-8">
       <Link href={linkVoltaHref} className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
         {linkVoltaLabel}
       </Link>
@@ -256,7 +256,7 @@ function AcaoEnvio({ he, onAtualizar }: { he: HoraExtraDetalhada; onAtualizar: (
         type="button"
         onClick={enviar}
         disabled={enviando}
-        className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-60"
       >
         {enviando ? "Enviando..." : "Enviar para aprovação"}
       </button>
@@ -594,7 +594,7 @@ function SecaoItens({
           <button
             type="submit"
             disabled={enviando}
-            className="mt-3 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+            className="mt-3 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-60"
           >
             {enviando ? "Adicionando..." : "Adicionar item"}
           </button>
@@ -661,7 +661,7 @@ function CartaoBaterPonto({
           type="button"
           onClick={iniciar}
           disabled={processando}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-60"
         >
           {processando ? "Batendo ponto..." : "Bater ponto"}
         </button>
@@ -682,7 +682,7 @@ function CartaoBaterPonto({
         type="button"
         onClick={encerrar}
         disabled={processando}
-        className="mt-3 rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+        className="mt-3 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-60"
       >
         {processando ? "Encerrando..." : "Encerrar expediente"}
       </button>

@@ -156,7 +156,7 @@ export default function AdminUsuariosPage() {
         <button
           type="submit"
           disabled={criando}
-          className="mt-3 rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+          className="mt-3 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-60"
         >
           {criando ? "Criando..." : "Criar usuário"}
         </button>
