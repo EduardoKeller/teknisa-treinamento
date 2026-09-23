@@ -21,7 +21,7 @@ const COMPANHIAS = ["LATAM", "GOL", "Azul", "Outra"] as const;
 const URL_MINHAS_VIAGENS: Record<string, string> = {
   LATAM: "https://www.latamairlines.com/br/pt/minhas-viagens",
   GOL: "https://b2c.voegol.com.br/minhas-viagens",
-  Azul: "https://www.voeazul.com.br/br/pt/home/minhas-viagens",
+  Azul: "https://www.voeazul.com.br/br/pt/home/reservas.html",
 };
 
 const CAMPO_LABEL = "text-xs font-medium uppercase tracking-wide text-gray-400 dark:text-gray-500";
