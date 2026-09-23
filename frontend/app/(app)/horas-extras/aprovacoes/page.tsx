@@ -2,8 +2,27 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 import { HoraExtra, UsuarioAtual, STATUS_LABEL, STATUS_CLASS, formatarData, formatarHoras } from "@/lib/types";
+import { AbasStatus } from "@/components/abas-status";
 
-export default async function AprovacoesHorasExtrasPage() {
+const ABAS = [
+  { valor: "enviado", rotulo: "Pendentes" },
+  { valor: "aprovado", rotulo: "Aprovados" },
+  { valor: "reprovado", rotulo: "Reprovados" },
+  { valor: "todos", rotulo: "Todos" },
+];
+
+const MENSAGEM_VAZIO: Record<string, string> = {
+  enviado: "Nenhum registro aguardando aprovação no momento.",
+  aprovado: "Nenhum registro aprovado ainda.",
+  reprovado: "Nenhum registro reprovado.",
+  todos: "Nenhum registro encontrado.",
+};
+
+interface Props {
+  searchParams: Promise<{ status?: string }>;
+}
+
+export default async function AprovacoesHorasExtrasPage({ searchParams }: Props) {
   const meResponse = await apiFetch("/api/usuarios/me");
   if (!meResponse.ok) {
     redirect("/login");
@@ -14,33 +33,39 @@ export default async function AprovacoesHorasExtrasPage() {
     redirect("/horas-extras");
   }
 
-  const response = await apiFetch("/api/horas-extras?status=enviado");
+  const { status } = await searchParams;
+  const aba = ABAS.some((a) => a.valor === status) ? status! : "enviado";
+
+  const response = await apiFetch(aba === "todos" ? "/api/horas-extras" : `/api/horas-extras?status=${aba}`);
 
   if (!response.ok) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-8">
-        <p className="text-sm text-red-600 dark:text-red-400">Não foi possível carregar as aprovações pendentes.</p>
+        <p className="text-sm text-red-600 dark:text-red-400">Não foi possível carregar os registros.</p>
       </div>
     );
   }
 
-  const registros: HoraExtra[] = await response.json();
+  const todos: HoraExtra[] = await response.json();
+  const registros = aba === "todos" ? todos.filter((he) => he.status !== "rascunho") : todos;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Aprovações de horas extras</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Registros aguardando sua aprovação</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Registros da sua equipe, com histórico de aprovações e reprovações</p>
         </div>
         <Link href="/horas-extras" className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
           Minhas Horas Extras
         </Link>
       </div>
 
+      <AbasStatus basePath="/horas-extras/aprovacoes" abas={ABAS} ativa={aba} />
+
       {registros.length === 0 ? (
         <div className="rounded-lg border border-dashed border-gray-300 p-10 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
-          Nenhum registro aguardando aprovação no momento.
+          {MENSAGEM_VAZIO[aba]}
         </div>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-800">
