@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
 import { useToast } from "@/components/toast";
+import { CampoObrigatorio } from "@/components/campo-obrigatorio";
 
 export default function NovoRegistroHorasExtrasPage() {
   const router = useRouter();
@@ -59,10 +60,15 @@ export default function NovoRegistroHorasExtrasPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5 rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          <span className="text-red-500 dark:text-red-400">*</span> campos obrigatórios
+        </p>
+
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="periodo_inicio" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Início
+              <CampoObrigatorio />
             </label>
             <input
               id="periodo_inicio"
@@ -76,6 +82,7 @@ export default function NovoRegistroHorasExtrasPage() {
           <div>
             <label htmlFor="periodo_fim" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Fim
+              <CampoObrigatorio />
             </label>
             <input
               id="periodo_fim"

@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
 import { useToast } from "@/components/toast";
+import { CampoObrigatorio } from "@/components/campo-obrigatorio";
 
 interface DadosBancarios {
   usuario_id: string;
@@ -93,9 +94,14 @@ export default function PerfilPage() {
       </p>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4 rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          <span className="text-red-500 dark:text-red-400">*</span> campos obrigatórios
+        </p>
+
         <div>
           <label htmlFor="cpf" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
             CPF
+            <CampoObrigatorio />
           </label>
           <input
             id="cpf"
@@ -111,6 +117,7 @@ export default function PerfilPage() {
         <div>
           <label htmlFor="banco_nome" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
             Banco
+            <CampoObrigatorio />
           </label>
           <input
             id="banco_nome"
@@ -127,6 +134,7 @@ export default function PerfilPage() {
           <div>
             <label htmlFor="banco_numero" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Código
+              <CampoObrigatorio />
             </label>
             <input
               id="banco_numero"
@@ -141,6 +149,7 @@ export default function PerfilPage() {
           <div>
             <label htmlFor="agencia" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Agência
+              <CampoObrigatorio />
             </label>
             <input
               id="agencia"
@@ -154,6 +163,7 @@ export default function PerfilPage() {
           <div>
             <label htmlFor="conta" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Conta
+              <CampoObrigatorio />
             </label>
             <input
               id="conta"

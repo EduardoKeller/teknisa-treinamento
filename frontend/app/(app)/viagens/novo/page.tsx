@@ -6,6 +6,7 @@ import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
 import { useToast } from "@/components/toast";
 import { SeletorCidade } from "@/components/seletor-cidade";
+import { CampoObrigatorio } from "@/components/campo-obrigatorio";
 import { CentroCusto, Empresa } from "@/lib/types";
 
 const INPUT_CLASS =
@@ -151,10 +152,15 @@ export default function NovaSolicitacaoViagemPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6 rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          <span className="text-red-500 dark:text-red-400">*</span> campos obrigatórios
+        </p>
+
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="empresa" className={LABEL_CLASS}>
               Empresa
+              <CampoObrigatorio />
             </label>
             <select
               id="empresa"
@@ -196,6 +202,7 @@ export default function NovaSolicitacaoViagemPage() {
         <div>
           <label htmlFor="motivo" className={LABEL_CLASS}>
             Motivo da solicitação
+            <CampoObrigatorio />
           </label>
           <textarea
             id="motivo"
@@ -225,10 +232,12 @@ export default function NovaSolicitacaoViagemPage() {
                 <div>
                   <label htmlFor="hospede_nome" className={LABEL_CLASS}>
                     Nome completo do hóspede
+                    <CampoObrigatorio />
                   </label>
                   <input
                     id="hospede_nome"
                     type="text"
+                    required={incluiHotel}
                     value={hospedeNome}
                     onChange={(e) => setHospedeNome(e.target.value)}
                     className={INPUT_CLASS}
@@ -253,10 +262,12 @@ export default function NovaSolicitacaoViagemPage() {
                   <div>
                     <label htmlFor="checkin_data" className={LABEL_CLASS}>
                       Entrada
+                      <CampoObrigatorio />
                     </label>
                     <input
                       id="checkin_data"
                       type="date"
+                      required={incluiHotel}
                       value={checkinData}
                       onChange={(e) => setCheckinData(e.target.value)}
                       className={INPUT_CLASS}
@@ -280,10 +291,12 @@ export default function NovaSolicitacaoViagemPage() {
                   <div>
                     <label htmlFor="checkout_data" className={LABEL_CLASS}>
                       Saída
+                      <CampoObrigatorio />
                     </label>
                     <input
                       id="checkout_data"
                       type="date"
+                      required={incluiHotel}
                       value={checkoutData}
                       onChange={(e) => setCheckoutData(e.target.value)}
                       className={INPUT_CLASS}
@@ -309,6 +322,7 @@ export default function NovaSolicitacaoViagemPage() {
                 <div>
                   <label htmlFor="cidade" className={LABEL_CLASS}>
                     Cidade
+                    <CampoObrigatorio />
                   </label>
                   <SeletorCidade
                     id="cidade"
@@ -396,10 +410,12 @@ export default function NovaSolicitacaoViagemPage() {
                 <div>
                   <label htmlFor="passageiro_nome" className={LABEL_CLASS}>
                     Nome completo do passageiro
+                    <CampoObrigatorio />
                   </label>
                   <input
                     id="passageiro_nome"
                     type="text"
+                    required={incluiPassagem}
                     value={passageiroNome}
                     onChange={(e) => setPassageiroNome(e.target.value)}
                     className={INPUT_CLASS}
@@ -439,10 +455,12 @@ export default function NovaSolicitacaoViagemPage() {
                   <div>
                     <label htmlFor="ida_data" className={LABEL_CLASS}>
                       Data
+                      <CampoObrigatorio />
                     </label>
                     <input
                       id="ida_data"
                       type="date"
+                      required={incluiPassagem}
                       value={idaData}
                       onChange={(e) => setIdaData(e.target.value)}
                       className={INPUT_CLASS}
@@ -451,6 +469,7 @@ export default function NovaSolicitacaoViagemPage() {
                   <div>
                     <label htmlFor="ida_de" className={LABEL_CLASS}>
                       De
+                      <CampoObrigatorio />
                     </label>
                     <SeletorCidade
                       id="ida_de"
@@ -464,6 +483,7 @@ export default function NovaSolicitacaoViagemPage() {
                   <div>
                     <label htmlFor="ida_para" className={LABEL_CLASS}>
                       Para
+                      <CampoObrigatorio />
                     </label>
                     <SeletorCidade
                       id="ida_para"
