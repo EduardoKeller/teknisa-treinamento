@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { apiFetch } from "@/lib/api";
-import { Rdv, UsuarioAtual, STATUS_LABEL, STATUS_CLASS, formatarData, formatarValor } from "@/lib/types";
+import { Rdv, UsuarioAtual, STATUS_LABEL, STATUS_CLASS, formatarData } from "@/lib/types";
+import { ValorReembolso } from "@/components/valor-reembolso";
 
 export default async function MeusRdvsPage() {
   const meResponse = await apiFetch("/api/usuarios/me");
@@ -67,8 +68,8 @@ export default async function MeusRdvsPage() {
                       {STATUS_LABEL[rdv.status]}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right font-medium text-gray-900 dark:text-gray-100">
-                    {formatarValor(rdv.valor_reembolso)}
+                  <td className="px-4 py-3 text-right">
+                    <ValorReembolso valor={rdv.valor_reembolso} />
                   </td>
                 </tr>
               ))}
