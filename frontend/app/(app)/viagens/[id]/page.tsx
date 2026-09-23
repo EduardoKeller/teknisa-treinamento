@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import Link from "next/link";
 import { apiFetchClient } from "@/lib/api-client";
 import { useToast } from "@/components/toast";
+import { ComprovanteModal, type ComprovantePreview } from "@/components/comprovante-modal";
 import {
   SolicitacaoViagemDetalhada,
   UsuarioAtual,
@@ -553,6 +554,7 @@ function ComprovanteReserva({
 }) {
   const { showError, showSuccess } = useToast();
   const [processando, setProcessando] = useState(false);
+  const [preview, setPreview] = useState<ComprovantePreview | null>(null);
 
   async function verComprovante() {
     const response = await apiFetchClient(`/api/solicitacoes-viagem/${id}/comprovante`);
@@ -561,7 +563,8 @@ function ComprovanteReserva({
       return;
     }
     const { url } = await response.json();
-    window.open(url, "_blank");
+    const tipo = (comprovanteUrl ?? "").toLowerCase().endsWith(".pdf") ? "pdf" : "imagem";
+    setPreview({ url, tipo });
   }
 
   async function enviarArquivo(event: ChangeEvent<HTMLInputElement>) {
@@ -638,6 +641,8 @@ function ComprovanteReserva({
           </label>
         )
       )}
+
+      <ComprovanteModal preview={preview} onClose={() => setPreview(null)} />
     </div>
   );
 }
