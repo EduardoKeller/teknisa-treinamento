@@ -11,7 +11,7 @@ export default async function MeusRdvsPage() {
 
   if (!response.ok) {
     return (
-      <div className="mx-auto max-w-5xl px-4 py-8">
+      <div className="mx-auto max-w-7xl px-4 py-8">
         <p className="text-sm text-red-600 dark:text-red-400">Não foi possível carregar seus RDVs. Tente novamente mais tarde.</p>
       </div>
     );
@@ -20,7 +20,7 @@ export default async function MeusRdvsPage() {
   const rdvs: Rdv[] = await response.json();
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Meus RDVs</h1>
@@ -28,7 +28,7 @@ export default async function MeusRdvsPage() {
         </div>
         <Link
           href="/rdvs/novo"
-          className="inline-flex w-fit items-center rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+          className="inline-flex w-fit items-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-blue-700"
         >
           Novo RDV
         </Link>

@@ -208,7 +208,7 @@ export default function NovoRdvPage() {
           <button
             type="submit"
             disabled={enviando}
-            className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-60"
           >
             {enviando ? "Criando..." : "Criar RDV"}
           </button>

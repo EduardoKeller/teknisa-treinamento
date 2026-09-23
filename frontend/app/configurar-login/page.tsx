@@ -99,7 +99,7 @@ export default function ConfigurarLoginPage() {
           <button
             type="submit"
             disabled={salvando}
-            className="w-full rounded-md bg-gray-900 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:opacity-60 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+            className="w-full rounded-md bg-blue-600 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-60"
           >
             {salvando ? "Salvando..." : "Salvar e continuar"}
           </button>
