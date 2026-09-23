@@ -2,9 +2,11 @@
 
 import { use, useCallback, useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { Paperclip } from "lucide-react";
 import { apiFetchClient } from "@/lib/api-client";
 import { useToast } from "@/components/toast";
 import { ValorReembolso } from "@/components/valor-reembolso";
+import { ComprovanteModal, type ComprovantePreview } from "@/components/comprovante-modal";
 import {
   CategoriaDespesa,
   RdvDetalhado,
@@ -735,6 +737,7 @@ function SecaoItensDespesa({
   const [editValor, setEditValor] = useState("");
   const [editDataGasto, setEditDataGasto] = useState("");
   const [salvandoEdicao, setSalvandoEdicao] = useState(false);
+  const [preview, setPreview] = useState<ComprovantePreview | null>(null);
 
   function iniciarEdicao(item: RdvDetalhado["itens_despesa"][number]) {
     setEditandoId(item.id);
@@ -824,7 +827,7 @@ function SecaoItensDespesa({
     await onAtualizar();
   }
 
-  async function verComprovante(itemId: string) {
+  async function verComprovante(itemId: string, caminhoArquivo: string) {
     const response = await apiFetchClient(`/api/rdvs/${rdvId}/itens-despesa/${itemId}/comprovante`);
     if (!response.ok) {
       const data = await response.json().catch(() => null);
@@ -832,7 +835,8 @@ function SecaoItensDespesa({
       return;
     }
     const { url } = await response.json();
-    window.open(url, "_blank", "noopener,noreferrer");
+    const tipo = caminhoArquivo.toLowerCase().endsWith(".pdf") ? "pdf" : "imagem";
+    setPreview({ url, tipo });
   }
 
   async function enviarComprovante(itemId: string, arquivo: File) {
@@ -966,9 +970,11 @@ function SecaoItensDespesa({
                         <div className="flex items-center gap-2">
                           <button
                             type="button"
-                            onClick={() => verComprovante(item.id)}
-                            className="text-xs text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                            onClick={() => verComprovante(item.id, item.comprovante_url!)}
+                            title="Ver comprovante"
+                            className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                           >
+                            <Paperclip size={14} />
                             Ver
                           </button>
                           {editavel && (
@@ -1076,6 +1082,8 @@ function SecaoItensDespesa({
           </button>
         </form>
       )}
+
+      <ComprovanteModal preview={preview} onClose={() => setPreview(null)} />
     </section>
   );
 }
