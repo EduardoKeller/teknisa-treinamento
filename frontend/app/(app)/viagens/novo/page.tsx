@@ -46,11 +46,9 @@ export default function NovaSolicitacaoViagemPage() {
   const [idaData, setIdaData] = useState("");
   const [idaDe, setIdaDe] = useState("");
   const [idaPara, setIdaPara] = useState("");
-  const [idaHorario, setIdaHorario] = useState("");
   const [voltaData, setVoltaData] = useState("");
   const [voltaDe, setVoltaDe] = useState("");
   const [voltaPara, setVoltaPara] = useState("");
-  const [voltaHorario, setVoltaHorario] = useState("");
   const [observacoesPassagem, setObservacoesPassagem] = useState("");
 
   useEffect(() => {
@@ -117,11 +115,9 @@ export default function NovaSolicitacaoViagemPage() {
         ida_data: idaData || null,
         ida_de: idaDe || null,
         ida_para: idaPara || null,
-        ida_horario: idaHorario || null,
         volta_data: voltaData || null,
         volta_de: voltaDe || null,
         volta_para: voltaPara || null,
-        volta_horario: voltaHorario || null,
         observacoes_passagem: observacoesPassagem || null,
       }),
     });
@@ -439,7 +435,7 @@ export default function NovaSolicitacaoViagemPage() {
 
               <div className="rounded-md border border-gray-200 p-3 dark:border-gray-800">
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Ida</p>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <div>
                     <label htmlFor="ida_data" className={LABEL_CLASS}>
                       Data
@@ -478,24 +474,12 @@ export default function NovaSolicitacaoViagemPage() {
                       className={INPUT_CLASS}
                     />
                   </div>
-                  <div>
-                    <label htmlFor="ida_horario" className={LABEL_CLASS}>
-                      Horário sugerido
-                    </label>
-                    <input
-                      id="ida_horario"
-                      type="text"
-                      value={idaHorario}
-                      onChange={(e) => setIdaHorario(e.target.value)}
-                      className={INPUT_CLASS}
-                    />
-                  </div>
                 </div>
               </div>
 
               <div className="rounded-md border border-gray-200 p-3 dark:border-gray-800">
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Volta</p>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <div>
                     <label htmlFor="volta_data" className={LABEL_CLASS}>
                       Data
@@ -531,18 +515,6 @@ export default function NovaSolicitacaoViagemPage() {
                       valor={voltaPara}
                       onChange={setVoltaPara}
                       onSelecionar={(m) => setVoltaPara(`${m.nome}/${m.uf}`)}
-                      className={INPUT_CLASS}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="volta_horario" className={LABEL_CLASS}>
-                      Horário sugerido
-                    </label>
-                    <input
-                      id="volta_horario"
-                      type="text"
-                      value={voltaHorario}
-                      onChange={(e) => setVoltaHorario(e.target.value)}
                       className={INPUT_CLASS}
                     />
                   </div>

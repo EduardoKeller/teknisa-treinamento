@@ -76,11 +76,9 @@ const CAMPOS_PASSAGEM = [
   "ida_data",
   "ida_de",
   "ida_para",
-  "ida_horario",
   "volta_data",
   "volta_de",
   "volta_para",
-  "volta_horario",
   "observacoes_passagem",
 ] as const;
 
