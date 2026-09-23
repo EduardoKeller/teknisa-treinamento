@@ -196,11 +196,9 @@ export interface SolicitacaoViagem {
   ida_data: string | null;
   ida_de: string | null;
   ida_para: string | null;
-  ida_horario: string | null;
   volta_data: string | null;
   volta_de: string | null;
   volta_para: string | null;
-  volta_horario: string | null;
   observacoes_passagem: string | null;
 
   detalhes_reserva: string | null;

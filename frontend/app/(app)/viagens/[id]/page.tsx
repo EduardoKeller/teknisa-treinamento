@@ -151,7 +151,6 @@ export default function DetalheSolicitacaoViagemPage({ params }: Props) {
                   valor={solicitacao.ida_data ? formatarData(solicitacao.ida_data) : null}
                 />
                 <Campo label="Trecho" valor={[solicitacao.ida_de, solicitacao.ida_para].filter(Boolean).join(" → ") || null} />
-                <Campo label="Horário sugerido" valor={solicitacao.ida_horario} />
               </div>
             </div>
             <div className="rounded-md border border-gray-200 p-3 dark:border-gray-800">
@@ -162,7 +161,6 @@ export default function DetalheSolicitacaoViagemPage({ params }: Props) {
                   valor={solicitacao.volta_data ? formatarData(solicitacao.volta_data) : null}
                 />
                 <Campo label="Trecho" valor={[solicitacao.volta_de, solicitacao.volta_para].filter(Boolean).join(" → ") || null} />
-                <Campo label="Horário sugerido" valor={solicitacao.volta_horario} />
               </div>
             </div>
           </div>
