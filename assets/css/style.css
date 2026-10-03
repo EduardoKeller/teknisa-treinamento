@@ -234,3 +234,38 @@ p { margin: 0; }
   color: #fff; display: grid; place-items: center; cursor: pointer;
 }
 .lightbox-close svg { width: 18px; height: 18px; }
+
+/* Modo escuro: alternador e ajustes */
+.theme-toggle {
+  all: unset; cursor: pointer; box-sizing: border-box; display: flex; align-items: center; gap: 12px;
+  margin-top: auto; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line);
+  color: var(--ink-soft); font-family: "Manrope", sans-serif; font-weight: 700; font-size: 13.5px;
+}
+.theme-toggle:hover { background: var(--accent-soft); color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.theme-toggle svg { width: 18px; height: 18px; flex: none; }
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .theme-toggle-label::before { content: "Modo escuro"; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .theme-toggle-label::before { content: "Modo claro"; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .theme-toggle-label::before { content: "Modo claro"; }
+}
+.theme-toggle-compact {
+  margin: 0 0 0 auto; width: 38px; height: 38px; padding: 0; justify-content: center;
+  background: var(--card); color: var(--ink); flex: none;
+}
+.theme-toggle-compact .theme-toggle-label { display: none; }
+@media (min-width: 881px) { .theme-toggle-compact { display: none; } }
+@media (max-width: 880px) { .sidebar .theme-toggle { display: none; } }
+
+/* O logo é vermelho-escuro sobre fundo transparente: no escuro ganha uma base clara */
+:root[data-theme="dark"] .sidebar-logo,
+:root[data-theme="dark"] .mobile-topbar-logo { background: #fbf7f0; border-radius: 8px; padding: 3px 8px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .sidebar-logo,
+  :root:not([data-theme="light"]) .mobile-topbar-logo { background: #fbf7f0; border-radius: 8px; padding: 3px 8px; }
+}

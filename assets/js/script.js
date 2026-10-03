@@ -88,6 +88,20 @@
   lightbox.addEventListener('click', function(e) { if (e.target === lightbox) closeLightbox(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
 
+  var root = document.documentElement;
+  var darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  function isDark() {
+    var t = root.getAttribute('data-theme');
+    return t ? t === 'dark' : darkQuery.matches;
+  }
+  document.querySelectorAll('.theme-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var next = isDark() ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+  });
+
   var hash = location.hash.replace('#', '');
   if (hash && document.getElementById('sec-' + hash)) {
     showSection(hash);
